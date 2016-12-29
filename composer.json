@@ -1,0 +1,16 @@
+{
+    "name": "roysegall/nuntius_boot",
+    "authors": [
+        {
+            "name": "RoySegall",
+            "email": "roy.segall@gizra.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "coderstephen/slack-client": "^0.2.5",
+        "raveren/kint": "^1.0",
+        "jclg/php-slack-bot": "^0.0.3"
+    }
+}
