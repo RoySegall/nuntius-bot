@@ -61,6 +61,10 @@ class SuperCommand extends \PhpSlackBot\Command\BaseCommand {
       return "";
     }
   }
+
+  public function nuntiusSendMessage($channel, $subtitle, $text) {
+    $this->send($channel, $subtitle, $text);
+  }
 }
 
 $bot = new Bot();

@@ -7,15 +7,15 @@ class Nuntius {
   /**
    * The path of the plugins.
    *
-   * @var NuntiusPlugin[]
+   * @var NuntiusPluginAbstract[]
    */
   protected $plugins;
 
   /**
-   * @param NuntiusPlugin $plugin
+   * @param NuntiusPluginAbstract $plugin
    * @return $this
    */
-  public function addPlugins(NuntiusPlugin $plugin) {
+  public function addPlugins(NuntiusPluginAbstract $plugin) {
     $this->plugins[] = $plugin;
 
     return $this;
@@ -34,8 +34,14 @@ class Nuntius {
 
     foreach ($this->plugins as $plugin) {
 
-    }
+      foreach ($plugin->formats as $format => $info) {
+        if (!$matches = $this->stepDefinitionMatch($sentence, $format)) {
+          continue;
+        }
 
+        call_user_func_array([$plugin, $info['callback']], $matches);
+      }
+    }
   }
 
   /**
@@ -45,9 +51,19 @@ class Nuntius {
    *   The text the user submitted.
    * @param $plugin_format
    *   The format of the plugin.
+   *
+   * @return boolean|array
+   *   In case there is not match, return FALSE. If found, return the artguments
+   *   from the sentence.
    */
-  public function matchPlugin($user_input, $plugin_format) {
+  public function stepDefinitionMatch($user_input, $plugin_format) {
+    if (!preg_match($plugin_format, $user_input, $matches)) {
+      return FALSE;
+    }
 
+    unset($matches[0]);
+
+    return $matches;
   }
 
 }

@@ -2,16 +2,32 @@
 
 namespace Nuntius\Plugins;
 
-use Nuntius\NuntiusPlugin;
+use Nuntius\NuntiusPluginAbstract;
+use Nuntius\NuntiusPluginInterface;
 
-class Reminder implements NuntiusPlugin {
+class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
 
   public $formats = [
-    'when {username} is logged in tell him to {do_something}',
-    'Remind me when i\'m logging in to {do_something}',
+    '/Remind me when i\'m logging in to (.*)/' => [
+      'callback' => 'RemindMe',
+      'description' => '',
+    ],
+    '/when (.*) is logged in tell him to (.*)/' => [
+      'callback' => 'RemindTo',
+      'description' => '',
+    ],
   ];
 
-  public function action() {
-    return 'a';
+  /**
+   * Adding a reminder for some one.
+   *
+   * @param $to
+   * @param $remind
+   */
+  public function RemindTo($to, $remind) {
+
+    $this->addEntry();
+
   }
+
 }
