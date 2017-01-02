@@ -16,6 +16,18 @@ class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
       'callback' => 'RemindTo',
       'description' => '',
     ],
+    '/forget about the reminders for (.*)/' => [
+      'callback' => 'RemindTo',
+      'description' => '',
+    ],
+    '/forget about the last reminder for (.*)/' => [
+      'callback' => 'RemindTo',
+      'description' => '',
+    ],
+    '/delete all the reminders I asked from you/' => [
+      'callback' => 'RemindTo',
+      'description' => '',
+    ],
   ];
 
   /**
