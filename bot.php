@@ -68,6 +68,7 @@ class SuperCommand extends \PhpSlackBot\Command\BaseCommand {
 }
 
 $bot = new Bot();
-$bot->setToken('xoxb-122081602870-7snjp9RHBDrEZ7l9j47qfXH2'); // Get your token here https://my.slack.com/services/new/bot
+// Get your token here https://my.slack.com/services/new/bot.
+$bot->setToken('xoxb-122081602870-7snjp9RHBDrEZ7l9j47qfXH2');
 $bot->loadCatchAllCommand(new SuperCommand());
 $bot->run();
