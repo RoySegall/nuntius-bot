@@ -48,8 +48,7 @@ class NuntiusSuperCommand extends BaseCommand {
         ->run(Nuntius::getRethinkDB()->getConnection());
 
       foreach ($results as $result) {
-        $reminder = $result['author'] . ' told me to tell you ' . $result['remind'];
-        $this->send($this->getIMChannel($this->getIdFromUserName($result['to'])), $result['to'], $reminder);
+        $this->send($this->getIMChannel($this->getIdFromUserName($result['to'])), $result['to'], $result['message']);
 
         // The reminder no longer have any purpose. Delete it.
         Nuntius::getRethinkDB()->getTable('reminders')
