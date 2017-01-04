@@ -23,6 +23,11 @@ class NuntiusRethinkdb {
     $this->connection = \r\connect($info['host'], $info['port'], $info['database'], $info['api_key'], $info['timeout']);
   }
 
+  /**
+   * Getting the connect object.
+   *
+   * @return r\Connection
+   */
   public function getConnection() {
     return $this->connection;
   }
