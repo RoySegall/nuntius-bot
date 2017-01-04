@@ -15,38 +15,24 @@ class NuntiusSuperCommand extends BaseCommand {
   protected $nuntius;
 
   /**
-   * Setting the nuntius object with the plugins.
-   *
    * @param Nuntius $nuntius
-   *   The nuntius object.
-   *
-   * @return NuntiusSuperCommand
-   *   The current instance.
    */
   public function setNuntius(Nuntius $nuntius) {
     $this->nuntius = $nuntius;
-
-    return $this;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   protected function configure() {
   }
 
-  /**
-   * {@inheritdoc}
-   */
   protected function execute($data, $context) {
 
-    list($author, $message) = explode(': ', $data['content']);
-
-    // Get the username from the data.
-    $data['username'] = $author;
+    $username = $this->getUserNameFromUserId($data['user']);
+    $data['username'] = $username;
 
     // Log all the stuff. For debugging and records.
     Nuntius::getRethinkDB()->addEntry('logs', $data);
+
+    list($author, $message) = explode(': ', $data['content']);
 
     // Get the matching plugin.
     $this->nuntius
@@ -58,7 +44,7 @@ class NuntiusSuperCommand extends BaseCommand {
 
       // The user logged in. Any stuff we need to tell him?
       $results = Nuntius::getRethinkDB()->getTable('reminders')
-        ->filter(\r\row('to')->eq($author))
+        ->filter(\r\row('to')->eq($data['username']))
         ->run(Nuntius::getRethinkDB()->getConnection());
 
       foreach ($results as $result) {
@@ -73,6 +59,11 @@ class NuntiusSuperCommand extends BaseCommand {
       }
     }
 
+    if ($data['type'] == 'desktop_notification') {
+//      if ($data['subtitle'] == 'itamargronich' || $data['subtitle'] == 'roysegall') {
+//        $this->send($data['channel'], $data['subtitle'], 'עשית בר פיס היום גבר?');
+//      }
+    }
   }
 
   /**
@@ -117,5 +108,4 @@ class NuntiusSuperCommand extends BaseCommand {
   public function nuntiusSendMessage($channel, $subtitle, $text) {
     $this->send($channel, $subtitle, $text);
   }
-
 }

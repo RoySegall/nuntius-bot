@@ -12,7 +12,7 @@ class Reminder extends NuntiusPluginAbstract {
       'callback' => 'RemindMe',
       'description' => '',
     ],
-    '/when (.*) is logged in tell him to (.*)/' => [
+    '/when (.*) is logged in tell him (.*)/' => [
       'callback' => 'RemindTo',
       'description' => '',
     ],
