@@ -2,6 +2,7 @@
 
 namespace Nuntius\Plugins;
 
+use Nuntius\Nuntius;
 use Nuntius\NuntiusPluginAbstract;
 use Nuntius\NuntiusPluginInterface;
 
@@ -38,7 +39,10 @@ class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
    */
   public function RemindTo($to, $remind) {
 
-    $this->addEntry();
+    Nuntius::getRethinkDB()->addEntry('reminders', [
+      'to' => $to,
+      'remind' => $remind,
+    ]);
 
   }
 

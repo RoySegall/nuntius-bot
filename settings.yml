@@ -1,7 +1,9 @@
 rethinkdb:
   host: localhost
   port: 28015
-  db: nuntius
+  database: nuntius
+  api_key:
+  timeout: 30
 schemes:
   - songs
   - reminders

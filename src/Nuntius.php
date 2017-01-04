@@ -24,10 +24,11 @@ class Nuntius {
 
   /**
    * Get the DB instance.
+   *
    * @return NuntiusRethinkdb
    */
   public static function getRethinkDB() {
-    return new NuntiusRethinkdb();
+    return new NuntiusRethinkdb(self::getSettings()['rethinkdb']);
   }
 
   /**

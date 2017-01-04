@@ -18,8 +18,9 @@ class NuntiusRethinkdb {
    */
   protected $db;
 
-  function __construct() {
-    $this->connection = r\connect('localhost');
+  function __construct($info) {
+    $this->db = $info['database'];
+    $this->connection = \r\connect($info['host'], $info['port'], $info['database'], $info['api_key'], $info['timeout']);
   }
 
   /**
@@ -39,8 +40,22 @@ class NuntiusRethinkdb {
    *   The DB name.
    */
   public function createDB($db) {
-    $this->db = $db;
     r\dbCreate($db)->run($this->connection);
+  }
+
+  /**
+   * Adding entry to a table.
+   *
+   * @param $string
+   *   The table name.
+   * @param $array
+   *   The record.
+   */
+  public function addEntry($string, $array) {
+    r\db($this->db)
+      ->table($string)
+      ->insert($array)
+      ->run($this->connection);
   }
 
 }
