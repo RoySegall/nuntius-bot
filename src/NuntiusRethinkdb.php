@@ -23,6 +23,10 @@ class NuntiusRethinkdb {
     $this->connection = \r\connect($info['host'], $info['port'], $info['database'], $info['api_key'], $info['timeout']);
   }
 
+  public function getConnection() {
+    return $this->connection;
+  }
+
   /**
    * Create a table in the DB.
    *
@@ -56,6 +60,19 @@ class NuntiusRethinkdb {
       ->table($string)
       ->insert($array)
       ->run($this->connection);
+  }
+
+  /**
+   * Get a table object.
+   *
+   * @param $table
+   *   The name of the table.
+   *
+   * @return r\Queries\Tables\Table
+   */
+  public function getTable($table) {
+    return r\db($this->db)
+      ->table($table);
   }
 
 }

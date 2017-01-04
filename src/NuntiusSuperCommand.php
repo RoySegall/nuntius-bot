@@ -13,33 +13,49 @@ class NuntiusSuperCommand extends BaseCommand {
 
     $username = $this->getUserNameFromUserId($data['user']);
     $data['username'] = $username;
-    var_dump($data);
+
+    Nuntius::getRethinkDB()->addEntry('logs', $data);
+
+    $nuntius = new \Nuntius\Nuntius();
+    $nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
+
+    list($author, $message) = explode(': ', $data['content']);
+    $nuntius
+      ->setAuthor($author)
+      ->getPlugin($message);
+
+
+    // Move to plugin actions.
+
 
     if ($data['type'] == 'presence_change' && $data['presence'] == 'active') {
-      $username = $this->getUserNameFromUserId($data['user']);
-      $imchannel = $this->getIMChannel($data['user']);
 
-      if ($username == 'itamargronich') {
-        $this->send($imchannel, $username, "שלום לך!");
-      }
+      $results = Nuntius::getRethinkDB()->getTable('reminders')
+        ->filter(\r\row('to')->eq($username))
+        ->run(Nuntius::getRethinkDB()->getConnection());
 
-      if ($username == 'roysegall') {
-        $this->send($imchannel, $username, "Hi there georgce!");
-      }
+      foreach ($results as $result) {
 
-      if ($username == 'rachel') {
-        $this->send($imchannel, $username, "How You Doin'..? https://youtu.be/43wkqM27z2E");
-      }
+        var_dump($this->getIMChannel($this->getIdFromUserName($result['to'])));
+        var_dump($this->getIdFromUserName($result['to']));
+        var_dump($result['to']);
+        $this->send($this->getIMChannel($this->getIdFromUserName($result['to'])), $result['to'], $result['author'] . ' told me to tell you ' . $result['remind']);
 
-      if ($username == 'da_vi_t') {
-        $this->send($imchannel, $username, "גבר... מה עם ברפיס?");
+        // todo: delete after sending.
       }
     }
 
-    // Some one ping the bot.
     if ($data['type'] == 'desktop_notification') {
-      if ($data['subtitle'] == 'itamargronich' || $data['subtitle'] == 'roysegall') {
-        $this->send($data['channel'], $data['subtitle'], 'עשית בר פיס היום גבר?');
+//      if ($data['subtitle'] == 'itamargronich' || $data['subtitle'] == 'roysegall') {
+//        $this->send($data['channel'], $data['subtitle'], 'עשית בר פיס היום גבר?');
+//      }
+    }
+  }
+
+  public function getIdFromUserName($username) {
+    foreach ($this->getCurrentContext()['users'] as $user) {
+      if ($user['name'] == $username) {
+        return $user['id'];
       }
     }
   }
@@ -47,7 +63,7 @@ class NuntiusSuperCommand extends BaseCommand {
   public function getIMChannel($userId) {
     $client = new \GuzzleHttp\Client();
     $url = 'https://slack.com/api/im.open?';
-    $url.= 'token='.'xoxb-122081602870-7snjp9RHBDrEZ7l9j47qfXH2';
+    $url.= 'token='.\Nuntius\Nuntius::getSettings()['bot_id'];
     $url.= '&user='.$userId;
     $res = $client->request('GET', $url);
     $obj = json_decode($res->getBody(), true);

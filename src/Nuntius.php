@@ -14,6 +14,27 @@ class Nuntius {
   protected $plugins;
 
   /**
+   * Array with some information relate to the operation.
+   *
+   * @var array
+   */
+  public $author;
+
+  /**
+   * Setting some context for the operation.
+   *
+   * @param $author
+   *   The author of the message for the bot.
+   *
+   * @return Nuntius
+   */
+  public function setAuthor($author) {
+    $this->author = $author;
+
+    return $this;
+  }
+
+  /**
    * Getting the settings.
    *
    * @return array
@@ -59,6 +80,11 @@ class Nuntius {
           continue;
         }
 
+        if (!is_callable([$plugin, $info['callback']])) {
+          continue;
+        }
+
+        $plugin->setAuthor($this->author);
         call_user_func_array([$plugin, $info['callback']], $matches);
       }
     }

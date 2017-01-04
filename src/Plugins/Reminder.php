@@ -4,9 +4,8 @@ namespace Nuntius\Plugins;
 
 use Nuntius\Nuntius;
 use Nuntius\NuntiusPluginAbstract;
-use Nuntius\NuntiusPluginInterface;
 
-class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
+class Reminder extends NuntiusPluginAbstract {
 
   public $formats = [
     '/Remind me when i\'m logging in to (.*)/' => [
@@ -18,7 +17,7 @@ class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
       'description' => '',
     ],
     '/forget about the reminders for (.*)/' => [
-      'callback' => 'RemindTo',
+      'callback' => 'deleteReminderForFrom',
       'description' => '',
     ],
     '/forget about the last reminder for (.*)/' => [
@@ -26,7 +25,7 @@ class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
       'description' => '',
     ],
     '/delete all the reminders I asked from you/' => [
-      'callback' => 'RemindTo',
+      'callback' => 'DeleteAllReminderOfUser',
       'description' => '',
     ],
   ];
@@ -40,8 +39,9 @@ class Reminder extends NuntiusPluginAbstract implements NuntiusPluginInterface {
   public function RemindTo($to, $remind) {
 
     Nuntius::getRethinkDB()->addEntry('reminders', [
-      'to' => $to,
-      'remind' => $remind,
+      'to' => trim($to),
+      'remind' => trim($remind),
+      'author' => trim($this->author),
     ]);
 
   }
