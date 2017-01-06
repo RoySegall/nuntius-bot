@@ -76,8 +76,17 @@ class Nuntius {
     foreach ($this->plugins as $plugin) {
 
       foreach ($plugin->formats as $format => $info) {
-        if (!$matches = $this->stepDefinitionMatch($sentence, $format)) {
+        $arguments = $this->stepDefinitionMatch($sentence, $format);
+
+        if ($arguments === FALSE) {
+          // No matching plugin at all. Skipping.
           continue;
+        }
+
+        if ($arguments === TRUE) {
+          // We fount a plugin but there is no arguments the callback need. set
+          // the arguments as an empty array.
+          $arguments = [];
         }
 
         if (!is_callable([$plugin, $info['callback']])) {
@@ -85,7 +94,7 @@ class Nuntius {
         }
 
         $plugin->setAuthor($this->author);
-        call_user_func_array([$plugin, $info['callback']], $matches);
+        call_user_func_array([$plugin, $info['callback']], $arguments);
       }
     }
   }
@@ -105,6 +114,10 @@ class Nuntius {
   public function stepDefinitionMatch($user_input, $plugin_format) {
     if (!preg_match($plugin_format, $user_input, $matches)) {
       return FALSE;
+    }
+
+    if (count($matches) == 1) {
+      return TRUE;
     }
 
     unset($matches[0]);
