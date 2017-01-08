@@ -33,6 +33,9 @@ class Reminder extends NuntiusPluginAbstract {
    *   The user we need to remind.
    * @param $remind
    *   The reminder.
+   *
+   * @return string
+   *   The text to return after the action was done.
    */
   public function RemindTo($to, $remind) {
     Nuntius::getRethinkDB()->addEntry('reminders', [
@@ -40,6 +43,8 @@ class Reminder extends NuntiusPluginAbstract {
       'message' => trim($this->author) . ' told me to tell you ' . trim($remind),
       'author' => trim($this->author),
     ]);
+
+    return "Don't worry! I got your back. I'll send him the reminder.";
   }
 
   /**
@@ -47,6 +52,9 @@ class Reminder extends NuntiusPluginAbstract {
    *
    * @param $remind
    *   The remind.
+   *
+   * @return string
+   *   The text to return after the action was done.
    */
   public function RemindMe($remind) {
     Nuntius::getRethinkDB()->addEntry('reminders', [
@@ -54,6 +62,8 @@ class Reminder extends NuntiusPluginAbstract {
       'message' => 'You told me to remind about ' . trim($remind),
       'author' => trim($this->author),
     ]);
+
+    return "OK! I will remind you next you'll log in.";
   }
 
   /**
@@ -61,6 +71,9 @@ class Reminder extends NuntiusPluginAbstract {
    *
    * @param $to
    *   The user name.
+   *
+   * @return string
+   *   The text to return after the action was done.
    */
   public function deleteReminderForFrom($to) {
     // The user logged in. Any stuff we need to tell him?
@@ -75,10 +88,15 @@ class Reminder extends NuntiusPluginAbstract {
         ->delete()
         ->run(Nuntius::getRethinkDB()->getConnection());
     }
+
+    return "Roger out! the reminders for " . $to . " was removed.";
   }
 
   /**
    * Delete all the messages a user asked.
+   *
+   * @return string
+   *   The text to return after the action was done.
    */
   public function DeleteAllReminderOfUser() {
     // The user logged in. Any stuff we need to tell him?
@@ -93,6 +111,8 @@ class Reminder extends NuntiusPluginAbstract {
         ->delete()
         ->run(Nuntius::getRethinkDB()->getConnection());
     }
+
+    return "Which reminders? :wink:";
   }
 
 }

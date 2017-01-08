@@ -63,10 +63,13 @@ class Nuntius {
   }
 
   /**
-   * Get the best matching plugin accodring to the current text.
+   * Get the best matching plugin according to the current text.
    *
    * @param $sentence
    *   The text the user submitted.
+   *
+   * @return string
+   *   The text after the actions completed.
    */
   public function getPlugin($sentence) {
 
@@ -94,7 +97,9 @@ class Nuntius {
         }
 
         $plugin->setAuthor($this->author);
-        call_user_func_array([$plugin, $info['callback']], $arguments);
+        if ($text = call_user_func_array([$plugin, $info['callback']], $arguments)) {
+          return $text;
+        }
       }
     }
   }

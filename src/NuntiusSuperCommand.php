@@ -35,9 +35,16 @@ class NuntiusSuperCommand extends BaseCommand {
     list($author, $message) = explode(': ', $data['content']);
 
     // Get the matching plugin.
-    $this->nuntius
-      ->setAuthor($author)
-      ->getPlugin($message);
+
+    if ($data['type'] == 'desktop_notification') {
+      $text = $this->nuntius
+        ->setAuthor($author)
+        ->getPlugin($message);
+
+      if ($text) {
+        $this->freeMessage($data['channel'], $text);
+      }
+    }
 
     // todo: Move to plugin actions.
     if ($data['type'] == 'presence_change' && $data['presence'] == 'active') {
@@ -56,12 +63,6 @@ class NuntiusSuperCommand extends BaseCommand {
           ->delete()
           ->run(Nuntius::getRethinkDB()->getConnection());
       }
-    }
-
-    if ($data['type'] == 'desktop_notification') {
-//      if ($data['subtitle'] == 'itamargronich' || $data['subtitle'] == 'roysegall') {
-//        $this->send($data['channel'], $data['subtitle'], 'עשית בר פיס היום גבר?');
-//      }
     }
   }
 
@@ -106,5 +107,15 @@ class NuntiusSuperCommand extends BaseCommand {
 
   public function nuntiusSendMessage($channel, $subtitle, $text) {
     $this->send($channel, $subtitle, $text);
+  }
+
+  public function freeMessage($channel, $message) {
+      $response = array(
+        'id' => time(),
+        'type' => 'message',
+        'channel' => $channel,
+        'text' => $message,
+      );
+      $this->getClient()->send(json_encode($response));
   }
 }
