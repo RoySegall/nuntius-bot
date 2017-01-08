@@ -79,11 +79,24 @@ class Nuntius {
     foreach ($this->plugins as $plugin) {
 
       foreach ($plugin->formats as $format => $info) {
-        $arguments = $this->stepDefinitionMatch($sentence, $format);
 
-        if ($arguments === FALSE) {
-          // No matching plugin at all. Skipping.
-          continue;
+        if (strpos($format, '/') === FALSE) {
+          $list = explode(',', $format);
+
+          if (in_array($sentence, $list)) {
+            $arguments = [];
+          }
+          else {
+            continue;
+          }
+        }
+        else {
+          $arguments = $this->stepDefinitionMatch($sentence, $format);
+
+          if ($arguments === FALSE) {
+            // No matching plugin at all. Skipping.
+            continue;
+          }
         }
 
         if ($arguments === TRUE) {

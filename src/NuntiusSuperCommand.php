@@ -29,9 +29,6 @@ class NuntiusSuperCommand extends BaseCommand {
     $username = $this->getUserNameFromUserId($data['user']);
     $data['username'] = $username;
 
-    // Log all the stuff. For debugging and records.
-    Nuntius::getRethinkDB()->addEntry('logs', $data);
-
     list($author, $message) = explode(': ', $data['content']);
 
     // Get the matching plugin.
@@ -64,6 +61,9 @@ class NuntiusSuperCommand extends BaseCommand {
           ->run(Nuntius::getRethinkDB()->getConnection());
       }
     }
+
+    // Log all the stuff. For debugging and records.
+    Nuntius::getRethinkDB()->addEntry('logs', $data);
   }
 
   /**

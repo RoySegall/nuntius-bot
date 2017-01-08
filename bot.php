@@ -7,6 +7,7 @@ use PhpSlackBot\Bot;
 // Setting Nuntius and the plugins.
 $nuntius = new \Nuntius\Nuntius();
 $nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
+$nuntius->addPlugins(New \Nuntius\Plugins\SmallTalk());
 
 $command = new \Nuntius\NuntiusSuperCommand();
 $command->setNuntius($nuntius);

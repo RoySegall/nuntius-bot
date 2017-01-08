@@ -4,6 +4,9 @@ require_once 'vendor/autoload.php';
 
 $nuntius = new \Nuntius\Nuntius();
 $nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
+$nuntius->addPlugins(New \Nuntius\Plugins\SmallTalk());
 
-$nuntius
-  ->getPlugin('@nuntius delete all the reminders I asked from you');
+$text = $nuntius
+  ->getPlugin('hi');
+
+var_dump($text);
