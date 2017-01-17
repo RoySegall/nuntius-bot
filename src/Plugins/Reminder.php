@@ -7,6 +7,8 @@ use Nuntius\NuntiusPluginAbstract;
 
 class Reminder extends NuntiusPluginAbstract {
 
+  protected $category = 'Reminders';
+
   public $formats = [
     '/remind me next time I logging in to (.*)/' => [
       'callback' => 'RemindMe',

@@ -39,7 +39,17 @@ class NuntiusSuperCommand extends BaseCommand {
         ->getPlugin($message);
 
       if ($text) {
-        $this->freeMessage($data['channel'], $text);
+        if (is_array($text)) {
+          foreach ($text as $senctences) {
+            $this->freeMessage($data['channel'], $senctences);
+
+            // A normal person will wait a second between each sentence.
+            sleep(1);
+          }
+        }
+        else {
+          $this->freeMessage($data['channel'], $text);
+        }
       }
     }
 

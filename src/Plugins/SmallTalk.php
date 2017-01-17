@@ -6,16 +6,14 @@ use Nuntius\NuntiusPluginAbstract;
 
 class SmallTalk extends NuntiusPluginAbstract {
 
+  protected $category = 'Small talk';
+
   public $formats = [
     'hi,Hi,Hey,hey,hello,Hello,Shalom,shalom,hello' => [
       'callback' => 'Hi',
       'description' => '',
     ],
     '/what can you do/' => [
-      'callback' => 'help',
-      'description' => '',
-    ],
-    '/help/' => [
       'callback' => 'help',
       'description' => '',
     ],
@@ -35,13 +33,6 @@ class SmallTalk extends NuntiusPluginAbstract {
     shuffle($answers);
 
     return reset($answers);
-  }
-
-  /**
-   * All the stuff that nuntius can do.
-   */
-  public function help() {
-    return "Well.. I can do a lot of stuff! Soon you all know what can I do";
   }
 
 }
