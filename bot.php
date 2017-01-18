@@ -8,6 +8,7 @@ use PhpSlackBot\Bot;
 $nuntius = new \Nuntius\Nuntius();
 $nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
 $nuntius->addPlugins(New \Nuntius\Plugins\SmallTalk());
+$nuntius->addPlugins(New \Nuntius\Plugins\Help());
 
 $command = new \Nuntius\NuntiusSuperCommand();
 $command->setNuntius($nuntius);

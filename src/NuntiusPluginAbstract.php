@@ -5,6 +5,11 @@ namespace Nuntius;
 abstract class NuntiusPluginAbstract implements NuntiusPluginInterface {
 
   /**
+   * @var string
+   */
+  protected $category;
+
+  /**
    * Holds all the operation the plugin can handle.
    *
    * @var array
@@ -17,6 +22,16 @@ abstract class NuntiusPluginAbstract implements NuntiusPluginInterface {
    * @var array
    */
   public $author;
+
+  /**
+   * @var NuntiusSuperCommand
+   */
+  protected $nuntius;
+
+  /**
+   * @var NuntiusPluginAbstract[]
+   */
+  protected $plugins;
 
   /**
    * Setting some context for the operation.
@@ -47,6 +62,20 @@ abstract class NuntiusPluginAbstract implements NuntiusPluginInterface {
     $this->formats = $formats;
 
     return $this;
+  }
+
+  /**
+   * @param NuntiusPluginAbstract[] $plugins
+   */
+  public function setPlugins(array $plugins) {
+    $this->plugins = $plugins;
+  }
+
+  /**
+   * @return string
+   */
+  public function getCategory() {
+    return $this->category;
   }
 
 }

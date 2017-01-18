@@ -1,7 +1,7 @@
 rethinkdb:
   host: localhost
   port: 28015
-  database: nuntius
+  db: nuntius
   api_key:
   timeout: 30
 schemes:

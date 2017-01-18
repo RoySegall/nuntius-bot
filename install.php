@@ -6,11 +6,11 @@ $value = \Nuntius\Nuntius::getSettings();
 $db = \Nuntius\Nuntius::getRethinkDB();
 
 $db->createDB($value['rethinkdb']['db']);
+print("The DB was created.\n");
 
-print("The DB was created\n");
-
+sleep(5);
 
 foreach ($value['schemes'] as $scheme) {
   $db->createTable($scheme);
-  print("The {$scheme} was created\n");
+  print("The table {$scheme} has created\n");
 }

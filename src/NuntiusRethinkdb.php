@@ -19,8 +19,12 @@ class NuntiusRethinkdb {
   protected $db;
 
   function __construct($info) {
-    $this->db = $info['database'];
-    $this->connection = \r\connect($info['host'], $info['port'], $info['database'], $info['api_key'], $info['timeout']);
+    $this->db = $info['db'];
+    try {
+      $this->connection = \r\connect($info['host'], $info['port'], $info['db'], $info['api_key'], $info['timeout']);
+    } catch (\Exception $e) {
+      print($e->getMessage() . "\n");
+    }
   }
 
   /**
@@ -39,7 +43,11 @@ class NuntiusRethinkdb {
    *   The table name.
    */
   public function createTable($table) {
-    r\db($this->db)->tableCreate($table)->run($this->connection);
+    try {
+      r\db($this->db)->tableCreate($table)->run($this->connection);
+    } catch (\Exception $e) {
+      print($e->getMessage() . "\n");
+    }
   }
 
   /**
@@ -49,7 +57,11 @@ class NuntiusRethinkdb {
    *   The DB name.
    */
   public function createDB($db) {
-    r\dbCreate($db)->run($this->connection);
+    try {
+      r\dbCreate($db)->run($this->connection);
+    } catch (\Exception $e) {
+      print($e->getMessage() . "\n");
+    }
   }
 
   /**

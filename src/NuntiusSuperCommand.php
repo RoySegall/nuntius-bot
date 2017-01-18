@@ -21,6 +21,13 @@ class NuntiusSuperCommand extends BaseCommand {
     $this->nuntius = $nuntius;
   }
 
+  /**
+   * @return Nuntius
+   */
+  public function getNuntius() {
+    return $this->nuntius;
+  }
+
   protected function configure() {
   }
 
@@ -42,9 +49,6 @@ class NuntiusSuperCommand extends BaseCommand {
         if (is_array($text)) {
           foreach ($text as $senctences) {
             $this->freeMessage($data['channel'], $senctences);
-
-            // A normal person will wait a second between each sentence.
-            sleep(1);
           }
         }
         else {

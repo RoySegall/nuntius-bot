@@ -21,6 +21,11 @@ class Nuntius {
   public $author;
 
   /**
+   * @var NuntiusSuperCommand
+   */
+  protected $nuntius;
+
+  /**
    * Setting some context for the operation.
    *
    * @param $author
@@ -60,6 +65,13 @@ class Nuntius {
     $this->plugins[] = $plugin;
 
     return $this;
+  }
+
+  /**
+   * @return NuntiusPluginAbstract[]
+   */
+  public function getPlugins() {
+    return $this->plugins;
   }
 
   /**
@@ -108,6 +120,8 @@ class Nuntius {
         if (!is_callable([$plugin, $info['callback']])) {
           continue;
         }
+
+        $plugin->setPlugins($this->getPlugins());
 
         $plugin->setAuthor($this->author);
         if ($text = call_user_func_array([$plugin, $info['callback']], $arguments)) {
