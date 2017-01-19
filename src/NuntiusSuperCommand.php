@@ -33,54 +33,16 @@ class NuntiusSuperCommand extends BaseCommand {
 
   protected function execute($data, $context) {
 
-    $username = $this->getUserNameFromUserId($data['user']);
-    $data['username'] = $username;
-
-    if ($data['type'] == 'message') {
-      // This is a normal text with out the bot was mentioned.
-      $message = $data['text'];
-      $author = $username;
-    }
-    else {
-      // The bot was mentioned.
-      list($author, $message) = explode(': ', $data['content']);
-    }
+    list($message, $author) = $this->getAuthorAndMessage($data);
 
     // Get the matching plugin.
     if (in_array($data['type'], ['desktop_notification', 'message'])) {
-      $text = $this->nuntius
-        ->setAuthor($author)
-        ->getPlugin($message);
-
-      if ($text) {
-        if (is_array($text)) {
-          foreach ($text as $senctences) {
-            $this->freeMessage($data['channel'], $senctences);
-          }
-        }
-        else {
-          $this->freeMessage($data['channel'], $text);
-        }
-      }
+      $this->sendReactionMessage($data, $author, $message);
     }
 
-    // todo: Move to plugin actions.
     if ($data['type'] == 'presence_change' && $data['presence'] == 'active') {
-
-      // The user logged in. Any stuff we need to tell him?
-      $results = Nuntius::getRethinkDB()->getTable('reminders')
-        ->filter(\r\row('to')->eq($data['username']))
-        ->run(Nuntius::getRethinkDB()->getConnection());
-
-      foreach ($results as $result) {
-        $this->send($this->getIMChannel($this->getIdFromUserName($result['to'])), $result['to'], $result['message']);
-
-        // The reminder no longer have any purpose. Delete it.
-        Nuntius::getRethinkDB()->getTable('reminders')
-          ->get($result['id'])
-          ->delete()
-          ->run(Nuntius::getRethinkDB()->getConnection());
-      }
+      $this->WelcomeMessageFire($data);
+      $this->NotificationFire($data);
     }
 
     // Log all the stuff. For debugging and records.
@@ -131,12 +93,97 @@ class NuntiusSuperCommand extends BaseCommand {
   }
 
   public function freeMessage($channel, $message) {
-      $response = array(
-        'id' => time(),
-        'type' => 'message',
-        'channel' => $channel,
-        'text' => $message,
-      );
-      $this->getClient()->send(json_encode($response));
+    $response = array(
+      'id' => time(),
+      'type' => 'message',
+      'channel' => $channel,
+      'text' => $message,
+    );
+    $this->getClient()->send(json_encode($response));
   }
+
+  /**
+   * Fir up a message When the bot was notified or received a PM.
+   *
+   * @param $data
+   *   Information about the last action.
+   * @param $author
+   *   The user who wrote the message.
+   * @param $message
+   *   The content of the message.
+   */
+  protected function sendReactionMessage($data, $author, $message) {
+    $text = $this->nuntius
+      ->setAuthor($author)
+      ->getPlugin($message);
+
+    if ($text) {
+      if (is_array($text)) {
+        foreach ($text as $senctences) {
+          $this->freeMessage($data['channel'], $senctences);
+        }
+      } else {
+        $this->freeMessage($data['channel'], $text);
+      }
+    }
+  }
+
+  /**
+   * The user logged in. Any stuff we need to tell him?
+   *
+   * @param $data
+   *   Information about the event.
+   */
+  protected function NotificationFire($data) {
+    $results = Nuntius::getRethinkDB()
+      ->getTable('reminders')
+      ->filter(\r\row('to')->eq($data['username']))
+      ->run(Nuntius::getRethinkDB()->getConnection());
+
+    foreach ($results as $result) {
+      $this->send($this->getIMChannel($this->getIdFromUserName($result['to'])), $result['to'], $result['message']);
+
+      // The reminder no longer have any purpose. Delete it.
+      Nuntius::getRethinkDB()
+        ->getTable('reminders')
+        ->get($result['id'])
+        ->delete()
+        ->run(Nuntius::getRethinkDB()->getConnection());
+    }
+  }
+
+  /**
+   * When the user is logged in for the first time, greet him.
+   *
+   * @param $data
+   *   Information about the event.
+   */
+  protected function WelcomeMessageFire($data) {
+  }
+
+  /**
+   * Get the author and the message from the event data.
+   *
+   * @param $data
+   *   Data relate to the event.
+   *
+   * @return array
+   *   Return array with the message and the username.
+   */
+  protected function getAuthorAndMessage(&$data) {
+    $username = $this->getUserNameFromUserId($data['user']);
+
+    if ($data['type'] == 'message') {
+      // This is a normal text with out the bot was mentioned.
+      $message = $data['text'];
+      $data['username'] = $username;
+      return array($message, $data['username']);
+    }
+    else {
+      // The bot was mentioned.
+      list($author, $message) = explode(': ', $data['content']);
+      return array($message, $author);
+    }
+  }
+
 }
