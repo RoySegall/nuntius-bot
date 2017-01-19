@@ -11,11 +11,8 @@ class SmallTalk extends NuntiusPluginAbstract {
   public $formats = [
     'hi,Hi,Hey,hey,hello,Hello,Shalom,shalom,hello' => [
       'callback' => 'Hi',
-      'description' => '',
-    ],
-    '/what can you do/' => [
-      'callback' => 'help',
-      'description' => '',
+      'human_command' => 'hi,Hi,Hey,hey,hello,Hello,Shalom,shalom,hello',
+      'description' => 'Several ways to get a random text from me.',
     ],
   ];
 

@@ -36,11 +36,18 @@ class NuntiusSuperCommand extends BaseCommand {
     $username = $this->getUserNameFromUserId($data['user']);
     $data['username'] = $username;
 
-    list($author, $message) = explode(': ', $data['content']);
+    if ($data['type'] == 'message') {
+      // This is a normal text with out the bot was mentioned.
+      $message = $data['text'];
+      $author = $username;
+    }
+    else {
+      // The bot was mentioned.
+      list($author, $message) = explode(': ', $data['content']);
+    }
 
     // Get the matching plugin.
-
-    if ($data['type'] == 'desktop_notification') {
+    if (in_array($data['type'], ['desktop_notification', 'message'])) {
       $text = $this->nuntius
         ->setAuthor($author)
         ->getPlugin($message);
