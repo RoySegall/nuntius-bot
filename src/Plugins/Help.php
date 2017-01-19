@@ -49,7 +49,7 @@ class Help extends NuntiusPluginAbstract {
    * @return string
    */
   public function actionsIn($category) {
-    $message = ['I can do cool stuff with ' . $category];
+    $message = ['I can do cool stuff with ' . $category . ': '];
     foreach ($this->plugins as $plugin) {
 
       if ($plugin->getCategory() != $category) {
@@ -57,7 +57,7 @@ class Help extends NuntiusPluginAbstract {
       }
 
       foreach ($plugin->formats as $format) {
-        $message[] = $format['description'];
+        $message[] = '`' . $format['human_command'] . '`: ' . $format['description'];
       }
     }
 

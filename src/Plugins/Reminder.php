@@ -12,19 +12,26 @@ class Reminder extends NuntiusPluginAbstract {
   public $formats = [
     '/remind me next time I logging in to (.*)/' => [
       'callback' => 'RemindMe',
-      'description' => '',
+      'human_command' => 'remind me next time I logging in to REMINDER',
+      'description' => 'The next time you will logged in i will remind what you'
+      . ' have asked',
     ],
     '/when (.*) is logged in tell him (.*)/' => [
       'callback' => 'RemindTo',
-      'description' => '',
+      'human_command' => 'when USERNAME is logged in tell him STUFF',
+      'description' => 'Next time the username will logged in I will remind him'
+      . ' what you have asked. Don\'t add the @ sign before the username.',
     ],
     '/forget about the reminders for (.*)/' => [
       'callback' => 'deleteReminderForFrom',
-      'description' => '',
+      'human_command' => 'forget about the reminders for USERNAME',
+      'description' => 'Next time the username will logged in I will remind him'
+      . ' what you have asked. Don\'t add the @ sign before the username.',
     ],
     '/delete all the reminders I asked from you/' => [
       'callback' => 'DeleteAllReminderOfUser',
-      'description' => '',
+      'human_command' => 'delete all the reminders I asked from you',
+      'description' => 'I will delete all the reminders you have asked from me.',
     ],
   ];
 
