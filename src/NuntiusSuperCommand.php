@@ -159,6 +159,31 @@ class NuntiusSuperCommand extends BaseCommand {
    *   Information about the event.
    */
   protected function WelcomeMessageFire($data) {
+    $username = $this->getUserNameFromUserId($data['user']);
+    $channel = $this->getIMChannel($data['user']);
+
+    $results = Nuntius::getRethinkDB()
+      ->getTable('users')
+      ->filter(\r\row('username')->eq($username))
+      ->filter(\r\row('greeted')->eq(TRUE))
+      ->run(Nuntius::getRethinkDB()->getConnection());
+
+    if (!$results->toArray()) {
+
+      $texts = [
+        "Hi there! I am nuntius.",
+        "This is the first time we see each other. Isn't that exciting? A new friend!",
+        "I can assist you with couple of ways. Just say `help` and I'll show what I can do.",
+      ];
+      foreach ($texts as $text) {
+        $this->send($channel, $username, $text);
+      }
+
+      Nuntius::getRethinkDB()->addEntry('users', [
+        'username' => $username,
+        'greeted' => TRUE,
+      ]);
+    }
   }
 
   /**
