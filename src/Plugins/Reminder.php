@@ -10,9 +10,9 @@ class Reminder extends NuntiusPluginAbstract {
   protected $category = 'Reminders';
 
   public $formats = [
-    '/remind me next time I log into (.*)/' => [
+    '/Remind me next time I log in to (.*)/' => [
       'callback' => 'RemindMe',
-      'human_command' => 'remind me next time I log into REMINDER',
+      'human_command' => 'Remind me next time I log in to REMINDER',
       'description' => 'The next time you will log in, I will remind of what you'
       . ' asked',
     ],
