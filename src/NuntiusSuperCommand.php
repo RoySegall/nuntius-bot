@@ -171,9 +171,9 @@ class NuntiusSuperCommand extends BaseCommand {
     if (!$results->toArray()) {
 
       $texts = [
-        "Hi there! I am nuntius.",
-        "This is the first time we see each other. Isn't that exciting? A new friend!",
-        "I can assist you with couple of ways. Just say `help` and I'll show what I can do.",
+        "Hi there! I am Nuntius.",
+        "This is the first time I have seen you here. How exciting. A new friend!",
+        "I can assist you in a couple of ways. Ask for `help' and I will show you what I can do.",
       ];
       foreach ($texts as $text) {
         $this->send($channel, $username, $text);
