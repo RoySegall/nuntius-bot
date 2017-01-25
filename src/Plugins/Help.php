@@ -12,7 +12,7 @@ class Help extends NuntiusPluginAbstract {
       'description' => "Help: you can trigger it with one of the above: 
       `help,help,-help,--help,h,-h,--h,Help,What can you do?,What can you do` and i'll show you all the commands.",
     ],
-    '/what can do in (.*)/' => [
+    '/what can you do in (.*)/' => [
       'callback' => 'actionsIn',
       'description' => 'Actions: Ask action in a category by 
       `what can do in foo` and you will see the commands in a category',
@@ -35,9 +35,9 @@ class Help extends NuntiusPluginAbstract {
     }
 
     return [
-      "There is a list of things that I can do.",
-      "It sorted by categories: " . implode(", ", $categories),
-      "If you'ld like to know, send me: `@nuntius what can do in ...`",
+      "There is a list of things I can do.",
+      "It is sorted by categories: " . implode(", ", $categories),
+      "Just ask me: `@nuntius what can you do in ...`",
     ];
   }
 
