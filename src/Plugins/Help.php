@@ -35,9 +35,9 @@ class Help extends NuntiusPluginAbstract {
     }
 
     return [
-      "There is a list of things that I can do.",
-      "It sorted by categories: " . implode(", ", $categories),
-      "If you'ld like to know, send me: `@nuntius what can do in ...`",
+      "There is a list of things I can do.",
+      "It is sorted by categories: " . implode(", ", $categories),
+      "Just ask me: `@nuntius what can you do in ...`",
     ];
   }
 
