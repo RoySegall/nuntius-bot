@@ -5,10 +5,6 @@ use Nuntius\Nuntius;
 require_once 'vendor/autoload.php';
 
 $nuntius = new Nuntius();
-$nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
-$nuntius->addPlugins(New \Nuntius\Plugins\SmallTalk());
-$nuntius->addPlugins(New \Nuntius\Plugins\Help());
-
 $rethinkdb = Nuntius::getRethinkDB();
 
 $results = Nuntius::getRethinkDB()

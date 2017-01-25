@@ -9,12 +9,7 @@ class RemindersTest extends PHPUnit_Framework_TestCase {
 
   public function __construct($name = NULL, array $data = [], $dataName = '') {
     parent::__construct($name, $data, $dataName);
-
     $this->nuntius = new \Nuntius\Nuntius();
-
-    $this->nuntius->addPlugins(New \Nuntius\Plugins\Reminder());
-    $this->nuntius->addPlugins(New \Nuntius\Plugins\SmallTalk());
-    $this->nuntius->addPlugins(New \Nuntius\Plugins\Help());
   }
 
   /**
