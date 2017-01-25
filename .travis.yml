@@ -16,4 +16,5 @@ before_script:
 
 script:
   - rethinkdb > /dev/null &
+  - php install.php
   - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/
