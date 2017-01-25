@@ -13,7 +13,8 @@
     "raveren/kint": "^1.0",
     "jclg/php-slack-bot": "^0.0.3",
     "symfony/yaml": "^3.2",
-    "danielmewes/php-rql": "^2.3"
+    "danielmewes/php-rql": "^2.3",
+    "phpunit/phpunit": "^5.7"
   },
   "autoload": {
     "psr-4": {
