@@ -13,7 +13,6 @@ before_script:
   # Installing composer
   - curl -sS https://getcomposer.org/installer | php
   - php composer.phar install
-  - composer.phar self-update
 
 script:
   - rethinkdb > /dev/null &
