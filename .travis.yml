@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+
+addons:
+  rethinkdb: "2.3"
+
+before_script:
+  # Installing composer
+  - curl -sS https://getcomposer.org/installer | php
+  - sudo mv composer.phar /usr/local/bin/composer
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer self-update
+  - pwd
+  - ls -al
+
+script:
+  # Run the PHPUnit tests which also include the kernel tests.
+  - ./vendor/phpunit/phpunit/phpunit -c ./core/phpunit.xml.dist ./modules/rethinkdb
