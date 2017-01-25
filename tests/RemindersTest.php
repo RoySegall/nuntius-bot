@@ -23,6 +23,7 @@ class RemindersTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($results, NULL);
 
     // todo: check something happens in the DB.
+    $this->assertEquals(1,2);
   }
 
 }
