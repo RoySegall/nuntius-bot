@@ -10,28 +10,28 @@ class Reminder extends NuntiusPluginAbstract {
   protected $category = 'Reminders';
 
   public $formats = [
-    '/remind me next time I logging in to (.*)/' => [
+    '/remind me next time I log into (.*)/' => [
       'callback' => 'RemindMe',
-      'human_command' => 'remind me next time I logging in to REMINDER',
-      'description' => 'The next time you will logged in i will remind what you'
-      . ' have asked',
+      'human_command' => 'remind me next time I log into REMINDER',
+      'description' => 'The next time you will log in, I will remind of what you'
+      . ' asked',
     ],
     '/when (.*) is logged in tell him (.*)/' => [
       'callback' => 'RemindTo',
       'human_command' => 'when USERNAME is logged in tell him STUFF',
-      'description' => 'Next time the username will logged in I will remind him'
-      . ' what you have asked. Don\'t add the @ sign before the username.',
+      'description' => 'Next time the username logs in I will remind him'
+      . ' of what you asked. Don\'t add the @ sign before the username.',
     ],
     '/forget about the reminders for (.*)/' => [
       'callback' => 'deleteReminderForFrom',
       'human_command' => 'forget about the reminders for USERNAME',
-      'description' => 'Next time the username will logged in I will remind him'
-      . ' what you have asked. Don\'t add the @ sign before the username.',
+      'description' => 'Next time the username will log in I will remind him'
+      . ' of what you asked. Don\'t add the @ sign before the username.',
     ],
     '/delete all the reminders I asked from you/' => [
       'callback' => 'DeleteAllReminderOfUser',
       'human_command' => 'delete all the reminders I asked from you',
-      'description' => 'I will delete all the reminders you have asked from me.',
+      'description' => 'I will delete all the reminders you asked from me.',
     ],
   ];
 
@@ -53,7 +53,7 @@ class Reminder extends NuntiusPluginAbstract {
       'author' => trim($this->author),
     ]);
 
-    return "Don't worry! I got your back. I'll send him the reminder.";
+    return "Don't worry! I got your back. I'll send him a reminder.";
   }
 
   /**
@@ -68,7 +68,7 @@ class Reminder extends NuntiusPluginAbstract {
   public function RemindMe($remind) {
     Nuntius::getRethinkDB()->addEntry('reminders', [
       'to' => trim($this->author),
-      'message' => 'You told me to remind about ' . trim($remind),
+      'message' => 'You asked me to remind about ' . trim($remind),
       'author' => trim($this->author),
     ]);
 
@@ -98,7 +98,7 @@ class Reminder extends NuntiusPluginAbstract {
         ->run(Nuntius::getRethinkDB()->getConnection());
     }
 
-    return "Roger out! the reminders for " . $to . " was removed.";
+    return "Roger out! The reminder for " . $to . " was removed.";
   }
 
   /**
@@ -121,7 +121,7 @@ class Reminder extends NuntiusPluginAbstract {
         ->run(Nuntius::getRethinkDB()->getConnection());
     }
 
-    return "Which reminders? :wink:";
+    return "What reminder? :wink:";
   }
 
 }
