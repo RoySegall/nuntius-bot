@@ -2,6 +2,9 @@
 
 namespace Nuntius;
 
+use Nuntius\Plugins\Help;
+use Nuntius\Plugins\Reminder;
+use Nuntius\Plugins\SmallTalk;
 use Symfony\Component\Yaml\Yaml;
 
 class Nuntius {
@@ -24,6 +27,15 @@ class Nuntius {
    * @var NuntiusSuperCommand
    */
   protected $nuntius;
+
+  /**
+   * Nuntius constructor.
+   */
+  function __construct() {
+    $this->addPlugins(New Reminder());
+    $this->addPlugins(New SmallTalk());
+    $this->addPlugins(New Help());
+  }
 
   /**
    * Setting some context for the operation.
