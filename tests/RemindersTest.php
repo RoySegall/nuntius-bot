@@ -1,16 +1,8 @@
 <?php
 
-class RemindersTest extends PHPUnit_Framework_TestCase {
+namespace tests;
 
-  /**
-   * @var \Prophecy\Prophecy\ObjectProphecy|\Nuntius\Nuntius
-   */
-  protected $nuntius;
-
-  public function __construct($name = NULL, array $data = [], $dataName = '') {
-    parent::__construct($name, $data, $dataName);
-    $this->nuntius = new \Nuntius\Nuntius();
-  }
+class RemindersTest extends TestsAbstract {
 
   /**
    * Test reminders.
