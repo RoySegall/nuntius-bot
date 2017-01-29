@@ -27,7 +27,7 @@ class Help extends NuntiusPluginAbstract {
 
     foreach ($this->plugins as $plugin) {
 
-      if (!$plugin) {
+      if (!$plugin->getCategory()) {
         continue;
       }
 
@@ -36,7 +36,7 @@ class Help extends NuntiusPluginAbstract {
 
     return [
       "There is a list of things I can do.",
-      "It is sorted by categories: " . implode(", ", $categories),
+      "It is sorted by categories: " . implode(", ", $categories) . '.',
       "Just ask me: `@nuntius what can you do in ...`",
     ];
   }
