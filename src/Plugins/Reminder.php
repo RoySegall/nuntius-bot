@@ -7,6 +7,9 @@ use Nuntius\NuntiusPluginAbstract;
 
 class Reminder extends NuntiusPluginAbstract {
 
+  /**
+   * @inheritdoc
+   */
   protected $category = 'Reminders';
 
   public $formats = [

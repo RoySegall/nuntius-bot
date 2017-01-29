@@ -7,7 +7,7 @@ class RemindersTest extends TestsAbstract {
   /**
    * Reminders when the user log in.
    *
-   * @covers Reminder::RemindMe
+   * @covers Reminder::RemindMe()
    */
   public function testRemindWhenUserLogIn() {
     $results = $this
@@ -28,7 +28,7 @@ class RemindersTest extends TestsAbstract {
   /**
    * Testing reminders for other users.
    *
-   * @covers Reminder::RemindTo
+   * @covers Reminder::RemindTo()
    */
   public function testRemindToOtherUser() {
     $results = $this->nuntius->setAuthor('Hal2000')->getPlugin('when Major Tom is logged in tell him he should tell me hi');
@@ -47,7 +47,7 @@ class RemindersTest extends TestsAbstract {
   /**
    * Testing for deleting reminders for a user.
    *
-   * @covers Reminder::deleteReminderForFrom
+   * @covers Reminder::deleteReminderForFrom()
    */
   public function testDeleteRemindersFor() {
     // Set up reminders for Major tom and Ground control.
@@ -78,7 +78,7 @@ class RemindersTest extends TestsAbstract {
   /**
    * Testing for deleting all the reminders.
    *
-   * @covers Reminder::DeleteAllReminderOfUser
+   * @covers Reminder::DeleteAllReminderOfUser()
    */
   public function testDeleteAllReminders() {
     // Set up reminders for Major tom and John.

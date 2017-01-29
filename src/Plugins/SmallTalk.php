@@ -6,6 +6,9 @@ use Nuntius\NuntiusPluginAbstract;
 
 class SmallTalk extends NuntiusPluginAbstract {
 
+  /**
+   * @inheritdoc
+   */
   protected $category = 'Small talk';
 
   public $formats = [
