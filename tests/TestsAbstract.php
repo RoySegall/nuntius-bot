@@ -27,13 +27,6 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
   public function setUp() {
     $this->nuntius = new \Nuntius\Nuntius();
     $this->rethinkdb = Nuntius::getRethinkDB();
-    $this->rethinkdb->setPrefix(time());
-
-    $this->tables = Nuntius::getSettings()['schemes'];
-
-    foreach ($this->tables as $table) {
-      $this->rethinkdb->createTable($table);
-    }
   }
 
   /**
@@ -42,8 +35,8 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
   public function tearDown() {
     parent::tearDown();
 
-    foreach ($this->tables as $table) {
-      $this->rethinkdb->deleteTable($table);
+    foreach (Nuntius::getSettings()['schemes'] as $table) {
+      $this->rethinkdb->truncateTable($table);
     }
   }
 
