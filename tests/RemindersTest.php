@@ -14,6 +14,13 @@ class RemindersTest extends TestsAbstract {
       ->getPlugin('remind me next time I log in to do burpee');
 
     $this->assertEquals($results, 'OK! I will remind you next you\'ll log in.');
+
+    $results = $this->rethinkdb
+      ->getTable('reminders')
+      ->filter(\r\row('to')->eq('john'))
+      ->run($this->rethinkdb->getConnection());
+
+    $this->assertTrue(!empty($results), 'There are no reminders in the DB.');
   }
 
   /**
