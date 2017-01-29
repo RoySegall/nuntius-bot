@@ -38,8 +38,33 @@ class HelpTest extends TestsAbstract {
   }
 
   /**
+   * Testing the documentation for each plugin.
+   *
+   * @covers Help::actionsIn()
+   */
+  public function testWhatCanYouDoIn() {
+    foreach ($this->nuntius->getPlugins() as $plugin) {
+
+      if (!$plugin->getCategory()) {
+        continue;
+      }
+
+      $results = $this->nuntius->getPlugin('@nuntius what can you do in ' . $plugin->getCategory());
+
+      $documentation = ['I can do cool stuff with ' . $plugin->getCategory() . ': '];
+      foreach ($plugin->formats as $format) {
+        $documentation[] = "`{$format['human_command']}`: {$format['description']}";
+      }
+
+      $this->assertEquals($documentation, $results);
+
+    }
+
+  }
+
+  /**
    * Return list of the categories.
-   * 
+   *
    * @return array
    */
   protected function getCategories() {

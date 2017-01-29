@@ -71,10 +71,11 @@ class Nuntius {
 
   /**
    * @param NuntiusPluginAbstract $plugin
+   *
    * @return $this
    */
   public function addPlugins(NuntiusPluginAbstract $plugin) {
-    $this->plugins[] = $plugin;
+    $this->plugins[$plugin->getCategory()] = $plugin;
 
     return $this;
   }
