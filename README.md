@@ -23,10 +23,71 @@ You'll need PHP5.6 and above, [Composer](http://getcomposer.org) and
 [RethinkDB](http://rethinkdb.com).
 
 Go to [slack custom integration](https://gizrateam.slack.com/apps/A0F7YS25R-bots)
-to get the bot access token(it will change any day so keep that in mind when updating nuntius)
+to get the bot access token(it will change any day so keep that in mind when 
+updating nuntius).
 
 ```bash
 cp settings.example.yml settings.yml
 composer install
 rethinkdb
+```
+
+Open the settings file you created and set the token you copied. and run:
+```bash
+php install.php
+php bot.php
+```
+
+That's it. Nuntius is up and running.
+
+## Adding reactions
+The main idea of nuntius is reacting with people. Each reaction belong to a 
+category. A category is bundled into a class which located in the `src/Plugins`
+directory.
+
+Have a look:
+```php
+
+class Reminder extends NuntiusPluginAbstract {
+
+  /**
+   * @inheritdoc
+   */
+  protected $category = 'Reminders';
+
+  public $formats = [
+    '/Command with argument (.*) that will be passed as an argument/' => [
+      'callback' => 'CommandWithArguments',
+      'human_command' => 'Command with argument ARGUMENT that will be passed as an argument',
+      'description' => 'This is description',
+    ],
+    'known text 1,known text 2' => [
+      'callback' => 'KnownText',
+      'human_command' => 'when USERNAME is logged in tell him STUFF',
+      'description' => 'known text 1,known text 2',
+    ],
+  ];
+
+  /**
+   * Adding a reminder for some one.
+   *
+   * @param $to
+   *   The user we need to remind.
+   * @param $remind
+   *   The reminder.
+   *
+   * @return string
+   *   The text to return after the action was done.
+   */
+  public function RemindTo($to, $remind) {
+    Nuntius::getRethinkDB()->addEntry('table', [
+      'key' => 'value',
+    ]);
+
+    return "Don't worry! I got your back. I'll send him a reminder.";
+  }
+
+}
+
+
 ```
