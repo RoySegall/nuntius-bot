@@ -11,13 +11,13 @@ origin story when his uncle-CPU died due to lack of understanding that with
 great power comes great responsibility.
 
 Nuntius in Latin means messages. That was the original project - a chat based on
-any backend technology: Drupal, Wordpress, NodeJS, etc., etc. That could connect
+any backend technology: Drupal, Wordpress, NodeJS, etc., etc. that could connect
 to any front end technology(React, Elm, Angular, etc., etc.) and using any 
 websocket service(Socket.IO, Pusher, FireBase). The project was too much for a 
 single man but the name lived on.
 
 ## Set up.
-You'll need PHP5.6 and above, [Composer](http://getcomposer.org) and 
+You'll need PHP 5.6 and above, [Composer](http://getcomposer.org) and 
 [RethinkDB](http://rethinkdb.com).
 
 Go to [slack custom integration](https://gizrateam.slack.com/apps/A0F7YS25R-bots)
@@ -98,14 +98,14 @@ $this->addPlugins(New \Nuntius\Plugins\Reminder());
 ```
 
 ## Updating Nuntius
-You wrote a new command, awesome! Go to get a fresh token 
-(Remember `slack custom integration`?) Stop the current process on Nuntius, pull
-the last changes, update the token in the settings and re-run Nuntius.
+You wrote a new command, awesome! Go and get a fresh token 
+(Remember `slack custom integration`?), stop the current process of Nuntius, 
+pull the last changes, update the token in the settings and re-run Nuntius.
 
 ## Tests
-We love tests. The tests based on PHPUnit. I don't think mocking object is the 
-correct way to do tests in our case since we need to see that something affected
-the DB.
+We love tests. The tests based on PHPUnit. I don't think mocking an object is 
+the correct way to do tests in our case since we need to see that something
+affected the DB.
 
 The tests, for now, are not setting up new tables so **don't run in on live**
 (Dah!).
