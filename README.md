@@ -42,11 +42,13 @@ That's it. Nuntius is up and running.
 
 ## Adding reactions
 The main idea of nuntius is reacting with people. Each reaction belong to a 
-category. A category is bundled into a class which located in the `src/Plugins`
+category. A category bundled into a class which located in the `src/Plugins`
 directory.
 
 Have a look:
 ```php
+
+namespace Nuntius\Plugins;
 
 class Reminder extends NuntiusPluginAbstract {
 
@@ -88,6 +90,56 @@ class Reminder extends NuntiusPluginAbstract {
   }
 
 }
+```
 
+After creating the new class we need to register it. The registration happens in
+`\Nuntius\Nuntius::__construct`:
 
+```php
+$this->addPlugins(New \Nuntius\Plugins\Reminder());
+```
+
+## Updating Nuntius
+You wrote new command, awesome! Go to get a fresh token 
+(Remember `slack custom integration`?) Stop the current process on Nuntius, pull
+the last changes, update the token in the settings and re run Nuntius.
+
+## Tests
+We love tests. The tests based on PHPUnit. I don't think mocking object is the 
+correct way to do tests in our case since we need to see that something affected
+the DB.
+
+The tests, for now, are not setting up new tables so **don't run in on live**
+(Dahh!).
+
+The tests need to see how Nuntius handles the text. We can have a look on the
+reminder tests:
+```php
+
+namespace tests;
+
+class RemindersTest extends TestsAbstract {
+
+  /**
+   * Reminders when the user log in.
+   *
+   * @covers Reminder::RemindMe()
+   */
+  public function testRemindWhenUserLogIn() {
+    $results = $this
+      ->nuntius
+      ->setAuthor('Hal2000')
+      ->getPlugin('@nuntius remind me next time I log in to do burpee');
+
+    $this->assertEquals($results, 'OK! I will remind you next you\'ll log in.');
+
+    $results = $this->rethinkdb
+      ->getTable('reminders')
+      ->filter(\r\row('to')->eq('Hal2000'))
+      ->run($this->rethinkdb->getConnection());
+
+    $this->assertTrue(!empty($results->toArray()), 'There are no reminders in the DB.');
+  }
+  
+}
 ```
