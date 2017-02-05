@@ -16,7 +16,7 @@ cache:
 before_script:
   # Installing composer
   - curl -sS https://getcomposer.org/installer | php
-  - php composer.phar install
+  - php composer.phar install --dev
 
 script:
   - rethinkdb > /dev/null &
