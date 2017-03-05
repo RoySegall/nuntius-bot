@@ -2,17 +2,17 @@
 
 require_once 'vendor/autoload.php';
 
-use PhpSlackBot\Bot;
+use React\EventLoop\Factory;
+use Mpociot\BotMan\BotManFactory;
+use Mpociot\BotMan\BotMan;
 
-// Setting Nuntius and the plugins.
-$nuntius = new \Nuntius\Nuntius();
+$loop = Factory::create();
+$botman = BotManFactory::createForRTM([
+  'slack_token' => \Nuntius\Nuntius::getSettings()['bot_id'],
+], $loop);
 
-$command = new \Nuntius\NuntiusSuperCommand();
-$command->setNuntius($nuntius);
+$botman->hears('Hello', function(BotMan $bot) {
+  $bot->startConversation(new Nuntius\Plugins\OnboardingConversation());
+});
 
-$bot = new Bot();
-
-// Get your token here https://my.slack.com/services/new/bot.
-$bot->setToken(\Nuntius\Nuntius::getSettings()['bot_id']);
-$bot->loadCatchAllCommand($command);
-$bot->run();
+$loop->run();

@@ -33,15 +33,20 @@ class NuntiusSuperCommand extends BaseCommand {
 
   protected function execute($data, $context) {
 
+    if (empty($data['type'])) {
+      return;
+    }
+
     list($message, $author) = $this->getAuthorAndMessage($data);
 
     // Get the matching plugin.
-    if (in_array($data['type'], ['desktop_notification', 'message'])) {
+
+    if ($data['type'] == 'desktop_notification') {
       $this->sendReactionMessage($data, $author, $message);
     }
 
     if ($data['type'] == 'presence_change' && $data['presence'] == 'active') {
-      $this->WelcomeMessageFire($data);
+//      $this->WelcomeMessageFire($data);
       $this->NotificationFire($data);
     }
 
@@ -93,12 +98,53 @@ class NuntiusSuperCommand extends BaseCommand {
   }
 
   public function freeMessage($channel, $message) {
-    $response = array(
-      'id' => time(),
-      'type' => 'message',
+//    $response = array(
+//      'id' => time(),
+//      'type' => 'message',
+//      'channel' => $channel,
+//      'text' => $message,
+//    );
+
+    $response = [
+      "text" => "Would you like to play a game?",
       'channel' => $channel,
-      'text' => $message,
-    );
+      'type' => 'message',
+      "attachments"=> [
+          "text"=> "Choose a game to play",
+          "fallback"=> "You are unable to choose a game",
+          "callback_id"=> "wopr_game",
+          "color"=> "#3AA3E3",
+          "attachment_type"=> "default",
+          "actions"=> [
+            [
+              "name"=> "game",
+              "text"=> "Chess",
+              "type"=> "button",
+              "value"=> "chess"
+            ],
+            [
+              "name"=> "game",
+              "text"=> "Falken's Maze",
+              "type"=> "button",
+              "value"=> "maze"
+            ],
+            [
+              "name"=> "game",
+              "text"=> "Thermonuclear War",
+              "style"=> "danger",
+              "type"=> "button",
+              "value"=> "war",
+              "confirm"=> [
+                "title"=> "Are you sure?",
+                "text"=> "Wouldn't you prefer a good game of chess?",
+                "ok_text"=> "Yes",
+                "dismiss_text"=> "No"
+              ]
+            ]
+          ]
+        ]
+    ];
+    var_dump('a');
     $this->getClient()->send(json_encode($response));
   }
 
@@ -113,6 +159,8 @@ class NuntiusSuperCommand extends BaseCommand {
    *   The content of the message.
    */
   protected function sendReactionMessage($data, $author, $message) {
+    $this->freeMessage($data['channel'], 'a');
+
     $text = $this->nuntius
       ->setAuthor($author)
       ->getPlugin($message);
@@ -126,6 +174,7 @@ class NuntiusSuperCommand extends BaseCommand {
         $this->freeMessage($data['channel'], $text);
       }
     }
+
   }
 
   /**
@@ -135,6 +184,11 @@ class NuntiusSuperCommand extends BaseCommand {
    *   Information about the event.
    */
   protected function NotificationFire($data) {
+
+    if (empty($data['username'])) {
+      return;
+    }
+
     $results = Nuntius::getRethinkDB()
       ->getTable('reminders')
       ->filter(\r\row('to')->eq($data['username']))
@@ -196,6 +250,10 @@ class NuntiusSuperCommand extends BaseCommand {
    *   Return array with the message and the username.
    */
   protected function getAuthorAndMessage(&$data) {
+    if (!isset($data['user'])) {
+      return;
+    }
+
     $username = $this->getUserNameFromUserId($data['user']);
 
     if ($data['type'] == 'message') {

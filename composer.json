@@ -9,11 +9,11 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "coderstephen/slack-client": "^0.2.5",
     "raveren/kint": "^1.0",
-    "jclg/php-slack-bot": "^0.0.3",
     "symfony/yaml": "^3.2",
-    "danielmewes/php-rql": "^2.3"
+    "danielmewes/php-rql": "^2.3",
+    "mpociot/botman": "^1.4",
+    "cboden/ratchet": "^0.3.6"
   },
   "autoload": {
     "psr-4": {
