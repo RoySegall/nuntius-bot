@@ -4,8 +4,4 @@ rethinkdb:
   db: nuntius
   api_key:
   timeout: 30
-schemes:
-  - songs
-  - reminders
-  - users
-bot_id:
+access_token: ''

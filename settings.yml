@@ -1,12 +1,15 @@
 rethinkdb:
-  host: localhost
-  port: 28015
-  db: nuntius
+  host:
+  port:
+  db:
   api_key:
-  timeout: 30
-schemes:
-  - songs
-  - reminders
-  - users
-  - logs
-bot_id: 'xoxb-122081602870-HGr04K1XiqDTRgI0Fx3l1LUP'
+  timeout:
+events:
+  presence_change: '\Nuntius\Plugin\PresenceChange'
+  message: '\Nuntius\Plugin\Message'
+entities:
+  reminders: '\Nuntius\Entity\Reminders'
+tasks:
+  reminders: '\Nuntius\Tasks\Reminders'
+  help: '\Nuntius\Tasks\Help'
+access_token: ''

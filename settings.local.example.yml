@@ -1,0 +1,9 @@
+# RethinkDB connection information.
+rethinkdb:
+  host:
+  port:
+  db:
+  api_key:
+  timeout:
+# Set you bot access token.
+access_token: ''

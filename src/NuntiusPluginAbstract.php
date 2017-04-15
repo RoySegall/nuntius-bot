@@ -1,81 +1,68 @@
 <?php
 
 namespace Nuntius;
+use Slack\RealTimeClient;
 
-abstract class NuntiusPluginAbstract implements NuntiusPluginInterface {
+/**
+ * Class NuntiusPluginAbstract.
+ *
+ * Base class for all the plugins.
+ */
+abstract class NuntiusPluginAbstract {
+
+  use NuntiusServicesTrait;
 
   /**
-   * @var string
+   * @var \Nuntius\NuntiusRethinkdb
    */
-  protected $category;
+  protected $db;
 
   /**
-   * Holds all the operation the plugin can handle.
+   * @var \Slack\RealTimeClient
+   */
+  protected $client;
+
+  /**
+   * The entity manager.
+   *
+   * @var \Nuntius\EntityManager
+   */
+  protected $entityManager;
+
+  /**
+   * Information about the action.
    *
    * @var array
    */
-  public $formats;
+  public $data;
 
   /**
-   * Array with some information relate to the operation.
+   * Constructing the class.
    *
-   * @var array
+   * @param \Slack\RealTimeClient $client
+   *   The client object.
    */
-  public $author;
-
-  /**
-   * @var NuntiusSuperCommand
-   */
-  protected $nuntius;
-
-  /**
-   * @var NuntiusPluginAbstract[]
-   */
-  protected $plugins;
-
-  /**
-   * Setting some context for the operation.
-   *
-   * @param $author
-   *   The author of the message for the bot.
-   *
-   * @return NuntiusPluginInterface
-   */
-  public function setAuthor($author) {
-    $this->author = $author;
-    return $this;
+  function __construct(RealTimeClient $client) {
+    $this->db = Nuntius::getRethinkDB();
+    $this->client = $client;
+    $this->entityManager = Nuntius::getEntityManager();
   }
 
   /**
-   * @return mixed
+   * The action to commit when the event on slack is triggered.
    */
-  public function getFormats() {
-    return $this->formats;
+  abstract public function action();
+
+  /**
+   * Invoking an action before triggering the action method.
+   */
+  public function preAction() {
   }
 
   /**
-   * @param mixed $formats
-   *
-   * @return NuntiusPluginInterface
+   * Invoking an action after the action method was triggered.
    */
-  public function setFormats($formats) {
-    $this->formats = $formats;
-
-    return $this;
-  }
-
-  /**
-   * @param NuntiusPluginAbstract[] $plugins
-   */
-  public function setPlugins(array $plugins) {
-    $this->plugins = $plugins;
-  }
-
-  /**
-   * @return string
-   */
-  public function getCategory() {
-    return $this->category;
+  public function postAction() {
   }
 
 }

@@ -19,6 +19,7 @@ before_script:
   - php composer.phar install --dev
 
 script:
+  - cp settings.local.travis.yml settings.local.yml
   - rethinkdb > /dev/null &
   - php install.php
   - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/

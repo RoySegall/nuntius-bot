@@ -35,7 +35,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
   public function tearDown() {
     parent::tearDown();
 
-    foreach (Nuntius::getSettings()['schemes'] as $table) {
+    foreach (array_keys(Nuntius::getSettings()['entities']) as $table) {
       $this->rethinkdb->truncateTable($table);
     }
   }

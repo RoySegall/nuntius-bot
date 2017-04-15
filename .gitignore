@@ -1,3 +1,4 @@
 vendor
 .idea
 rethinkdb_data/
+settings.local.yml
