@@ -13,7 +13,8 @@
     "symfony/yaml": "^3.2",
     "danielmewes/php-rql": "^2.3",
     "cboden/ratchet": "^0.3.6",
-    "coderstephen/slack-client": "^0.2.5"
+    "coderstephen/slack-client": "^0.2.5",
+    "symfony/console": "^3.2"
   },
   "autoload": {
     "psr-4": {

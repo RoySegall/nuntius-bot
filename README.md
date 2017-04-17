@@ -25,119 +25,15 @@ to get the bot access token(it will change any day so keep that in mind when
 updating Nuntius).
 
 ```bash
-cp settings.example.yml settings.yml
+cp settings.local.example.yml settings.local.yml
 composer install
 rethinkdb
 ```
 
 Open the settings file you created and set the token you copied, and run:
 ```bash
-php install.php
+php console.php nuntius:install
 php bot.php
 ```
 
 That's it. Nuntius is up and running.
-
-## Adding reactions
-The main idea of Nuntius is reacting with people. Each reaction belongs to a 
-category. A category bundled into a class which located in the `src/Plugins`
-directory.
-
-Have a look:
-```php
-
-namespace Nuntius\Plugins;
-
-class Reminder extends NuntiusPluginAbstract {
-
-  /**
-   * @inheritdoc
-   */
-  protected $category = 'Reminders';
-
-  public $formats = [
-    '/Command with argument (.*) that will be passed as an argument/' => [
-      'callback' => 'CommandWithArguments',
-      'human_command' => 'Command with argument ARGUMENT that will be passed as an argument',
-      'description' => 'This is description',
-    ],
-    'known text 1,known text 2' => [
-      'callback' => 'KnownText',
-      'human_command' => 'when USERNAME is logged in tell him STUFF',
-      'description' => 'known text 1,known text 2',
-    ],
-  ];
-
-  /**
-   * Adding a reminder for some one.
-   *
-   * @param $to
-   *   The user we need to remind.
-   * @param $remind
-   *   The reminder.
-   *
-   * @return string
-   *   The text to return after the action was done.
-   */
-  public function RemindTo($to, $remind) {
-    Nuntius::getRethinkDB()->addEntry('table', [
-      'key' => 'value',
-    ]);
-
-    return "Don't worry! I got your back. I'll send him a reminder.";
-  }
-
-}
-```
-
-After creating the new class we need to register it. The registration happens in
-`\Nuntius\Nuntius::__construct`:
-
-```php
-$this->addPlugins(New \Nuntius\Plugins\Reminder());
-```
-
-## Updating Nuntius
-You wrote a new command, awesome! Go and get a fresh token 
-(Remember `slack custom integration`?), stop the current process of Nuntius, 
-pull the last changes, update the token in the settings and re-run Nuntius.
-
-## Tests
-We love tests. The tests based on PHPUnit. I don't think mocking an object is 
-the correct way to do tests in our case since we need to see that something
-affected the DB.
-
-The tests, for now, are not setting up new tables so **don't run in on live**
-(Dah!).
-
-The tests need to see how Nuntius handles the text. We can have a look on the
-reminder tests:
-```php
-
-namespace tests;
-
-class RemindersTest extends TestsAbstract {
-
-  /**
-   * Reminders when the user log in.
-   *
-   * @covers Reminder::RemindMe()
-   */
-  public function testRemindWhenUserLogIn() {
-    $results = $this
-      ->nuntius
-      ->setAuthor('Hal2000')
-      ->getPlugin('@nuntius remind me next time I log in to do burpee');
-
-    $this->assertEquals($results, 'OK! I will remind you next you\'ll log in.');
-
-    $results = $this->rethinkdb
-      ->getTable('reminders')
-      ->filter(\r\row('to')->eq('Hal2000'))
-      ->run($this->rethinkdb->getConnection());
-
-    $this->assertTrue(!empty($results->toArray()), 'There are no reminders in the DB.');
-  }
-  
-}
-```

@@ -75,4 +75,10 @@ class Nuntius {
     return new TasksManager($tasks);
   }
 
+  public static function getUpdateManager() {
+    $updates = self::getSettings()['updates'];
+
+    return new UpdateManager($updates);
+  }
+
 }
