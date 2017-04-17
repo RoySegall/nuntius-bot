@@ -21,7 +21,7 @@ interface EntityBaseInterface {
    * @param $id
    *   Entity ID.
    *
-   * @return array
+   * @return $this
    *   The entity.
    */
   public function load($id);

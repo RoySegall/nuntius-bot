@@ -16,7 +16,7 @@ trait NuntiusServicesTrait {
    * The sentence should be in the format of:
    * @code
    *  /what can you do in (.*)/
-   * @code
+   * @endcode
    *
    * @param $input
    *   The text the user submitted.

@@ -78,6 +78,10 @@ class TasksManager {
          $arguments = [];
         }
 
+        if ($task instanceof TaskConversationInterface) {
+          return [$task, '', $arguments];
+        }
+
         return [$task, $scope['callback'], $arguments];
       }
     }

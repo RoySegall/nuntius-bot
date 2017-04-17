@@ -2,4 +2,7 @@
 
 require_once 'vendor/autoload.php';
 
-Kint::dump(\Nuntius\Nuntius::getSettings());
+$plugin = \Nuntius\Nuntius::getTasksManager()->getMatchingTask('nice to meet you');
+$task = $plugin[0];
+
+$task->startTalking();

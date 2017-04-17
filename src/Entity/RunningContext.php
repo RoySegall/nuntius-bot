@@ -4,6 +4,6 @@ namespace Nuntius\Entity;
 
 use Nuntius\EntityBase;
 
-class Reminders extends EntityBase {
+class RunningContext extends EntityBase {
 
 }
