@@ -70,6 +70,8 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     $text = $this->collectAllAnswers();
 
     if ($this->conversationScope() != 'forever') {
+      unset($context['id']);
+      $this->entityManager->get('context_archive')->insert($context);
       $this->deleteContext();
     }
 
