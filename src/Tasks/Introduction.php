@@ -11,20 +11,6 @@ use Nuntius\TaskConversationInterface;
 class Introduction extends TaskConversationAbstract implements TaskConversationInterface {
 
   /**
-   * The first name.
-   *
-   * @var string
-   */
-  public $firstName;
-
-  /**
-   * The last name.
-   *
-   * @var string
-   */
-  public $lastMame;
-
-  /**
    * {@inheritdoc}
    */
   public function scope() {
