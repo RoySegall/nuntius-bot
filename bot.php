@@ -8,6 +8,10 @@ use React\EventLoop\Factory;
 $settings = \Nuntius\Nuntius::getSettings();
 $token = $settings['access_token'];
 
+if (empty($token)) {
+  throw new Exception('The access token is missing');
+}
+
 // Set up stuff.
 $client_loop = React\EventLoop\Factory::create();
 $client = new Slack\RealTimeClient($client_loop);
@@ -26,6 +30,9 @@ foreach ($settings['events'] as $event => $namespace) {
     $plugin->postAction();
   });
 }
+
+echo "a";
+
 
 // Login something to screen when the bot started to work.
 $client->connect()->then(function () {

@@ -1,9 +1,9 @@
 # RethinkDB connection information.
 rethinkdb:
-  host:
-  port:
-  db:
+  host: localhost
+  port: 28015
+  db: nuntius
   api_key:
-  timeout:
+  timeout: 30
 # Set you bot access token.
 access_token: ''
