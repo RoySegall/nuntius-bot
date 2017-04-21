@@ -94,7 +94,11 @@ abstract class EntityBase implements EntityBaseInterface {
    * {@inheritdoc}
    */
   public function load($id) {
-    $data = $this->getTable()->get($id)->run($this->db->getConnection())->getArrayCopy();
+    if (!$data = $this->getTable()->get($id)->run($this->db->getConnection())) {
+      return FALSE;
+    }
+
+    $data = $data->getArrayCopy();
     return $this->createInstance($data);
   }
 

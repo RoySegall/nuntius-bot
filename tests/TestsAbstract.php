@@ -7,11 +7,6 @@ use Nuntius\Nuntius;
 abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
 
   /**
-   * @var \Prophecy\Prophecy\ObjectProphecy|\Nuntius\Nuntius
-   */
-  protected $nuntius;
-
-  /**
    * @var \Nuntius\NuntiusRethinkdb
    */
   protected $rethinkdb;
@@ -25,7 +20,6 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
    * {@inheritdoc}
    */
   public function setUp() {
-    $this->nuntius = new \Nuntius\Nuntius();
     $this->rethinkdb = Nuntius::getRethinkDB();
   }
 
@@ -36,6 +30,12 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
     parent::tearDown();
 
     foreach (array_keys(Nuntius::getSettings()['entities']) as $table) {
+
+      if ($table == 'system') {
+        // Don't truncate the update table.
+        continue;
+      }
+
       $this->rethinkdb->truncateTable($table);
     }
   }
