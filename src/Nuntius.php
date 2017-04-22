@@ -2,9 +2,36 @@
 
 namespace Nuntius;
 
+use Slack\RealTimeClient;
 use Symfony\Component\Yaml\Yaml;
+use React\EventLoop\Factory;
 
 class Nuntius {
+
+  /**
+   * Bootstrapping the slack bot.
+   *
+   * @return RealTimeClient
+   *   The client obect.
+   *
+   * @throws \Exception
+   */
+  public static function bootstrap() {
+    // Bootstrapping.
+    $settings = self::getSettings();
+    $token = $settings['access_token'];
+
+    if (empty($token)) {
+      throw new \Exception('The access token is missing');
+    }
+
+    // Set up stuff.
+    $client_loop = Factory::create();
+    $client = new RealTimeClient($client_loop);
+    $client->setToken($token);
+
+    return $client;
+  }
 
   /**
    * Getting the settings.

@@ -18,6 +18,10 @@ before_script:
   - curl -sS https://getcomposer.org/installer | php
   - php composer.phar install --dev
 
+  # Set up stuff for the webhooks tests.
+  - nohup php -S localhost:8888 > /dev/null 2>&1 &
+  - export NUNTIUS_BASE_URL=http://localhost:8888
+
 script:
   - cp settings.local.travis.yml settings.local.yml
   - rethinkdb > /dev/null &

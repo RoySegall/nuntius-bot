@@ -13,6 +13,7 @@ entities:
   context_archive: '\Nuntius\Entity\RunningContext'
   running_context: '\Nuntius\Entity\RunningContext'
   system: '\Nuntius\Entity\System'
+  logger: '\Nuntius\Entity\Logger'
 tasks:
   reminders: '\Nuntius\Tasks\Reminders'
   help: '\Nuntius\Tasks\Help'
@@ -22,4 +23,7 @@ updates:
 commands:
   - '\Nuntius\Commands\UpdateCommand'
   - '\Nuntius\Commands\InstallCommand'
+webhooks:
+  github:
+    opened: '\Nuntius\Webhooks\GitHub\Opened'
 access_token: ''
