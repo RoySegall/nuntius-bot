@@ -113,4 +113,16 @@ class Nuntius {
     return new UpdateManager($updates);
   }
 
+  /**
+   * Return nuntius dispatcher object..
+   *
+   * @return \Nuntius\NuntiusDispatcher
+   *   Nuntius dispatcher manager.
+   */
+  public static function getDispatcher() {
+    $dispatcher = new NuntiusDispatcher(self::getSettings()['dispatchers']);
+
+    return $dispatcher->buildDispatcher();
+  }
+
 }

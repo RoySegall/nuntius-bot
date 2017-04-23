@@ -26,4 +26,10 @@ commands:
 webhooks:
   github:
     opened: '\Nuntius\Webhooks\GitHub\Opened'
+dispatcher:
+  names: '\Nuntius\Examples\Names\NameEvent'
+dispatchers:
+  names:
+    tom: '\Nuntius\Examples\Names\Tom::name'
+    hal: '\Nuntius\Examples\Names\HAL9000::name'
 access_token: ''
