@@ -23,11 +23,11 @@ class NuntiusDispatcher {
   /**
    * NuntiusDispatcher constructor.
    *
-   * @param $dispatchers
-   *   List of dispatchers.
+   * @param NuntiusConfig $config
+   *   The config service.
    */
-  function __construct($dispatchers) {
-    $this->dispatchers = $dispatchers;
+  function __construct(NuntiusConfig $config) {
+    $this->dispatchers = $config->getSetting('dispatchers');
   }
 
   /**
@@ -61,7 +61,7 @@ class NuntiusDispatcher {
    *   The events object after the the events was dispatched.
    */
   public function dispatch($event) {
-    $class = Nuntius::getSettings()['dispatcher'][$event];
+    $class = Nuntius::getSettings()->getSetting('dispatcher')[$event];
     return $this->dispatcher->dispatch($event, new $class);
   }
 

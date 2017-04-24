@@ -15,18 +15,61 @@ class UpdateManager {
   protected $updates;
 
   /**
+   * The DB service.
+   *
+   * @var NuntiusRethinkdb
+   */
+  protected $db;
+
+  /**
+   * The entity manager service.
+   *
+   * @var EntityManager
+   */
+  protected $entityManager;
+
+  /**
    * Constructing the update manager.
    *
-   * @param array $updates
-   *   List of all the updates.
+   * @param NuntiusRethinkdb $db
+   *   The DB service.
+   * @param EntityManager $entity_manager
+   *   The entity manager service.
+   * @param NuntiusConfig $config
+   *   The config service.
    */
-  function __construct($updates) {
-    $db = Nuntius::getRethinkDB();
-    $entity_manager = Nuntius::getEntityManager();
+  function __construct(NuntiusRethinkdb $db, EntityManager $entity_manager, NuntiusConfig $config) {
+    $this->db = $db;
+    $this->entityManager = $entity_manager;
 
+    $this->setUpdates($config->getSetting('updates'));
+  }
+
+  /**
+   * Set updates.
+   *
+   * @param array $updates
+   *   The updates list.
+   *
+   * @return $this
+   *   The current object.
+   */
+  protected function setUpdates($updates) {
     foreach ($updates as $update => $namespace) {
-      $this->updates[$update] = new $namespace($db, $update, $entity_manager);
+      $this->updates[$update] = new $namespace($this->db, $update, $this->entityManager);
     }
+
+    return $this;
+  }
+
+  /**
+   * Get all the tasks.
+   *
+   * @return UpdateBaseInterface[]
+   *   All the teaks.
+   */
+  public function getUpdates() {
+    return $this->updates;
   }
 
   /**
@@ -40,16 +83,6 @@ class UpdateManager {
    */
   public function get($update) {
     return $this->updates[$update];
-  }
-
-  /**
-   * Get all the tasks.
-   *
-   * @return UpdateBaseInterface[]
-   *   All the teaks.
-   */
-  public function getUpdates() {
-    return $this->updates;
   }
 
   /**
@@ -88,7 +121,7 @@ class UpdateManager {
    *   List of processed updates.
    */
   public function getDbProcessedUpdates() {
-    return Nuntius::getEntityManager()->get('system')->load('updates')->processed;
+    return $this->entityManager->get('system')->load('updates')->processed;
   }
 
   /**
@@ -99,10 +132,10 @@ class UpdateManager {
    */
   public function addProcessedUpdate($name) {
     /** @var \Nuntius\Entity\System $updates */
-    $updates = Nuntius::getEntityManager()->get('system')->load('updates');
+    $updates = $this->entityManager->get('system')->load('updates');
     $processed = $updates->processed;
     $processed[] = $name;
-    Nuntius::getEntityManager()->get('system')->update('updates', ['processed' => $processed]);
+    $this->entityManager->get('system')->update('updates', ['processed' => $processed]);
   }
 
 }

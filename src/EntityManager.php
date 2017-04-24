@@ -12,17 +12,51 @@ class EntityManager {
   protected $entities;
 
   /**
+   * The DB service.
+   *
+   * @var NuntiusRethinkdb
+   */
+  protected $db;
+
+  /**
    * Constructing the entity manager.
    *
-   * @param array $entities
+   * @param NuntiusRethinkdb $db
    *   List of all the entities.
+   * @param NuntiusConfig $config
+   *   The config service.
    */
-  function __construct($entities) {
-    $db = Nuntius::getRethinkDB();
+  function __construct(NuntiusRethinkdb $db, NuntiusConfig $config) {
+    $this->db = $db;
 
+    $this->setEntities($config->getSetting('entities'));
+  }
+
+  /**
+   * Entities setter.
+   *
+   * @param array $entities
+   *   List of entities.
+   *
+   * @return $this
+   *   The current instance.
+   */
+  public function setEntities($entities) {
     foreach ($entities as $entity => $namespace) {
-      $this->entities[$entity] = new $namespace($db, $entity);
+      $this->entities[$entity] = new $namespace($this->db, $entity);
     }
+
+    return $this;
+  }
+
+  /**
+   * Get the entities.
+   *
+   * @return EntityBaseInterface[]
+   *   The entities objects.
+   */
+  public function getEntities() {
+    return $this->entities;
   }
 
   /**

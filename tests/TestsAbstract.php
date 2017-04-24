@@ -29,7 +29,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
   public function tearDown() {
     parent::tearDown();
 
-    foreach (array_keys(Nuntius::getSettings()['entities']) as $table) {
+    foreach (array_keys(Nuntius::getSettings()->getSetting('entities')) as $table) {
 
       if ($table == 'system') {
         // Don't truncate the update table.

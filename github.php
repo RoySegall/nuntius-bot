@@ -17,7 +17,7 @@ if (empty($_POST['payload'])) {
 $payload = json_decode($_POST['payload']);
 $event = $payload->action;
 
-if (!$namespace = \Nuntius\Nuntius::getSettings()['webhooks']['github'][$event]) {
+if (!$namespace = \Nuntius\Nuntius::getSettings()->getSetting('webhooks')['github'][$event]) {
   \Nuntius\Nuntius::getEntityManager()->get('logger')->insert([
     'type' => 'error',
     'error' => 'There is no matching webhook controller for ' . $event . ' webhook.',

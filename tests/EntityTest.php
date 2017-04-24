@@ -29,7 +29,7 @@ class EntityTest extends TestsAbstract {
    * Testing entities crud operation.
    */
   public function testEntitiesCrud() {
-    foreach (array_keys(Nuntius::getSettings()['entities']) as $entity) {
+    foreach (array_keys(Nuntius::getSettings()->getSetting('entities')) as $entity) {
       $this->crudOperations($entity);
     }
   }

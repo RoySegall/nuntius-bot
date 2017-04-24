@@ -27,7 +27,7 @@ class InstallCommand extends Command  {
 
     $io = new SymfonyStyle($input, $output);
 
-    $value = Nuntius::getSettings();
+    $value = Nuntius::getSettings()->getSettings();
     $db = Nuntius::getRethinkDB();
 
     $io->section("Setting up the DB.");

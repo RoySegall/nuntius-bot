@@ -3,7 +3,9 @@
 namespace Nuntius;
 
 use Slack\RealTimeClient;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use React\EventLoop\Factory;
 
 class Nuntius {
@@ -12,14 +14,12 @@ class Nuntius {
    * Bootstrapping the slack bot.
    *
    * @return RealTimeClient
-   *   The client obect.
+   *   The client object.
    *
    * @throws \Exception
    */
   public static function bootstrap() {
-    // Bootstrapping.
-    $settings = self::getSettings();
-    $token = $settings['access_token'];
+    $token = self::getSettings()->getSetting('access_token');
 
     if (empty($token)) {
       throw new \Exception('The access token is missing');
@@ -36,37 +36,38 @@ class Nuntius {
   /**
    * Getting the settings.
    *
-   * @return array
+   * @return NuntiusConfig
+   *   The nuntius config service.
    */
   public static function getSettings() {
-    $main_settings = Yaml::parse(file_get_contents('settings.yml'));
+    return self::container()->get('config');
+  }
 
-    $local_settings = [];
-    if (file_exists('settings.local.yml')) {
-      $local_settings = Yaml::parse(file_get_contents('settings.local.yml'));
+  /**
+   * Get the container.
+   *
+   * @return ContainerBuilder
+   *   The container object.
+   */
+  public static function container() {
+    static $container;
+
+    if ($container) {
+      // We already got the container, return that.
+      return $container;
     }
 
-    $settings = [];
-    foreach ($main_settings as $key => $value) {
-      // Getting settings from the main default settings.
-      $settings[$key] = $main_settings[$key];
+    $container = new ContainerBuilder();
+    $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../'));
 
-      if (is_array($settings[$key])) {
-        // The setting is defined as settings. Merge the local settings with the
-        // main settings.
-        if (isset($local_settings[$key])) {
-          $settings[$key] = $local_settings[$key] + $main_settings[$key];
-        }
-      }
-      else {
-        // The setting is not an array(bot access token) - the local settings
-        // call the shot for the value of the setting.
-        $settings[$key] = isset($local_settings[$key]) ? $local_settings[$key] : '';
-      }
+    $loader->load('services.yml');
 
+    // Load all the services files.
+    foreach (self::getSettings()->getSetting('services') as $service) {
+      $loader->load($service);
     }
 
-    return $settings;
+    return $container;
   }
 
   /**
@@ -75,7 +76,7 @@ class Nuntius {
    * @return NuntiusRethinkdb
    */
   public static function getRethinkDB() {
-    return new NuntiusRethinkdb(self::getSettings()['rethinkdb']);
+    return self::container()->get('rethinkdb');
   }
 
   /**
@@ -85,9 +86,7 @@ class Nuntius {
    *   The entity manager.
    */
   public static function getEntityManager() {
-    $entities = self::getSettings()['entities'];
-
-    return new EntityManager($entities);
+    return self::container()->get('manager.entity');
   }
 
   /**
@@ -97,20 +96,17 @@ class Nuntius {
    *   The task manager object.
    */
   public static function getTasksManager() {
-    $tasks = self::getSettings()['tasks'];
-
-    return new TasksManager($tasks);
+    return self::container()->get('manager.task');
   }
 
   /**
    * Get the update manager.
    *
    * @return \Nuntius\UpdateManager
+   *   The update manager.
    */
   public static function getUpdateManager() {
-    $updates = self::getSettings()['updates'];
-
-    return new UpdateManager($updates);
+    return self::container()->get('manager.update');
   }
 
   /**
@@ -120,9 +116,7 @@ class Nuntius {
    *   Nuntius dispatcher manager.
    */
   public static function getDispatcher() {
-    $dispatcher = new NuntiusDispatcher(self::getSettings()['dispatchers']);
-
-    return $dispatcher->buildDispatcher();
+    return self::container()->get('dispatcher')->buildDispatcher();
   }
 
 }
