@@ -23,6 +23,7 @@ updates:
 commands:
   - '\Nuntius\Commands\UpdateCommand'
   - '\Nuntius\Commands\InstallCommand'
+  - '\Nuntius\Commands\EntityManagerCommand'
 webhooks:
   github:
     opened: '\Nuntius\Webhooks\GitHub\Opened'
