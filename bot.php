@@ -10,7 +10,7 @@ $settings = \Nuntius\Nuntius::getSettings();
 $client_loop = React\EventLoop\Factory::create();
 
 // Iterating over the plugins and register them for Slack events.
-foreach ($settings['events'] as $event => $namespace) {
+foreach ($settings->getSetting('events') as $event => $namespace) {
   /** @var \Nuntius\NuntiusPluginAbstract $plugin */
   $plugin = new $namespace($client);
 

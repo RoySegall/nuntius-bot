@@ -31,10 +31,10 @@ class NuntiusConfig {
    * Constructing the nuntius config service.
    */
   public function __construct() {
-    $this->mainSettings = Yaml::parse(file_get_contents('settings.yml'));
+    $this->mainSettings = Yaml::parse(file_get_contents(__DIR__ . '/../settings.yml'));
 
-    if (file_exists('settings.local.yml')) {
-      $this->localSettings = Yaml::parse(file_get_contents('settings.local.yml'));
+    if (file_exists(__DIR__ . '/../settings.local.yml')) {
+      $this->localSettings = Yaml::parse(file_get_contents(__DIR__ . '/../settings.local.yml'));
     }
 
     foreach ($this->mainSettings as $key => $value) {

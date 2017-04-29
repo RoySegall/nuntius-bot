@@ -35,4 +35,8 @@ dispatchers:
     hal: '\Nuntius\Examples\Names\HAL9000::name'
 services:
   - 'services.local.yml'
+cron:
+  ## Keep that one to see the cron task is working. You can comment out once
+  ## it's OK.
+  log: '\Nuntius\Cron\LogThings'
 access_token: ''

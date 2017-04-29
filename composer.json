@@ -17,7 +17,8 @@
     "symfony/console": "^3.2",
     "symfony/event-dispatcher": "^3.2",
     "symfony/dependency-injection": "^3.2",
-    "symfony/config": "^3.2"
+    "symfony/config": "^3.2",
+    "Cron/Cron": "^1.2"
   },
   "autoload": {
     "psr-4": {

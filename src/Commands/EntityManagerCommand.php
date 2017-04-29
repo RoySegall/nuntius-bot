@@ -3,7 +3,6 @@
 namespace Nuntius\Commands;
 
 use Nuntius\Nuntius;
-use Symfony\Component\Config\Definition\NumericNode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -100,6 +100,16 @@ class Nuntius {
   }
 
   /**
+   * Get the cron task manager.
+   *
+   * @return CronManager
+   *   The cron manager.
+   */
+  public static function getCronTasksManager() {
+    return self::container()->get('manager.cron');
+  }
+
+  /**
    * Get the update manager.
    *
    * @return \Nuntius\UpdateManager

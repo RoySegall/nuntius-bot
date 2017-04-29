@@ -23,3 +23,6 @@ services:
     class: \Nuntius\UpdateManager
     arguments: ['@rethinkdb', '@manager.entity', '@config']
 
+  manager.cron:
+    class: \Nuntius\CronManager
+    arguments: ['@config']
