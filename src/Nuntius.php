@@ -2,6 +2,7 @@
 
 namespace Nuntius;
 
+use React\EventLoop\StreamSelectLoop;
 use Slack\RealTimeClient;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,11 +12,15 @@ use React\EventLoop\Factory;
 class Nuntius {
 
   /**
+   * @var StreamSelectLoop
+   */
+  protected static $client_loop;
+
+  /**
    * Bootstrapping the slack bot.
    *
    * @return RealTimeClient
    *   The client object.
-   *
    * @throws \Exception
    */
   public static function bootstrap() {
@@ -26,11 +31,19 @@ class Nuntius {
     }
 
     // Set up stuff.
-    $client_loop = Factory::create();
-    $client = new RealTimeClient($client_loop);
+    self::$client_loop = Factory::create();
+
+    $client = new RealTimeClient(self::$client_loop);
     $client->setToken($token);
 
     return $client;
+  }
+
+  /**
+   * Run the boot.
+   */
+  public static function run() {
+    self::$client_loop->run();
   }
 
   /**
