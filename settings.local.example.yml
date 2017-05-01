@@ -7,3 +7,7 @@ rethinkdb:
   timeout: 30
 # Set you bot access token.
 access_token: ''
+# Keep for testing.
+#dispatchers:
+#  github_opened:
+#    notify_user: '\tests\overrides\NuntiusGitHubOpenedExampleOverride::act'

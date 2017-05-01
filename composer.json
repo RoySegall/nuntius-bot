@@ -23,7 +23,8 @@
   "autoload": {
     "psr-4": {
       "Nuntius\\": "src/",
-      "tests\\": "tests/"
+      "tests\\": "tests/",
+      "SlackHttpService\\": "src/SlackHttpService/"
     }
   },
   "require-dev": {

@@ -44,9 +44,9 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
   /**
    * Testing processing for known github webhooks.
    */
-  public function _testKnownWebhook() {
+  public function testKnownWebhook() {
     $this->mockOpenWebhook('pull_request');
-    $this->mockOpenWebhook('issue');
+//    $this->mockOpenWebhook('issue');
   }
 
   /**
@@ -61,11 +61,14 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
       'json' => [
         'action' => 'opened',
         $key => [
+          'html_url' => 'http://google.com',
           'title' => 'foo',
           'body' => 'bar',
+          'created_at' => 'today',
           'user' => [
+            'avatar_url' => 'http://google.com',
             'login' => 'Major. Tom',
-          ]
+          ],
         ],
       ]
     ]);
@@ -78,8 +81,13 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
     $process = reset($process)->getArrayCopy();
     $payload = $process['payload']->getArrayCopy();
 
+    $this->assertEquals($payload['body'], 'bar');
+    $this->assertEquals($payload['created'], 'today');
+    $this->assertEquals($payload['image'], 'http://google.com');
+    $this->assertEquals($payload['key'], $key);
     $this->assertEquals($payload['title'], 'foo');
-    $this->assertEquals($payload['user'], 'Major. Tom');
+    $this->assertEquals($payload['url'], 'http://google.com');
+    $this->assertEquals($payload['username'], 'Major. Tom');
   }
 
 }

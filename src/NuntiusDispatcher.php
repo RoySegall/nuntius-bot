@@ -54,15 +54,39 @@ class NuntiusDispatcher {
   }
 
   /**
+   * Dispatching the event.
+   *
    * @param $event
    *   The event type.
+   * @param array $data
+   *   Set data to the event dispatcher argument thus ensuring context aware.
    *
    * @return \Symfony\Component\EventDispatcher\Event
    *   The events object after the the events was dispatched.
    */
-  public function dispatch($event) {
+  public function dispatch($event, $data = NULL) {
+    $event_dispatcher = $this->getEventDispatcher($event);
+
+    if (method_exists($event_dispatcher, 'setData') && $data) {
+      $event_dispatcher->setData($data);
+    }
+
+    return $this->dispatcher->dispatch($event, $event_dispatcher);
+  }
+
+  /**
+   * Get the event dispatcher object.
+   *
+   * @param $event
+   *   The event name.
+   *
+   * @return EventDispatcher
+   *   The event object.
+   */
+  protected function getEventDispatcher($event) {
     $class = Nuntius::getSettings()->getSetting('dispatcher')[$event];
-    return $this->dispatcher->dispatch($event, new $class);
+
+    return new $class;
   }
 
 }

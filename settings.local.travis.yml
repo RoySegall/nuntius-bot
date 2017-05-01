@@ -5,3 +5,6 @@ rethinkdb:
   api_key:
   timeout: 30
 access_token: 'dummy'
+dispatchers:
+  github_opened:
+    notify_user: '\tests\overrides\NuntiusGitHubOpenedExampleOverride::act'

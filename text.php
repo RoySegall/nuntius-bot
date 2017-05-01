@@ -2,4 +2,6 @@
 
 require_once 'vendor/autoload.php';
 
-Kint::dump();
+$dispatcher = \Nuntius\Nuntius::getDispatcher();
+
+$dispatcher->dispatch('github_opened', ['bar' => 'foo']);
