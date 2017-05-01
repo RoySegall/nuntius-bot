@@ -9,6 +9,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use React\EventLoop\Factory;
 
+/**
+ * Class for everything. Responsible for bootstrapping, getting the container
+ * and aliasing for all the managers which accessible through the container.
+ */
 class Nuntius {
 
   /**
@@ -21,6 +25,7 @@ class Nuntius {
    *
    * @return RealTimeClient
    *   The client object.
+   *
    * @throws \Exception
    */
   public static function bootstrap() {

@@ -4,6 +4,9 @@ namespace tests;
 
 use Nuntius\Nuntius;
 
+/**
+ * Abstract classes for tests.
+ */
 abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
 
   /**

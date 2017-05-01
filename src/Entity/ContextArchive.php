@@ -4,6 +4,7 @@ namespace Nuntius\Entity;
 
 use Nuntius\EntityBase;
 
-class ContextArchive extends EntityBase {
-
-}
+/**
+ * Context archive entity.
+ */
+class ContextArchive extends EntityBase {}

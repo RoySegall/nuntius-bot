@@ -2,6 +2,9 @@
 
 namespace Nuntius\Examples\Names;
 
+/**
+ * Add name to the name event object. Used for demo purpose.
+ */
 class HAL9000 implements NameInterface {
 
   /**

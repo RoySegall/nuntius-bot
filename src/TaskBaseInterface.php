@@ -4,6 +4,9 @@ namespace Nuntius;
 
 use Slack\RealTimeClient;
 
+/**
+ * Interface for tasks.
+ */
 interface TaskBaseInterface {
 
   /**

@@ -4,6 +4,9 @@ namespace Nuntius;
 
 use r;
 
+/**
+ * RethinkDB layer manager.
+ */
 class NuntiusRethinkdb {
 
   /**

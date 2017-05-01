@@ -4,6 +4,7 @@ namespace Nuntius\Entity;
 
 use Nuntius\EntityBase;
 
-class Reminders extends EntityBase {
-
-}
+/**
+ * Reminders entity class.
+ */
+class Reminders extends EntityBase {}

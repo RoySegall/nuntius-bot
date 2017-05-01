@@ -5,6 +5,9 @@ namespace Nuntius\Cron;
 use Nuntius\CronTaskAbstract;
 use Nuntius\CronTaskInterface;
 
+/**
+ * Example cron task. Just logging stuff.
+ */
 class LogThings extends CronTaskAbstract implements CronTaskInterface {
 
   /**

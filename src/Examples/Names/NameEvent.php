@@ -4,6 +4,9 @@ namespace Nuntius\Examples\Names;
 
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Event dispatching object. Hold names which added by events.
+ */
 class NameEvent extends Event {
 
   /**

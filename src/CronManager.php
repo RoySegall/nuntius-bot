@@ -2,6 +2,9 @@
 
 namespace Nuntius;
 
+/**
+ * Cron task manager.
+ */
 class CronManager {
 
   /**

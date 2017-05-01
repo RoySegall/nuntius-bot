@@ -2,6 +2,9 @@
 
 namespace Nuntius;
 
+/**
+ * Entity mananger.
+ */
 class EntityManager {
 
   /**

@@ -4,6 +4,9 @@ namespace Nuntius;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Config manager.
+ */
 class NuntiusConfig {
 
   /**

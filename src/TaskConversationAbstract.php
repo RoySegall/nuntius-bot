@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+
 use r\Queries\Tables\Table;
 
 /**

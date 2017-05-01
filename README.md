@@ -721,6 +721,25 @@ class Message extends NuntiusPluginAbstract {
 }
 ```
 
+Send a message to a user when outside a room context AKA HTTP RPC-style:
+
+```php
+<?php
+$slack_http = new SlackHttpService();
+$slack = $slack_http->setAccessToken(Nuntius::getSettings()->getSetting('access_token'));
+$im_room = $slack->Im()->getImForUser($slack->Users()->getUserByName(strtolower($info['username'])));
+$message = new SlackHttpPayloadServicePostMessage();
+$message
+  ->setChannel($im_room)
+  ->setText($info['text']);
+
+// Posting the message.
+$slack->Chat()->postMessage($message);
+```
+
+For more options look on 
+`\Nuntius\Examples\GitHubOpened\NuntiusGitHubOpenedExample::postMessage`
+
 ## Tests
 
 In order to test GitHub webhooks set the local env variable `NUNTIUS_BASE_URL`

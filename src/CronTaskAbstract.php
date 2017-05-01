@@ -4,6 +4,9 @@ namespace Nuntius;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Abstract class for cron tasks.
+ */
 abstract class CronTaskAbstract implements CronTaskInterface {
 
   /**

@@ -4,6 +4,9 @@ namespace tests;
 
 use GuzzleHttp\Client;
 
+/**
+ * Abstract classes for web hooks tests.
+ */
 abstract class GithubWebhooksTestsAbstract extends TestsAbstract {
 
   /**

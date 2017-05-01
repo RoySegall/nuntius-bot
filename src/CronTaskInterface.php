@@ -2,6 +2,9 @@
 
 namespace Nuntius;
 
+/**
+ * Interfaces for cron tasks.
+ */
 interface CronTaskInterface {
 
   /**

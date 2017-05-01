@@ -4,6 +4,9 @@ namespace Nuntius\Update;
 
 use Nuntius\UpdateBaseInterface;
 
+/**
+ * Update for example.
+ */
 class Update1 implements UpdateBaseInterface {
 
   /**

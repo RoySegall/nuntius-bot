@@ -4,6 +4,7 @@ namespace Nuntius\Entity;
 
 use Nuntius\EntityBase;
 
-class RunningContext extends EntityBase {
-
-}
+/**
+ * Running context entity.
+ */
+class RunningContext extends EntityBase {}

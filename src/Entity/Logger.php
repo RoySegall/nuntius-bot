@@ -4,6 +4,7 @@ namespace Nuntius\Entity;
 
 use Nuntius\EntityBase;
 
-class Logger extends EntityBase {
-
-}
+/**
+ * Logger entity class.
+ */
+class Logger extends EntityBase {}

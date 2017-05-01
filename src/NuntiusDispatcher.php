@@ -4,6 +4,9 @@ namespace Nuntius;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * Dispatching evenets.
+ */
 class NuntiusDispatcher {
 
   /**

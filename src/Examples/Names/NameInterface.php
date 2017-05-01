@@ -2,6 +2,9 @@
 
 namespace Nuntius\Examples\Names;
 
+/**
+ * Interface of dispatched events class.
+ */
 interface NameInterface {
 
   /**

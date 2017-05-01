@@ -6,6 +6,9 @@ use Nuntius\Dispatcher\GitHubEvent;
 use Nuntius\Examples\GitHubOpened\NuntiusGitHubOpenedExample;
 use Nuntius\Nuntius;
 
+/**
+ * Overriding the original method and just logging the data.
+ */
 class NuntiusGitHubOpenedExampleOverride extends NuntiusGitHubOpenedExample {
 
   /**

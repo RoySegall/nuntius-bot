@@ -6,7 +6,7 @@ namespace Nuntius;
  * Trait for event dispatching objects.
  *
  * When dispatching an event with information we need setters and getters method
- * of the data. This trait will provide it easilly.
+ * of the data. This trait will provide it easily.
  */
 trait NuntiusEventDispatchSetDataTrait {
 

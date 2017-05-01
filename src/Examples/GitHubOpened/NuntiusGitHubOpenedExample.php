@@ -9,6 +9,9 @@ use SlackHttpService\Payloads\SlackHttpPayloadServiceAttachments;
 use SlackHttpService\Payloads\SlackHttpPayloadServicePostMessage;
 use SlackHttpService\SlackHttpService;
 
+/**
+ * Example on how to send messages in slack from http requests.
+ */
 class NuntiusGitHubOpenedExample implements GitHubOpenedEventInterface {
 
   /**
