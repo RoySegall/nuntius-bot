@@ -1,0 +1,20 @@
+{
+  "name": "nuntius-bot",
+  "version": "0.0.1",
+  "description": "PHP framework for bots",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoySegall/nuntius-bot.git"
+  },
+  "author": "RoySegall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoySegall/nuntius-bot/issues"
+  },
+  "homepage": "https://github.com/RoySegall/nuntius-bot#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4"
+  }
+}
