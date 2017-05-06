@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/RoySegall/nuntius-bot.svg?branch=master)](https://travis-ci.org/RoySegall/nuntius-bot)
 
+![Build Status](images/logo.png)
+
 # Nuntius slack bot
 Gizra became a company when a lot of the employees are remote: USA, 
 Canada, Spain and the list goes on. That status required from us to start using 
