@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>       <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>          <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>          <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Tasks - Nnutius documentation</title>
+    <meta name="description" content="Develop smart bot easily" />
+    <meta name="author" content="I, Me & Myself">
+    <meta charset="UTF-8">
+    <link rel="icon" href="themes/daux/img/favicon-blue.png" type="image/x-icon">
+    <!-- Mobile -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
+    <!-- CSS -->
+    <link href='themes/daux/css/theme-blue.min.css' rel='stylesheet' type='text/css'>
+            <!-- Tipue Search -->
+        <link href="tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body class="">
+    
+<header class="Navbar hidden-print">
+    <a class="Navbar__brand" href="index.html">Nnutius documentation</a>
+
+    <div class="Search">
+        <svg class="Search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451 451"><path d="M447.05 428l-109.6-109.6c29.4-33.8 47.2-77.9 47.2-126.1C384.65 86.2 298.35 0 192.35 0 86.25 0 .05 86.3.05 192.3s86.3 192.3 192.3 192.3c48.2 0 92.3-17.8 126.1-47.2L428.05 447c2.6 2.6 6.1 4 9.5 4s6.9-1.3 9.5-4c5.2-5.2 5.2-13.8 0-19zM26.95 192.3c0-91.2 74.2-165.3 165.3-165.3 91.2 0 165.3 74.2 165.3 165.3s-74.1 165.4-165.3 165.4c-91.1 0-165.3-74.2-165.3-165.4z"/></svg>
+        <input type="search" id="tipue_search_input" class="Search__field" placeholder="Search..." autocomplete="on" results=25 autosave=text_search>
+    </div>
+</header>
+<div class="Columns content">
+    <aside class="Columns__left Collapsible">
+        <div class="Collapsible__container">
+            <button type="button" class="Button Collapsible__trigger">
+                <span class="Collapsible__trigger--bar"></span>
+                <span class="Collapsible__trigger--bar"></span>
+                <span class="Collapsible__trigger--bar"></span>
+            </button>
+        </div>
+
+        <div class="Collapsible__content">
+            <!-- Navigation -->
+            <ul class='Nav'><li class='Nav__item '><a href="Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="Events.html">Events</a></li><li class='Nav__item '><a href="Entities.html">Entities</a></li><li class='Nav__item Nav__item--active'><a href="Tasks.html">Tasks</a></li><li class='Nav__item '><a href="Updates.html">Updates</a></li><li class='Nav__item '><a href="Commands.html">Commands</a></li><li class='Nav__item '><a href="Webhooks_integration.html">Webhooks integration</a></li><li class='Nav__item '><a href="Services.html">Services</a></li><li class='Nav__item '><a href="Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="Tests.html">Tests</a></li></ul>
+
+            <div class="Links">
+                                    <hr/>
+                                            <a href="https://github.com/roysegall/nuntius-bot" target="_blank">GitHub Repo</a>
+                        <br />
+                                    
+                                    <div class="CodeToggler">
+                        <hr/>
+                                                    <a class="CodeToggler__button CodeToggler__button--main" href="#">Show Code Blocks Inline</a><br>
+                                            </div>
+                
+                            </div>
+        </div>
+    </aside>
+    <div class="Columns__right ">
+        <div class="Columns__right__content">
+            <div class="doc_content">
+                <article class="Page">
+
+    <div class="Page__header">
+        <h1><a href="Tasks.html">Tasks</a></h1>
+                    </div>
+
+
+    <div class="s-content">
+        <p>One way to communicate with Nuntius is via text. First, let's have a look at the
+<code>settings.yml</code> file:</p>
+<pre><code class="language-yml">tasks:
+  reminders: '\Nuntius\Tasks\Reminders'
+  help: '\Nuntius\Tasks\Help'
+  introduction: '\Nuntius\Tasks\Introduction'
+</code></pre>
+<p>The tasks plugin needs to declare to which text it needs to response AKA scope:</p>
+<p>There two types of plugins:</p>
+<ol>
+<li>Black box task - A task that needs arguments, or not, and does a simple job:
+set a reminder for later.</li>
+<li>Conversation task - A task which depends on information and can get it by
+asking the user a couple of questions. Each conversation task has a
+conversation scope:</li>
+</ol>
+<ul>
+<li>Forever - a scope that likely won't change in the near future: List of the
+user's team members.</li>
+<li>Temporary - A scope that we don't need to keep forever: What you want to eat
+for lunch. <strong>But</strong> a temporary scope may not be relevant forever but we might
+want to use in the future. We would likely want to keep the places the user
+invited food from so we could suggest that in the past.</li>
+</ul>
+<p>Let's dive into the code.</p>
+<h3 id="page_Black+box+task">Black box task</h3>
+<pre><code class="language-php">&lt;?php
+
+namespace Nuntius\Tasks;
+
+/**
+ * Remind to the user something to do.
+ */
+class Reminders extends TaskBaseAbstract implements TaskBaseInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function scope() {
+    return [
+      '/remind me (.*)/' =&gt; [
+        'human_command' =&gt; 'remind me REMINDER',
+        'description' =&gt; 'Next time you log in I will remind you what you '
+        . ' wrote in the REMINDER',
+        'callback' =&gt; 'addReminder',
+      ],
+    ];
+  }
+
+  /**
+   * Adding a reminder to the DB.
+   *
+   * @param string $reminder
+   *   The reminder of the user.
+   *
+   * @return string
+   *   You got it dude!
+   */
+  public function addReminder($reminder) {
+    $this-&gt;entityManager-&gt;get('reminders')-&gt;insert([
+      'reminder' =&gt; $reminder,
+      'user' =&gt; $this-&gt;data['user'],
+    ]);
+
+    return 'OK! I got you covered!';
+  }
+
+}
+</code></pre>
+<p>In the <code>method</code> scope we define to which text we need to respond. Each <code>(.*)</code> is
+an argument. The keys meaning are:</p>
+<ul>
+<li>
+<code>human_command</code>: An example of how user input should be.</li>
+<li>
+<code>description</code>: Describing what the command will do.</li>
+<li>
+<code>callback</code>: The callback which will be invoked with the argument you expect
+to receive.</li>
+</ul>
+<h3 id="page_Conversation+task">Conversation task</h3>
+<p>Let's look first at the code and explain how to write the plugin:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace Nuntius\Tasks;
+
+
+/**
+ * Remind to the user something to do.
+ */
+class Introduction extends TaskConversationAbstract implements TaskConversationInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function scope() {
+    return [
+      '/nice to meet you/' =&gt; [
+        'human_command' =&gt; 'nice to meet you',
+        'description' =&gt; 'We will do a proper introduction',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function conversationScope() {
+    return 'forever';
+  }
+
+  /**
+   * Get the user first name.
+   */
+  public function questionFirstName() {
+    return 'Oh hey! It looks that we are not introduced yet. what is your first name?';
+  }
+
+  /**
+   * Get the last name of the user.
+   */
+  public function questionLastName() {
+    return 'what is your last name?';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function collectAllAnswers() {
+    return 'Well, ' . $this-&gt;answers['FirstName'] . ' ' . $this-&gt;answers['LastName'] . ', it is a pleasure.';
+  }
+
+}
+
+</code></pre>
+<p>First, it's important to implement the <code>TaskConversationInterface</code> interface.
+This is the way we recognize this a conversation task.</p>
+<p>Similar to the black box task we do define a scope but in this case, we don't
+define a callback. That's because nuntius will ask the question by a naming
+conventions method: methods with a <code>question</code> prefix will be invoked(similar to
+Unit test). The method needs to return the text of the question. The questions
+will be triggered by the order in the class - so keep in a rational order of
+methods.</p>
+<p>When nuntius collected all the answers, the <code>collectAllAnswers</code> will be invoked.
+The answers will be available in the <code>answers</code> property with the matching name
+of the method which holds the question but without the <code>question</code> prefix.</p>
+<p>In case something got in the way and the user lost his internet connection or
+the server went down the answers won't get lost. The answers stored in the DB
+except for a temporary context conversation. The answers will move into an
+archive and won't be available for next time the conversation will start.</p>
+    </div>
+
+        <nav>
+        <ul class="Pager">
+            <li class=Pager--prev><a href="Entities.html">Previous</a></li>            <li class=Pager--next><a href="Updates.html">Next</a></li>        </ul>
+    </nav>
+    </article>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-98663880-1', '');
+    ga('send', 'pageview');
+</script>
+
+    <!-- jQuery -->
+    <script src="themes/daux/js/jquery-1.11.3.min.js"></script>
+
+    <!-- hightlight.js -->
+    <script src="themes/daux/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- JS -->
+    
+    <script src="themes/daux/js/daux.js"></script>
+
+            <!-- Tipue Search -->
+        <script type="text/javascript" src="tipuesearch/tipuesearch.js"></script>
+
+        <script>
+            window.onunload = function(){}; // force $(document).ready to be called on back/forward navigation in firefox
+            $(function() {
+                tipuesearch({
+                    'base_url': ''
+                });
+            });
+        </script>
+    
+</body>
+</html>
