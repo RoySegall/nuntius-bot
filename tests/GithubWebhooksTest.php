@@ -1,19 +1,24 @@
 <?php
 
 namespace tests;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * Testing entity.
  */
-class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
+class GithubWebhooksTest extends WebhooksTestsAbstract {
 
   /**
    * Testing failed requests.
    */
   public function testFailRequest() {
-    $this->client->post('github.php', [
-      'json' => []
-    ]);
+    try {
+      $this->client->post('github', [
+        'json' => []
+      ]);
+    }
+    catch (ServerException $e) {
+    }
 
     $failed_success = $this->rethinkdb->getTable('logger')
       ->filter(\r\row('type')->eq('error'))
@@ -25,11 +30,15 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
     $this->assertNotEmpty($failed_success);
 
     // Try failed unknown event.
-    $this->client->post('github.php', [
-      'json' => [
-        'action' => 'open',
-      ]
-    ]);
+    try {
+      $this->client->post('github', [
+        'json' => [
+          'action' => 'open',
+        ]
+      ]);
+    }
+    catch (ServerException $e) {
+    }
 
     $failed_success = $this->rethinkdb->getTable('logger')
       ->filter(\r\row('type')->eq('error'))
@@ -46,7 +55,7 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
    */
   public function testKnownWebhook() {
     $this->mockOpenWebhook('pull_request');
-//    $this->mockOpenWebhook('issue');
+    $this->mockOpenWebhook('issue');
   }
 
   /**
@@ -57,7 +66,7 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
    */
   protected function mockOpenWebhook($key) {
     // Testing pull request process.
-    $this->client->post('github.php', [
+    $this->client->post('github', [
       'json' => [
         'action' => 'opened',
         $key => [
@@ -74,7 +83,7 @@ class GithubWebhooksTest extends GithubWebhooksTestsAbstract {
     ]);
 
     $process = $this->rethinkdb->getTable('logger')
-      ->filter(\r\row('logging')->eq('opened_pull_request'))
+      ->filter(\r\row('logging')->eq('opened_' . $key))
       ->run($this->rethinkdb->getConnection())
       ->toArray();
 
