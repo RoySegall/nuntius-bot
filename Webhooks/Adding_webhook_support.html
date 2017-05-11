@@ -4,7 +4,7 @@
 <!--[if IE 8]>          <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    <title>Slack how to - Nnutius documentation</title>
+    <title>Adding webhook support - Nnutius documentation</title>
     <meta name="description" content="Develop smart bot easily" />
     <meta name="author" content="I, Me & Myself">
     <meta charset="UTF-8">
@@ -46,7 +46,7 @@
 
         <div class="Collapsible__content">
             <!-- Navigation -->
-            <ul class='Nav'><li class='Nav__item '><a href="../Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="../Events.html">Events</a></li><li class='Nav__item '><a href="../Entities.html">Entities</a></li><li class='Nav__item '><a href="../Tasks.html">Tasks</a></li><li class='Nav__item '><a href="../Updates.html">Updates</a></li><li class='Nav__item '><a href="../Commands.html">Commands</a></li><li class='Nav__item  has-children'><a href="../Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item '><a href="../Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item '><a href="../Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="../Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="../Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="../Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="../Services.html">Services</a></li><li class='Nav__item '><a href="../Cron_tasks.html">Cron tasks</a></li><li class='Nav__item Nav__item--open has-children'><a href="../Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="../Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item Nav__item--active'><a href="../Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="../Tests.html">Tests</a></li></ul>
+            <ul class='Nav'><li class='Nav__item '><a href="../Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="../Events.html">Events</a></li><li class='Nav__item '><a href="../Entities.html">Entities</a></li><li class='Nav__item '><a href="../Tasks.html">Tasks</a></li><li class='Nav__item '><a href="../Updates.html">Updates</a></li><li class='Nav__item '><a href="../Commands.html">Commands</a></li><li class='Nav__item Nav__item--open has-children'><a href="../Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item '><a href="../Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item Nav__item--active'><a href="../Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="../Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="../Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="../Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="../Services.html">Services</a></li><li class='Nav__item '><a href="../Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="../Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="../Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="../Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="../Tests.html">Tests</a></li></ul>
 
             <div class="Links">
                                     <hr/>
@@ -67,75 +67,58 @@
                 <article class="Page">
 
     <div class="Page__header">
-        <h1><a href="../Uncovered_API/Managers.html">Uncovered API</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../Uncovered_API/Slack_how_to.html">Slack how to</a></h1>
+        <h1><a href="../Webhooks/What_is_webhook.html">Webhooks</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../Webhooks/Adding_webhook_support.html">Adding webhook support</a></h1>
                     </div>
 
 
     <div class="s-content">
-        <p>How to send a message to the user:</p>
-<pre><code class="language-php">&lt;?php
-
-namespace Nuntius\Plugin;
-
-/**
- * Class Message.
- *
- * Triggered when a message eas sent.
- */
-class Message extends NuntiusPluginAbstract {
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function action() {
-      $this-&gt;client-&gt;getDMByUserId('USER_ID')-&gt;then(function (ChannelInterface $channel) {
-       $this-&gt;client-&gt;send('Hi user!', $channel);
-     });
-    }
-}
+        <p>Now that you know what is a Webhook you know that you need to set an endpoint.</p>
+<p>Before we begin let's clear something - the endpoint for the incoming webhooks
+does not mean for any thing else rather than getting information from external
+services. i.e - setting an endpoint to display a list of entities is a bad
+practice.</p>
+<h2 id="page_Adding+a+routing">Adding a routing</h2>
+<p>As always, let's go to the <code>settings.yml</code> file:</p>
+<pre><code class="language-yml">webhooks_routing:
+  'github': '\Nuntius\WebhooksRounting\GitHub'
 </code></pre>
-<p>Send message in a room:</p>
+<p>The key of the item, in this case, <code>github</code>, will be the endpoint. i.e:
+<code>http://address.com/github</code></p>
+<h2 id="page_The+router+controller">The router controller</h2>
+<p>You set the endpoint, let's see how the controller should look:</p>
 <pre><code class="language-php">&lt;?php
 
-namespace Nuntius\Plugin;
-
 /**
- * Class Message.
- *
- * Triggered when a message eas sent.
+ * Handling incoming webhooks from GitHub.
  */
-class Message extends NuntiusPluginAbstract {
-    
+class GitHub implements WebhooksRoutingControllerInterface {
+
   /**
    * {@inheritdoc}
    */
-  public function action() {
-    $this-&gt;client-&gt;getChannelById('ROOM_ID')-&gt;then(function (ChannelInterface $channel) {
-      $this-&gt;client-&gt;send('Hi there room members', $channel);
-    });
+  public function response(Request $request) {
+    
+    // Logic here.
+    
+    return new JsonResponse(['type' =&gt; 'success', 'message' =&gt; 'The request has been processed.']);
   }
+
 }
 </code></pre>
-<p>Send a message to a user when outside a room context AKA HTTP RPC-style:</p>
-<pre><code class="language-php">&lt;?php
-$slack_http = new SlackHttpService();
-$slack = $slack_http-&gt;setAccessToken(Nuntius::getSettings()-&gt;getSetting('access_token'));
-$im_room = $slack-&gt;Im()-&gt;getImForUser($slack-&gt;Users()-&gt;getUserByName(strtolower($info['username'])));
-$message = new SlackHttpPayloadServicePostMessage();
-$message
-  -&gt;setChannel($im_room)
-  -&gt;setText($info['text']);
-
-// Posting the message.
-$slack-&gt;Chat()-&gt;postMessage($message);
-</code></pre>
-<p>For more options look on
-<code>\Nuntius\Examples\GitHubOpened\NuntiusGitHubOpenedExample::postMessage</code></p>
+<p>The controller need to implement the response method and do the logic over
+there: Maybe dispatch events, insert something to DB or just send a PM on slack.</p>
+<p>In this, you can see the controller return a <code>JsonResponse</code> but you can return
+any <code>Response</code> object. As long as you return an object because:</p>
+<ol>
+<li>The service that sent the webhook might think the request failed if a 2XX or
+a 5XX response was return.</li>
+<li>Symfony will fail the page of a <code>Response</code> type won't returned.</li>
+</ol>
     </div>
 
         <nav>
         <ul class="Pager">
-            <li class=Pager--prev><a href="../Uncovered_API/Managers.html">Previous</a></li>            <li class=Pager--next><a href="../Tests.html">Next</a></li>        </ul>
+            <li class=Pager--prev><a href="../Webhooks/What_is_webhook.html">Previous</a></li>            <li class=Pager--next><a href="../Webhooks/GitHub/Configure_the_integration.html">Next</a></li>        </ul>
     </nav>
     </article>
 

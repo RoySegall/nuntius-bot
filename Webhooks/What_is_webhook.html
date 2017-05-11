@@ -4,11 +4,11 @@
 <!--[if IE 8]>          <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    <title>Cron tasks - Nnutius documentation</title>
+    <title>What is webhook - Nnutius documentation</title>
     <meta name="description" content="Develop smart bot easily" />
     <meta name="author" content="I, Me & Myself">
     <meta charset="UTF-8">
-    <link rel="icon" href="themes/daux/img/favicon-blue.png" type="image/x-icon">
+    <link rel="icon" href="../themes/daux/img/favicon-blue.png" type="image/x-icon">
     <!-- Mobile -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +16,9 @@
     <!-- Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
     <!-- CSS -->
-    <link href='themes/daux/css/theme-blue.min.css' rel='stylesheet' type='text/css'>
+    <link href='../themes/daux/css/theme-blue.min.css' rel='stylesheet' type='text/css'>
             <!-- Tipue Search -->
-        <link href="tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../tipuesearch/tipuesearch.css" rel="stylesheet">
     
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,7 +27,7 @@
 <body class="">
     
 <header class="Navbar hidden-print">
-    <a class="Navbar__brand" href="index.html">Nnutius documentation</a>
+    <a class="Navbar__brand" href="../index.html">Nnutius documentation</a>
 
     <div class="Search">
         <svg class="Search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451 451"><path d="M447.05 428l-109.6-109.6c29.4-33.8 47.2-77.9 47.2-126.1C384.65 86.2 298.35 0 192.35 0 86.25 0 .05 86.3.05 192.3s86.3 192.3 192.3 192.3c48.2 0 92.3-17.8 126.1-47.2L428.05 447c2.6 2.6 6.1 4 9.5 4s6.9-1.3 9.5-4c5.2-5.2 5.2-13.8 0-19zM26.95 192.3c0-91.2 74.2-165.3 165.3-165.3 91.2 0 165.3 74.2 165.3 165.3s-74.1 165.4-165.3 165.4c-91.1 0-165.3-74.2-165.3-165.4z"/></svg>
@@ -46,7 +46,7 @@
 
         <div class="Collapsible__content">
             <!-- Navigation -->
-            <ul class='Nav'><li class='Nav__item '><a href="Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="Events.html">Events</a></li><li class='Nav__item '><a href="Entities.html">Entities</a></li><li class='Nav__item '><a href="Tasks.html">Tasks</a></li><li class='Nav__item '><a href="Updates.html">Updates</a></li><li class='Nav__item '><a href="Commands.html">Commands</a></li><li class='Nav__item  has-children'><a href="Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item '><a href="Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="Services.html">Services</a></li><li class='Nav__item Nav__item--active'><a href="Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="Tests.html">Tests</a></li></ul>
+            <ul class='Nav'><li class='Nav__item '><a href="../Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="../Events.html">Events</a></li><li class='Nav__item '><a href="../Entities.html">Entities</a></li><li class='Nav__item '><a href="../Tasks.html">Tasks</a></li><li class='Nav__item '><a href="../Updates.html">Updates</a></li><li class='Nav__item '><a href="../Commands.html">Commands</a></li><li class='Nav__item Nav__item--open has-children'><a href="../Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item Nav__item--active'><a href="../Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item '><a href="../Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="../Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="../Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="../Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="../Services.html">Services</a></li><li class='Nav__item '><a href="../Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="../Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="../Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="../Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="../Tests.html">Tests</a></li></ul>
 
             <div class="Links">
                                     <hr/>
@@ -67,55 +67,30 @@
                 <article class="Page">
 
     <div class="Page__header">
-        <h1><a href="Cron_tasks.html">Cron tasks</a></h1>
+        <h1><a href="../Webhooks/What_is_webhook.html">Webhooks</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../Webhooks/What_is_webhook.html">What is webhook</a></h1>
                     </div>
 
 
     <div class="s-content">
-        <p>If you need to run command in a constant period of time such as: sending
-messages in specific hours, process a lot of data in the DB, you need cron
-tasks.</p>
-<p>To enable the cron task you can add in the cront task the next code:</p>
-<pre><code>*/1 * * * * PATH_TO_PHP PATH_TO_NUNTIUS/cron.php &gt;/dev/null 2&gt;&amp;1
-</code></pre>
-<p><strong><em>If you see that the cron task is not triggered, try to give 777 permission to
-the file.</em></strong></p>
-<p>The cron task will be fired each minutes but that should not bother you. Let's
-have a look on the code.</p>
-<p>First, the <code>settings.yml</code> file:</p>
-<pre><code class="language-yml">cron:
-  log: '\Nuntius\Cron\LogThings'
-</code></pre>
-<p>Next, let's look on how to define the cron job:</p>
-<pre><code class="language-php">&lt;?php
-
-namespace Nuntius\Cron;
-
-class LogThings extends CronTaskAbstract implements CronTaskInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $period = '*/5 * * * *';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function run() {
-    // ...
-  }
-
-}
-</code></pre>
-<p>The <code>$period</code> property will tell to cron what is the periodic rule it's
-follows. In this case each five minutes.</p>
-<p>The next par is the <code>run</code> method. In that method you'll apply the logic of the
-the task.</p>
+        <p>By Wikipedia, a <a href="https://en.wikipedia.org/wiki/Webhook" class="external">Webhook</a> is:</p>
+<blockquote>
+<p>A webhook in web development is a method of augmenting or altering the
+behavior of a web page, or web application, with custom callbacks. These
+callbacks may be maintained, modified, and managed by third-party users and
+developers who may not necessarily be affiliated with the originating website
+or application.</p>
+</blockquote>
+<p>But, this might not tell you a lot(me either) so I'll give an example.</p>
+<h2 id="page_Real+life+example">Real life example</h2>
+<p>Let's say you want to know about something that happens at a GitHub repo, a
+Docker Hub project or maybe you want to listen to event from you logs service?
+With Webhook you can accomplish that. Basically, A Webhook is an HTTP request,
+with a data(payload) or without, which sent to your server from external server.</p>
     </div>
 
         <nav>
         <ul class="Pager">
-            <li class=Pager--prev><a href="Services.html">Previous</a></li>            <li class=Pager--next><a href="Uncovered_API/Managers.html">Next</a></li>        </ul>
+            <li class=Pager--prev><a href="../Commands.html">Previous</a></li>            <li class=Pager--next><a href="../Webhooks/Adding_webhook_support.html">Next</a></li>        </ul>
     </nav>
     </article>
 
@@ -135,24 +110,24 @@ the task.</p>
 </script>
 
     <!-- jQuery -->
-    <script src="themes/daux/js/jquery-1.11.3.min.js"></script>
+    <script src="../themes/daux/js/jquery-1.11.3.min.js"></script>
 
     <!-- hightlight.js -->
-    <script src="themes/daux/js/highlight.pack.js"></script>
+    <script src="../themes/daux/js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
     <!-- JS -->
     
-    <script src="themes/daux/js/daux.js"></script>
+    <script src="../themes/daux/js/daux.js"></script>
 
             <!-- Tipue Search -->
-        <script type="text/javascript" src="tipuesearch/tipuesearch.js"></script>
+        <script type="text/javascript" src="../tipuesearch/tipuesearch.js"></script>
 
         <script>
             window.onunload = function(){}; // force $(document).ready to be called on back/forward navigation in firefox
             $(function() {
                 tipuesearch({
-                    'base_url': ''
+                    'base_url': '../'
                 });
             });
         </script>
