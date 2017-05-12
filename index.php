@@ -20,8 +20,8 @@ $routes = new RouteCollection();
 $webhooks_handlers = \Nuntius\Nuntius::getSettings()->getSetting('webhooks_routing');
 
 foreach ($webhooks_handlers as $handler => $namespace) {
-  $routes->add($handler, new Route('/{handler}', array(
-    '_controller' => $namespace . '::response')
+  $routes->add($handler, new Route('/' . $handler, array(
+      '_controller' => $namespace . '::response')
   ));
 }
 
