@@ -76,7 +76,7 @@ class Nuntius {
     }
 
     $container = new ContainerBuilder();
-    $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../'));
+    $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../settings/'));
 
     $loader->load('services.yml');
 

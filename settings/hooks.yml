@@ -1,11 +1,3 @@
-# RethinkDB connection information.
-rethinkdb:
-  host:
-  port:
-  db:
-  api_key:
-  timeout:
-
 # Slack RTM event conterollers.
 events:
   presence_change: '\Nuntius\Plugin\PresenceChange'
@@ -69,5 +61,3 @@ cron:
   ## it's OK or override it in settings.local.yml.
   log: '\Nuntius\Cron\LogThings'
 
-# Slack access token.
-access_token: ''

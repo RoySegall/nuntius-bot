@@ -23,7 +23,8 @@ before_script:
   - export NUNTIUS_BASE_URL=http://localhost:8888
 
 script:
-  - cp settings.local.travis.yml settings.local.yml
+  - cp settings/credentials.local.travis.yml settings/credentials.local.yml
+  - cp settings/hooks.local.travis.yml settings/hooks.local.yml
   - rethinkdb > /dev/null &
   - php console.php nuntius:install
   - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/

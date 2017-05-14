@@ -1,6 +1,7 @@
 vendor
 .idea
 rethinkdb_data/
-settings.local.yml
 node_modules
 .publish
+
+settings/credentials.local.yml

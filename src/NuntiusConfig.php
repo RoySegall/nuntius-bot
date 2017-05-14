@@ -10,20 +10,6 @@ use Symfony\Component\Yaml\Yaml;
 class NuntiusConfig {
 
   /**
-   * Settings from the main settings.yml file.
-   *
-   * @var array
-   */
-  protected $mainSettings = [];
-
-  /**
-   * Settings from the settings.local.yml file.
-   *
-   * @var array
-   */
-  protected $localSettings = [];
-
-  /**
    * The combined settings.
    *
    * @var array
@@ -34,49 +20,71 @@ class NuntiusConfig {
    * Constructing the nuntius config service.
    */
   public function __construct() {
-    $this->mainSettings = Yaml::parse(file_get_contents(__DIR__ . '/../settings.yml'));
+    $this->settings =  array_merge($this->getHooks(), $this->getCredentials());
+  }
 
-    if (file_exists(__DIR__ . '/../settings.local.yml')) {
-      $this->localSettings = Yaml::parse(file_get_contents(__DIR__ . '/../settings.local.yml'));
+  /**
+   * Get all the hooks.
+   *
+   * @return array
+   *   List of the hooks.
+   */
+  public function getHooks() {
+    return $this->concatYmlFiles('hooks');
+  }
+
+  /**
+   * Return list of credentials.
+   *
+   * @return array
+   *   Credentials to the DB, 3rd party services etc. etc.
+   */
+  public function getCredentials() {
+    return $this->concatYmlFiles('credentials');
+  }
+
+  /**
+   * credentials a settings file with the local one.
+   *
+   * Settings(hooks and credentials) are listed inside a X.settings.yml or
+   * X.local.yml. The non-local yml contains settings provided by Nuntius core
+   * while the local yml file intend to override default settings.
+   *
+   * The method will combine both of the settings into a single array while the
+   * local settings file is the one which will call the shot.
+   *
+   * @param $file
+   *   The type of file i.e credentials or hooks.
+   * @return array
+   */
+  protected function concatYmlFiles($file) {
+    $path = __DIR__ . '/../settings/';
+    $main_settings = Yaml::parse(file_get_contents($path . $file . '.yml'));
+
+    if (file_exists($path . $file . '.local.yml')) {
+      $local_settings = Yaml::parse(file_get_contents($path . $file . '.local.yml'));
     }
 
-    foreach ($this->mainSettings as $key => $value) {
+    $settings = [];
+    foreach ($main_settings as $key => $value) {
       // Getting settings from the main default settings.
-      $this->settings[$key] = $this->mainSettings[$key];
+      $settings[$key] = $main_settings[$key];
 
-      if (is_array($this->settings[$key])) {
+      if (is_array($settings[$key])) {
         // The setting is defined as settings. Merge the local settings with the
         // main settings.
-        if (isset($this->localSettings[$key])) {
-          $this->settings[$key] = $this->localSettings[$key] + $this->mainSettings[$key];
+        if (isset($local_settings[$key])) {
+          $settings[$key] = $local_settings[$key] + $main_settings[$key];
         }
       }
       else {
         // The setting is not an array(bot access token) - the local settings
         // call the shot for the value of the setting.
-        $this->settings[$key] = isset($this->localSettings[$key]) ? $this->localSettings[$key] : '';
+        $settings[$key] = isset($local_settings[$key]) ? $local_settings[$key] : '';
       }
     }
-  }
 
-  /**
-   * Return the local settings.
-   *
-   * @return array
-   *   Local settings.
-   */
-  public function getLocalSettings() {
-    return $this->localSettings;
-  }
-
-  /**
-   * Return the main settings.
-   *
-   * @return array
-   *  Main settings.
-   */
-  public function getMainSettings() {
-    return $this->mainSettings;
+    return $settings;
   }
 
   /**
