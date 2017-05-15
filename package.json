@@ -14,7 +14,9 @@
   },
   "homepage": "https://github.com/RoySegall/nuntius-bot#readme",
   "dependencies": {
+    "browser-sync": "^2.18.8",
     "gulp": "^3.9.1",
-    "gulp-gh-pages": "^0.5.4"
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-run": "^1.7.1"
   }
 }

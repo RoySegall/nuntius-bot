@@ -3,5 +3,5 @@ vendor
 rethinkdb_data/
 node_modules
 .publish
-
 settings/credentials.local.yml
+docs/static

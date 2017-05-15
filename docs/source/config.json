@@ -1,0 +1,21 @@
+{
+  "title": "Nnutius documentation",
+  "breadcrumbs": true,
+  "breadcrumb_separator" : " > ",
+  "tagline": "Develop smart bot easily",
+  "image": "logo.png",
+  "live": {
+    "clean_urls": true
+  },
+  "html": {
+    "breadcrumbs": true,
+    "breadcrumb_separator": "Chevrons",
+    "inherit_index": true,
+    "float": false,
+    "repo": "roysegall/nuntius-bot",
+    "google_analytics": "UA-98663880-1",
+    "links": {
+      "GitHub Repo": "https://github.com/roysegall/nuntius-bot"
+    }
+  }
+}

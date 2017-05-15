@@ -19,7 +19,8 @@
     "symfony/dependency-injection": "^3.2",
     "symfony/config": "^3.2",
     "Cron/Cron": "^1.2",
-    "symfony/http-kernel": "^3.2"
+    "symfony/http-kernel": "^3.2",
+    "justinwalsh/daux.io": "^0.3.2"
   },
   "autoload": {
     "psr-4": {

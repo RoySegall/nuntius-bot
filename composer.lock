@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b132396005a837ca8a55005c6d17ff63",
+    "content-hash": "cc251f6d414c16261cf88912918b7d4a",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -699,6 +699,65 @@
             "time": "2017-03-20T17:10:46+00:00"
         },
         {
+            "name": "justinwalsh/daux.io",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justinwalsh/daux.io.git",
+                "reference": "2b1bfbf52a457bdc05aace77505e8b6d4b8547c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justinwalsh/daux.io/zipball/2b1bfbf52a457bdc05aace77505e8b6d4b8547c7",
+                "reference": "2b1bfbf52a457bdc05aace77505e8b6d4b8547c7",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "league/commonmark": "^0.15",
+                "league/plates": "~3.1",
+                "myclabs/deep-copy": "^1.5",
+                "php": ">=5.5",
+                "symfony/console": "~3.0",
+                "symfony/finder": "~3.0",
+                "symfony/process": "^3.1",
+                "webuni/commonmark-table-extension": "0.6.*",
+                "webuni/front-matter": "^0.2.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "~4"
+            },
+            "bin": [
+                "bin/daux"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Todaymade\\Daux\\": "libs/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Walsh",
+                    "homepage": "http://todaymade.com/"
+                }
+            ],
+            "description": "Documentation generator that uses a simple folder structure and Markdown files to create custom documentation on the fly",
+            "homepage": "http://daux.io/",
+            "keywords": [
+                "docs",
+                "documentation",
+                "markdown",
+                "md"
+            ],
+            "time": "2017-01-23T22:28:56+00:00"
+        },
+        {
             "name": "kint-php/kint",
             "version": "1.1",
             "source": {
@@ -748,6 +807,172 @@
                 "php"
             ],
             "time": "2017-01-15T14:23:43+00:00"
+        },
+        {
+            "name": "league/commonmark",
+            "version": "0.15.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/commonmark.git",
+                "reference": "c4c8e6bf99e62d9568875d9fc3ef473fe3e18e0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c4c8e6bf99e62d9568875d9fc3ef473fe3e18e0c",
+                "reference": "c4c8e6bf99e62d9568875d9fc3ef473fe3e18e0c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4.8"
+            },
+            "replace": {
+                "colinodell/commonmark-php": "*"
+            },
+            "require-dev": {
+                "cebe/markdown": "~1.0",
+                "erusev/parsedown": "~1.0",
+                "jgm/commonmark": "0.27",
+                "michelf/php-markdown": "~1.4",
+                "mikehaertl/php-shellcommand": "~1.2.0",
+                "phpunit/phpunit": "~4.3|~5.0",
+                "scrutinizer/ocular": "~1.1",
+                "symfony/finder": "~2.3|~3.0"
+            },
+            "suggest": {
+                "league/commonmark-extras": "Library of useful extensions including smart punctuation"
+            },
+            "bin": [
+                "bin/commonmark"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.16-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\CommonMark\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com",
+                    "homepage": "https://www.colinodell.com",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Markdown parser for PHP based on the CommonMark spec",
+            "homepage": "https://github.com/thephpleague/commonmark",
+            "keywords": [
+                "commonmark",
+                "markdown",
+                "parser"
+            ],
+            "time": "2017-05-09T12:47:53+00:00"
+        },
+        {
+            "name": "league/plates",
+            "version": "3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/plates.git",
+                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/b1684b6f127714497a0ef927ce42c0b44b45a8af",
+                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 | ^7.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.4",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Plates\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Reinink",
+                    "email": "jonathan@reinink.ca",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Plates, the native PHP template system that's fast, easy to use and easy to extend.",
+            "homepage": "http://platesphp.com",
+            "keywords": [
+                "league",
+                "package",
+                "templates",
+                "templating",
+                "views"
+            ],
+            "time": "2016-12-28T00:14:17+00:00"
+        },
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "doctrine/collections": "1.*",
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "homepage": "https://github.com/myclabs/DeepCopy",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "psr/container",
@@ -1586,6 +1811,55 @@
             "time": "2017-04-12T14:13:17+00:00"
         },
         {
+            "name": "symfony/finder",
+            "version": "v3.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "9cf076f8f492f4b1ffac40aae9c2d287b4ca6930"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/9cf076f8f492f4b1ffac40aae9c2d287b4ca6930",
+                "reference": "9cf076f8f492f4b1ffac40aae9c2d287b4ca6930",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-04-12T14:13:17+00:00"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "v3.2.8",
             "source": {
@@ -1957,6 +2231,121 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-05-01T14:55:58+00:00"
+        },
+        {
+            "name": "webuni/commonmark-table-extension",
+            "version": "0.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webuni/commonmark-table-extension.git",
+                "reference": "ebbd69b63436283ec726658835b213ec634485e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webuni/commonmark-table-extension/zipball/ebbd69b63436283ec726658835b213ec634485e8",
+                "reference": "ebbd69b63436283ec726658835b213ec634485e8",
+                "shasum": ""
+            },
+            "require": {
+                "league/commonmark": "^0.14|^0.15",
+                "php": "^5.5|^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "^4.3|^5.0",
+                "sllh/php-cs-fixer-styleci-bridge": "^2.0",
+                "symfony/var-dumper": "^2.7|^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webuni\\CommonMark\\TableExtension\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Hasoň",
+                    "email": "martin.hason@gmail.com",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Webuni s.r.o.",
+                    "homepage": "https://www.webuni.cz"
+                }
+            ],
+            "description": "The table extension for CommonMark PHP implementation",
+            "homepage": "https://github.com/webuni/commonmark-table-extension",
+            "keywords": [
+                "commonmark",
+                "markdown",
+                "table"
+            ],
+            "time": "2017-01-11T14:52:17+00:00"
+        },
+        {
+            "name": "webuni/front-matter",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webuni/front-matter.git",
+                "reference": "dfede21e98a91729151e9665a81215f838e9320f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webuni/front-matter/zipball/dfede21e98a91729151e9665a81215f838e9320f",
+                "reference": "dfede21e98a91729151e9665a81215f838e9320f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5|^7.0",
+                "symfony/yaml": "^2.3|^3.0"
+            },
+            "require-dev": {
+                "coduo/phpspec-data-provider-extension": "^1.0",
+                "fabpot/php-cs-fixer": "^1.9",
+                "memio/spec-gen": "~0.3",
+                "mthaml/mthaml": "^1.2",
+                "phpspec/phpspec": "^2.5",
+                "twig/twig": "~1.20|~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webuni\\FrontMatter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Hasoň",
+                    "email": "martin.hason@gmail.com",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Front matter parser and dumper for PHP",
+            "homepage": "https://github.com/webuni/front-yaml",
+            "keywords": [
+                "front-matter",
+                "yaml"
+            ],
+            "time": "2016-04-26T23:39:13+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -2448,48 +2837,6 @@
                 "instantiate"
             ],
             "time": "2015-06-14T21:17:01+00:00"
-        },
-        {
-            "name": "myclabs/deep-copy",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "doctrine/collections": "1.*",
-                "phpunit/phpunit": "~4.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Create deep copies (clones) of your objects",
-            "homepage": "https://github.com/myclabs/DeepCopy",
-            "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
-            ],
-            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
