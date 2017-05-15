@@ -72,11 +72,11 @@
 
 
     <div class="s-content">
-        <p>Gizra became a company when a lot of the employees are remote: USA,
-Canada, Spain and the list goes on. That status required from us to start using
-Slack. But the problem is that we wanted Slack to be cool. The obvious idea is
-to have a bot. The bot will interact with us and might improve the way we
-communicate.</p>
+        <p><a href="http://gizra.com" class="external">Gizra</a> became a company when a lot of the employees are
+remote: USA, Canada, Spain and the list goes on. That status required from us to
+start using Slack. But the problem is that we wanted Slack to be cool. The
+obvious idea is to have a bot. The bot will interact with us and might improve
+the way we communicate.</p>
 <h2 id="page_Origin">Origin</h2>
 <p>Like any awesome superhero, Nuntius have an origin story. It's not a tragic
 origin story when his uncle-CPU died due to lack of understanding that with
@@ -92,20 +92,25 @@ single man but the name lived on.</p>
 <p>After creating a bot, Go to <code>https://YOURTEAM.slack.com/apps</code>. Click on <code>Manage</code>
 and under <code>Custom integration</code> you'll see your bot. Click on the bot to get the
 access token.</p>
-<pre><code class="language-bash">cp settings.local.example.yml settings.local.yml
-composer install
+<pre><code class="language-bash">cd settings
+cp credentials.local.yml credentials.yml
+</code></pre>
+<p>Set the proper credentials and then:</p>
+<pre><code class="language-bash">composer install
 rethinkdb
 </code></pre>
-<p>Open the settings file you created and set the token you copied, and run:</p>
+<p>Now, that you set up credentials file correctly run:</p>
 <pre><code class="language-bash">php console.php nuntius:install
 php bot.php
 </code></pre>
 <p>That's it. Nuntius is up and running.</p>
 <h2 id="page_Integrating">Integrating</h2>
-<p>Integration can be done through the main <code>settings.yml</code> file(or in case you
-forked the project through the <code>settings.local.yml</code>). The <code>settings.local.yml</code>
-file will override the settings of the <code>settings.yml</code> file.</p>
-<p>Let's go through the various integrations.</p>
+<p>Nuntius integrations is done through the <code>hooks.yml</code> file. All the events,
+entities, tasks and other features(you will soon see) are listed in <code>hooks.yml</code>.
+In case you forked the project, and that the reasonable scenario, you need to
+create a <code>hooks.local.yml</code> in the settings directory.</p>
+<p>The <code>hooks.local.yml</code> allow you to override the definitions in <code>hooks.yml</code> thus
+gives you the option to swap everything in the system.</p>
     </div>
 
         <nav>
