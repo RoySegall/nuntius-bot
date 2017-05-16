@@ -41,6 +41,8 @@ php console.php nuntius:install
 php bot.php
 ```
 
+![install Gif](gif/install.gif)
+
 That's it. Nuntius is up and running.
 
 ## Integrating
