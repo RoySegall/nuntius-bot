@@ -25,7 +25,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     // Setting up the context.
     $context = [
       'user' => $this->data['user'],
-      'task' => $this->task_id,
+      'task' => $this->taskId,
     ];
 
     // Check if we have a running context for the user.
@@ -88,17 +88,30 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     $context = reset($context);
     $context['questions'] = $context['questions']->getArrayCopy();
 
+    $constraint = $this->getConstraint();
+
     // Look for the answer we need to handle.
     foreach ($context['questions'] as $question => $answer) {
-      if ($answer === FALSE) {
-
-        $context['questions'][$question] = $text;
-
-        $this->entityManager->get('context')
-          ->load($context['id'])
-          ->update($context['id'], $context);
-        break;
+      if ($answer !== FALSE) {
+        continue;
       }
+
+      if ($constraint) {
+        $method = str_replace('question', 'validate', $question);
+
+        if (method_exists($constraint, $method)) {
+          if (($error = $constraint->{$method}($text)) !== TRUE) {
+            return $error;
+          }
+        }
+      }
+
+      $context['questions'][$question] = $text;
+
+      $this->entityManager->get('context')
+        ->load($context['id'])
+        ->update($context['id'], $context);
+      break;
     }
   }
 
@@ -114,7 +127,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
   protected function checkForContext(Table $table) {
     $results = $table
       ->filter(\r\row('user')->eq($this->data['user']))
-      ->filter(\r\row('task')->eq($this->task_id))
+      ->filter(\r\row('task')->eq($this->taskId))
       ->run($this->db->getConnection());
 
     return $results->toArray();
@@ -136,6 +149,20 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     $running_context = $this->checkForContext($this->db->getTable('context'));
     $running_context = reset($running_context)->getArrayCopy();
     $this->entityManager->get('context')->delete($running_context['id']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConstraint() {
+    $scopes = $this->scope();
+    $scope = reset($scopes);
+
+    if (empty($scope['constraint'])) {
+      return;
+    }
+
+    return new $scope['constraint'];
   }
 
 }

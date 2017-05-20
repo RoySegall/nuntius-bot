@@ -20,7 +20,7 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
    *
    * @var string
    */
-  protected $task_id;
+  protected $taskId;
 
   /**
    * The entity manager.
@@ -55,7 +55,7 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
    */
   function __construct(NuntiusRethinkdb $db, $task_id, EntityManager $entity_manager) {
     $this->db = $db;
-    $this->task_id = $task_id;
+    $this->taskId = $task_id;
     $this->entityManager = $entity_manager;
   }
 
@@ -81,6 +81,13 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
    */
   public function actOnPresenceChange() {
     // Do nothing by default.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTaskId() {
+    return $this->taskId;
   }
 
 }

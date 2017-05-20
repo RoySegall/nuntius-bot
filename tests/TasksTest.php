@@ -4,6 +4,7 @@ namespace tests;
 use Nuntius\Nuntius;
 use Nuntius\Tasks\Introduction;
 use Nuntius\Tasks\Reminders;
+use Nuntius\Tasks\RestartQuestion;
 use Nuntius\TasksManager;
 use Slack\RealTimeClient;
 
@@ -64,6 +65,7 @@ class TasksTest extends TestsAbstract {
       'reminders' => $this->tasks->get('reminders'),
       'help' => $this->tasks->get('help'),
       'introduction' => $this->tasks->get('introduction'),
+      'restart_question' => $this->tasks->get('restart_question'),
     ]);
   }
 
@@ -91,6 +93,7 @@ class TasksTest extends TestsAbstract {
     $helps = [
       '`remind me REMINDER`: Next time you log in I will remind you what you  wrote in the REMINDER',
       '`nice to meet you`: We will do a proper introduction',
+      '`delete information`: Delete an information',
     ];
     $this->assertEquals($this->tasks->get('help')->listOfScopes(), implode("\n", $helps));
   }
@@ -106,6 +109,45 @@ class TasksTest extends TestsAbstract {
     $this->assertEquals('what is your last name?', $introduction->startTalking());
     $introduction->setAnswer('Tom');
     $this->assertEquals('Well, Major. Tom, it is a pleasure.', $introduction->startTalking());
+  }
+
+  /**
+   * Testing introduction plugin.
+   */
+  public function testRestartQuestion() {
+    // Get the list of all the tasks.
+    $tasks = Nuntius::getTasksManager()->getRestartableTasks();
+
+    $labels = [];
+    foreach ($tasks as $task) {
+      $labels[] = '`' . $task['label'] . '`';
+    }
+
+    // Get all the un-temp context question.
+    $text = "So... You want to delete information of a question. For which question?\n" . implode(',', $labels);
+
+    /** @var RestartQuestion $restart */
+    $restart = $this->tasks->get('restart_question');
+    $this->assertEquals($text, $restart->startTalking());
+    $this->assertEquals($restart->setAnswer('foo'), 'Hmmm..... it\'s look like `foo` is not a task I know.');
+    $restart->setAnswer('nice to meet you');
+    $this->assertEquals('Do you want to start the process again or should I restart the question?', $restart->startTalking());
+    $this->assertEquals($restart->setAnswer('maybe'), 'The answer need to be one of the following: `yes`, `no`, `y`, `n`');
+    $restart->setAnswer('no');
+    $this->assertequals('I deleted for you the information.', $restart->startTalking());
+
+    // Now, checking with the restart question.
+    $restart = $this->tasks->get('restart_question');
+    $this->assertEquals($text, $restart->startTalking());
+    $this->assertEquals($restart->setAnswer('foo'), 'Hmmm..... it\'s look like `foo` is not a task I know.');
+    $restart->setAnswer('nice to meet you');
+    $this->assertEquals('Do you want to start the process again or should I restart the question?', $restart->startTalking());
+    $this->assertEquals($restart->setAnswer('maybe'), 'The answer need to be one of the following: `yes`, `no`, `y`, `n`');
+    $restart->setAnswer('yes');
+
+    $answer = $restart->startTalking();
+    $this->assertContains("I deleted for you the information.", $answer);
+    $this->assertContains("Oh hey! It look that we are not introduced yet. what is your first name?", $answer);
   }
 
 }

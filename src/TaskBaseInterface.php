@@ -46,4 +46,12 @@ interface TaskBaseInterface {
    */
   public function setData(array $data);
 
+  /**
+   * Get the task ID.
+   *
+   * @return string
+   *   The task ID.
+   */
+  public function getTaskId();
+
 }

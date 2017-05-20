@@ -17,6 +17,7 @@ tasks:
   reminders: '\Nuntius\Tasks\Reminders'
   help: '\Nuntius\Tasks\Help'
   introduction: '\Nuntius\Tasks\Introduction'
+  restart_question: '\Nuntius\Tasks\RestartQuestion'
 
 # List of updates.
 updates:

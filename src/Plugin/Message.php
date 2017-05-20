@@ -43,7 +43,11 @@ class Message extends NuntiusPluginAbstract {
           ->setData($data);
 
         // Save the answer.
-        $task->setAnswer($this->data['text']);
+        if ($error = $task->setAnswer($this->data['text'])) {
+          $target_channel->then(function (ChannelInterface $channel) use ($error) {
+            $this->client->send($error, $channel);
+          });
+        }
 
         // Next question, please.
         if ($next_question = $task->startTalking()) {

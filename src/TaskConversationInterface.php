@@ -86,4 +86,11 @@ interface TaskConversationInterface extends TaskBaseInterface {
    */
   public function deleteContext();
 
+  /**
+   * Get the constraint of the question.
+   *
+   * @return AbstractQuestionConstraint
+   */
+  public function getConstraint();
+
 }

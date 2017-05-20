@@ -122,4 +122,32 @@ class TasksManager {
     return FALSE;
   }
 
+  /**
+   * Get the restartable tasks - tasks which their context last forever.
+   *
+   * @return array
+   */
+  public function getRestartableTasks() {
+
+    $restartable_tasks = [];
+    foreach ($this->getTasks() as $task) {
+
+      if (!$task instanceof TaskConversationInterface) {
+        // Get only conversation tasks.
+        continue;
+      }
+
+      if ($task->conversationScope() != 'forever') {
+        // Only tasks which their context should last for ever.
+        continue;
+      }
+
+      // Get the ID and the label of the task.
+      $scopes = $task->scope();
+      $restartable_tasks[] = ['id' => $task->getTaskId(), 'label' => reset($scopes)['human_command']];
+    }
+
+    return $restartable_tasks;
+  }
+
 }
