@@ -28,6 +28,7 @@ updates:
 commands:
   - '\Nuntius\Commands\UpdateCommand'
   - '\Nuntius\Commands\InstallCommand'
+  - '\Nuntius\Commands\RunCommand'
   - '\Nuntius\Commands\EntityManagerCommand'
 
 # Information for web hooks matching controllers.

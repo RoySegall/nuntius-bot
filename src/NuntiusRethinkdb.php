@@ -27,6 +27,13 @@ class NuntiusRethinkdb {
   protected $db;
 
   /**
+   * The DB connection error.
+   *
+   * @var string
+   */
+  public $error;
+
+  /**
    * NuntiusRethinkdb constructor.
    *
    * @param NuntiusConfig $config
@@ -38,7 +45,7 @@ class NuntiusRethinkdb {
     try {
       $this->connection = \r\connect($info['host'], $info['port'], $info['db'], $info['api_key'], $info['timeout']);
     } catch (\Exception $e) {
-      print($e->getMessage() . "\n");
+      $this->error = $e->getMessage();
     }
   }
 
