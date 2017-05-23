@@ -2,6 +2,7 @@
 
 namespace Nuntius;
 
+use GuzzleHttp\Promise\Promise;
 use r\Queries\Tables\Table;
 
 /**
@@ -163,6 +164,37 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     }
 
     return new $scope['constraint'];
+  }
+
+  /**
+   * Get the context of the current task for the current user or a given
+   * username.
+   *
+   * @param $task_id
+   *   The task ID.
+   * @param null $user
+   *   Optional. The user ID. In case of NULL the current user will be query.
+   *
+   * @return array
+   *   The task information.
+   */
+  protected function getTaskContext($task_id, $user = NULL) {
+    if (!$user) {
+      $user = $this->data['user'];
+    }
+
+    $results = $this->db
+      ->getTable('context')
+      ->filter(\r\row('task')->eq($task_id))
+      ->filter(\r\row('user')->eq($user))
+      ->run(Nuntius::getRethinkDB()->getConnection());
+
+    $rows = [];
+    foreach ($results as $result) {
+      $rows[] = $result->getArrayCopy();
+    }
+
+    return reset($rows);
   }
 
 }

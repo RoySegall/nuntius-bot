@@ -3,6 +3,7 @@
 namespace tests;
 use Nuntius\Nuntius;
 use Nuntius\Tasks\Introduction;
+use Nuntius\Tasks\NotifyTeam;
 use Nuntius\Tasks\Reminders;
 use Nuntius\Tasks\RestartQuestion;
 use Nuntius\TasksManager;
@@ -66,6 +67,7 @@ class TasksTest extends TestsAbstract {
       'help' => $this->tasks->get('help'),
       'introduction' => $this->tasks->get('introduction'),
       'restart_question' => $this->tasks->get('restart_question'),
+      'notify_team' => $this->tasks->get('notify_team'),
     ]);
   }
 
@@ -94,6 +96,7 @@ class TasksTest extends TestsAbstract {
       '`remind me REMINDER`: Next time you log in I will remind you what you  wrote in the REMINDER',
       '`nice to meet you`: We will do a proper introduction',
       '`delete information`: Delete an information',
+      '`notify team`: Notify the team about something',
     ];
     $this->assertEquals($this->tasks->get('help')->listOfScopes(), implode("\n", $helps));
   }
@@ -134,7 +137,7 @@ class TasksTest extends TestsAbstract {
     $this->assertEquals('Do you want to start the process again or should I restart the question?', $restart->startTalking());
     $this->assertEquals($restart->setAnswer('maybe'), 'The answer need to be one of the following: `yes`, `no`, `y`, `n`');
     $restart->setAnswer('no');
-    $this->assertequals('I deleted for you the information.', $restart->startTalking());
+    $this->assertEquals('I deleted for you the information.', $restart->startTalking());
 
     // Now, checking with the restart question.
     $restart = $this->tasks->get('restart_question');
@@ -148,6 +151,20 @@ class TasksTest extends TestsAbstract {
     $answer = $restart->startTalking();
     $this->assertContains("I deleted for you the information.", $answer);
     $this->assertContains("Oh hey! It look that we are not introduced yet. what is your first name?", $answer);
+  }
+
+  /**
+   * Testing the notify team task.
+   */
+  public function testNotifyTeam() {
+    /** @var NotifyTeam $restart */
+    $restart = $this->tasks->get('notify_team');
+
+    $this->assertEquals('Who are your team members? Use a comma(,) after a username.', $restart->startTalking());
+    $restart->setAnswer('Major. Tom, Hal 9000');
+    $this->assertEquals('What should I tell them?', $restart->startTalking());
+    $restart->setAnswer('There is a leak on the boat!');
+    $this->assertEquals('Awesome! I notified the team.', $restart->startTalking());
   }
 
 }
