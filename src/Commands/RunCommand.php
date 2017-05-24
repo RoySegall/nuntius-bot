@@ -3,6 +3,7 @@
 namespace Nuntius\Commands;
 
 use Nuntius\Nuntius;
+use r\Exceptions\RqlServerError;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,8 +30,6 @@ class RunCommand extends Command  {
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new SymfonyStyle($input, $output);
-    // Bootstrapping.
-    $client = Nuntius::bootstrap();
     $settings = Nuntius::getSettings();
 
     // Get the DB connection.
@@ -49,6 +48,17 @@ class RunCommand extends Command  {
       $io->error($text);
       return;
     }
+
+    try {
+      $db->getTable('system')->run($db->getConnection());
+    }
+    catch (RqlServerError $e) {
+      $io->error('It seems that the DB is not properly. Run php console.php nuntius:install');
+      return;
+    }
+
+    // Bootstrapping.
+    $client = Nuntius::bootstrap();
 
     // Iterating over the plugins and register them for Slack events.
     foreach ($settings->getSetting('events') as $event => $namespace) {
