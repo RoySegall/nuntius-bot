@@ -3,6 +3,9 @@ services:
   config:
     class: \Nuntius\NuntiusConfig
 
+  http:
+    class: '\GuzzleHttp\Client'
+
   dispatcher:
     class: \Nuntius\NuntiusDispatcher
     arguments: ['@config']

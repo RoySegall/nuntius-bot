@@ -61,6 +61,7 @@ class NuntiusConfig {
     $path = __DIR__ . '/../settings/';
     $main_settings = Yaml::parse(file_get_contents($path . $file . '.yml'));
 
+    $local_settings = [];
     if (file_exists($path . $file . '.local.yml')) {
       $local_settings = Yaml::parse(file_get_contents($path . $file . '.local.yml'));
     }
@@ -82,6 +83,14 @@ class NuntiusConfig {
         // call the shot for the value of the setting.
         $settings[$key] = isset($local_settings[$key]) ? $local_settings[$key] : '';
       }
+    }
+
+    foreach ($local_settings as $key => $value) {
+      if (in_array($key, array_keys($settings))) {
+        continue;
+      }
+
+      $settings[$key] = $value;
     }
 
     return $settings;

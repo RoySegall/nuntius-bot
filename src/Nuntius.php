@@ -147,4 +147,13 @@ class Nuntius {
     return self::container()->get('dispatcher')->buildDispatcher();
   }
 
+  /**
+   * Return the guzzle component.
+   *
+   * @return \GuzzleHttp\Client
+   */
+  public static function getGuzzle() {
+    return \Nuntius\Nuntius::container()->get('http');
+  }
+
 }
