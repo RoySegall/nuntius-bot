@@ -28,3 +28,4 @@ script:
   - rethinkdb > /dev/null &
   - php console.php nuntius:install
   - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/
+  - php console.php nuntius:run > /dev/null &
