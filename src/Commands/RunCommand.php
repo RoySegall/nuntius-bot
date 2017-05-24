@@ -63,7 +63,7 @@ class RunCommand extends Command  {
     }
 
     // Bootstrapping.
-    $client = Nuntius::bootstrap();
+//    $client = Nuntius::bootstrap();
 
     // Iterating over the plugins and register them for Slack events.
     foreach ($settings->getSetting('events') as $event => $namespace) {
