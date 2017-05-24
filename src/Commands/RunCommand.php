@@ -32,6 +32,11 @@ class RunCommand extends Command  {
     $io = new SymfonyStyle($input, $output);
     $settings = Nuntius::getSettings();
 
+    if (!$settings->getSetting('access_token')) {
+      $io->error('The access token is empty');
+      return;
+    }
+
     // Get the DB connection.
     $db = @Nuntius::getRethinkDB();
 
@@ -75,8 +80,8 @@ class RunCommand extends Command  {
     }
 
     // Login something to screen when the bot started to work.
-    $client->connect()->then(function () {
-      echo "Nuntius started to work at " . date('d/m/Y H:i');
+    $client->connect()->then(function () use($io) {
+      $io->success("Nuntius started to work at " . date('d/m/Y H:i'));
     });
 
     // Starting the work.

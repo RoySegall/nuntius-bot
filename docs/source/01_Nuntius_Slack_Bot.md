@@ -38,7 +38,7 @@ rethinkdb
 Now, that you set up credentials file correctly run:
 ```bash
 php console.php nuntius:install
-php bot.php
+php console.php nuntius:run
 ```
 
 ![install Gif](gif/install.gif)
