@@ -53,7 +53,7 @@ class InstallCommand extends Command  {
     Nuntius::getEntityManager()->get('system')->update('updates', ['processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
 
     $io->section("The install has completed.");
-    $io->text('run php bot.php');
+    $io->text('run php console.php nuntius:run');
   }
 
 }
