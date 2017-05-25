@@ -88,7 +88,6 @@ class InstallCommand extends Command  {
       $settings['rethinkdb']['api_key'] = $io->ask('Enter the API key', 'none');
       $settings['rethinkdb']['timeout'] = $io->ask('Enter the timeout for the DB connection', 30);
 
-
       if ($settings['rethinkdb']['api_key'] == 'none') {
         $settings['rethinkdb']['api_key'] = '';
       }
