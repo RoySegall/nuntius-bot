@@ -23,21 +23,20 @@ After creating a bot, Go to `https://YOURTEAM.slack.com/apps`. Click on `Manage`
 and under `Custom integration` you'll see your bot. Click on the bot to get the
 access token.
 
-```bash
-cd settings
-cp credentials.local.yml credentials.yml
-```
-
-Set the proper credentials and then:
+Install composer components and start RethinkDB:
 
 ``` bash
 composer install
 rethinkdb
 ```
 
-Now, that you set up credentials file correctly run:
+Let's start and run the installe:
 ```bash
 php console.php nuntius:install
+```
+
+After that will finish you need to run 
+```bash
 php console.php nuntius:run
 ```
 
