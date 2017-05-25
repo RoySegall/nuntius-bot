@@ -60,7 +60,9 @@ class Message extends NuntiusPluginAbstract {
       }
     }
 
-    if (!$this->botWasMentioned($data['text'])) {
+    if (!$this->isDirectMessage() && !$this->botWasMentioned($data['text'])) {
+      // This is not a direct message which mean only if the bot was mentioned
+      // we can interact with the user.
       return;
     }
 
