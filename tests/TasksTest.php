@@ -4,10 +4,8 @@ namespace tests;
 use Nuntius\Nuntius;
 use Nuntius\Tasks\Introduction;
 use Nuntius\Tasks\NotifyTeam;
-use Nuntius\Tasks\Reminders;
 use Nuntius\Tasks\RestartQuestion;
 use Nuntius\TasksManager;
-use Slack\RealTimeClient;
 
 /**
  * Testing tasks.
