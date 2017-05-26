@@ -17,6 +17,13 @@ class DbDispatcher {
   protected $config;
 
   /**
+   * The DB driver.
+   *
+   * @var string
+   */
+  protected $driver;
+
+  /**
    * Dispatching the DB controllers.
    *
    * @param NuntiusConfig $config
@@ -24,6 +31,31 @@ class DbDispatcher {
    */
   function __construct(NuntiusConfig $config) {
     $this->config = $config;
+    $this->driver = $driver = $this->config->getSetting('db_driver');
+  }
+
+  /**
+   * Set the driver.
+   *
+   * @param $driver
+   *   The DB driver.
+   *
+   * @return \Nuntius\Db\DbDispatcher
+   *   The current instance.
+   */
+  public function setDriver($driver) {
+    $this->driver = $driver;
+    return $this;
+  }
+
+  /**
+   * Get the DB driver.
+   *
+   * @return string
+   *   The driver of the DB.
+   */
+  public function getDriver() {
+    return $this->driver;
   }
 
   /**
@@ -38,13 +70,12 @@ class DbDispatcher {
    * @throws \Exception
    */
   public function getDriverController($controller) {
-    $driver = $this->config->getSetting('db_driver');
 
-    if (!$controllers = $this->config->getSetting('db_drivers')[$driver]) {
-      throw new \Exception('The DB driver ' . $driver . ' does not exists');
+    if (empty($this->config->getSetting('db_drivers')[$this->driver])) {
+      throw new \Exception('The DB driver ' . $this->driver . ' does not exists');
     }
 
-    return $controllers[$controller];
+    return $this->config->getSetting('db_drivers')[$this->driver][$controller];
   }
 
   /**
