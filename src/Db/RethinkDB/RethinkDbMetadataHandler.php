@@ -29,4 +29,5 @@ class RethinkDbMetadataHandler implements DbMetadataHandlerInterface {
   public function supportRealTime() {
     return TRUE;
   }
+
 }
