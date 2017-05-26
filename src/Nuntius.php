@@ -92,6 +92,7 @@ class Nuntius {
    * Get the DB instance.
    *
    * @return NuntiusRethinkdb
+   * @internal
    */
   public static function getRethinkDB() {
     return self::container()->get('rethinkdb');
@@ -153,7 +154,16 @@ class Nuntius {
    * @return \GuzzleHttp\Client
    */
   public static function getGuzzle() {
-    return \Nuntius\Nuntius::container()->get('http');
+    return self::container()->get('http');
+  }
+
+  /**
+   * Get the DB layer manager.
+   *
+   * @return \Nuntius\Db\DbDispatcher
+   */
+  public static function getDb() {
+    return self::container()->get('db');
   }
 
 }

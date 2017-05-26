@@ -1,3 +1,10 @@
+db_drivers:
+  rethinkdb:
+    query: '\Nuntius\Db\RethinkDB\RethinkDbQueryHandler'
+    storage: '\Nuntius\Db\RethinkDB\RethinkDbStorageHandler'
+    operations: '\Nuntius\Db\RethinkDB\RethinkDbOperationHandler'
+    metadata: '\Nuntius\Db\RethinkDB\RethinkDbMetadataHandler'
+
 # Slack RTM event conterollers.
 events:
   presence_change: '\Nuntius\Plugin\PresenceChange'

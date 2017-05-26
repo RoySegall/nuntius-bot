@@ -2,5 +2,7 @@
 
 require_once 'vendor/autoload.php';
 
-$dispatcher = \Nuntius\Nuntius::getDispatcher();
+$db = \Nuntius\Nuntius::getDb();
+
+Kint::dump($db->getStorage());
 

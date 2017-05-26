@@ -4,7 +4,11 @@ services:
     class: \Nuntius\NuntiusConfig
 
   http:
-    class: '\GuzzleHttp\Client'
+    class: \GuzzleHttp\Client
+
+  db:
+    class: \Nuntius\Db\DbDispatcher
+    arguments: ['@config']
 
   dispatcher:
     class: \Nuntius\NuntiusDispatcher
