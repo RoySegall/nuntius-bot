@@ -38,4 +38,27 @@ class DbDispatcherTest extends TestsAbstract {
     }
   }
 
+  /**
+   * Testing the metadata.
+   */
+  public function testMetadata() {
+    $dbs = [
+      'rethinkdb' => [
+        'dbType' => 'NoSQL',
+        'installerDescription' => 'No SQL light weight DB with real time support.',
+        'supportRealTime' => TRUE,
+      ],
+    ];
+
+    $db = Nuntius::getDb();
+
+    foreach ($dbs as $driver => $info) {
+      $db->setDriver($driver);
+
+      foreach ($info as $method => $value) {
+        $this->assertEquals($db->getMetadata()->{$method}(), $value);
+      }
+    }
+  }
+
 }

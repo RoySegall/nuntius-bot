@@ -13,7 +13,7 @@ interface DbMetadataHandlerInterface {
    * @return string
    *   The DB type.
    */
-  public function DbType();
+  public function dbType();
 
   /**
    * Return a small description when choosing the DB at the install phase.
