@@ -7,4 +7,6 @@ namespace Nuntius\Db;
  */
 interface DbMetadataHandlerInterface {
 
+  public function DbType();
+
 }
