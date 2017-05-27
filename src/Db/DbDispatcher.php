@@ -31,7 +31,7 @@ class DbDispatcher {
    */
   function __construct(NuntiusConfig $config) {
     $this->config = $config;
-    $this->driver = $driver = $this->config->getSetting('db_driver');
+    $this->driver = $this->config->getSetting('db_driver');
   }
 
   /**

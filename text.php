@@ -11,7 +11,10 @@ $db = \Nuntius\Nuntius::getDb();
 //  ->toArray();
 
 $rows = $db->getQuery()
-  ->table('context')
-  ->condition('user', 'U368GNEUA')
+  ->table('logger')
+  ->condition('name', ['roy', 'david', 'noy'], 'IN')
+  ->condition('age', 28, '<')
   ->execute();
+
+\Kint::dump($rows);
 

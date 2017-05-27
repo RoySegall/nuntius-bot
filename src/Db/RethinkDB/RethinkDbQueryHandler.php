@@ -40,6 +40,11 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
    */
   protected $range = [];
 
+  /**
+   * Keep the sort settings.
+   *
+   * @var array
+   */
   protected $sort = [];
 
   /**

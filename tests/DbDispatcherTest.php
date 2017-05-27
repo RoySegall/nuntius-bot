@@ -1,6 +1,7 @@
 <?php
 
 namespace tests;
+use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\Nuntius;
 
 /**
@@ -11,7 +12,7 @@ class DbDispatcherTest extends TestsAbstract {
   /**
    * Testing the config DB controllers services.
    */
-  public function testControllersInterfaces() {
+  public function _testControllersInterfaces() {
     $db = Nuntius::getDb();
 
     foreach (array_keys(Nuntius::getSettings()->getSetting('db_drivers')) as $driver) {
@@ -28,7 +29,7 @@ class DbDispatcherTest extends TestsAbstract {
   /**
    * Testing what happens with un un valid diver.
    */
-  public function testUnValidDriver() {
+  public function _testUnValidDriver() {
     try {
       Nuntius::getDb()->setDriver('foo')->getMetadata();
       $this->fail();
@@ -39,9 +40,9 @@ class DbDispatcherTest extends TestsAbstract {
   }
 
   /**
-   * Testing the metadata.
+   * Testing the metadata controller.
    */
-  public function testMetadata() {
+  public function _testMetadata() {
     $dbs = [
       'rethinkdb' => [
         'dbType' => 'NoSQL',
@@ -67,7 +68,7 @@ class DbDispatcherTest extends TestsAbstract {
   public function testQuery() {
     // Create a list of entries.
     $objects = [
-      ['name' => 'Tony', 'age' => 27, 'alterego' => 'Iron Man'],
+      ['name' => 'Tony', '≈' => 27, 'alterego' => 'Iron Man'],
       ['name' => 'Peter', 'age' => 20, 'alterego' => 'SpiderMan'],
       ['mame' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
     ];
@@ -78,8 +79,21 @@ class DbDispatcherTest extends TestsAbstract {
     // Create the objects.
     Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
 
+    // Start querying the DB.
+    $db = Nuntius::getDb();
+
+    $db->setDriver('rethinkdb');
+
+    $this->queryingTesting($db->getQuery());
+
     // Delete the table.
     Nuntius::getRethinkDB()->deleteTable('superheroes');
+  }
+
+  protected function queryingTesting(DbQueryHandlerInterface $query) {
+    $this->assertCount(3, $query->table('superheroes')->execute());
+    $this->assertCount(1, $query->table('superheroes')->condition('name', 'Tony')->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('name', 'Tony', '!=')->execute());
   }
 
 }
