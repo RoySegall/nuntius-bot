@@ -61,4 +61,25 @@ class DbDispatcherTest extends TestsAbstract {
     }
   }
 
+  /**
+   * Testing the query controller.
+   */
+  public function testQuery() {
+    // Create a list of entries.
+    $objects = [
+      ['name' => 'Tony', 'age' => 27, 'alterego' => 'Iron Man'],
+      ['name' => 'Peter', 'age' => 20, 'alterego' => 'SpiderMan'],
+      ['mame' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
+    ];
+
+    // Create a random table.
+    Nuntius::getRethinkDB()->createTable('superheroes');
+
+    // Create the objects.
+    Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
+
+    // Delete the table.
+    Nuntius::getRethinkDB()->deleteTable('superheroes');
+  }
+
 }

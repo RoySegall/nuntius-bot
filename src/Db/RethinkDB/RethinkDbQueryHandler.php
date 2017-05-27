@@ -93,7 +93,7 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
   public function pager($start, $length) {
     $this->range = [
       'start' => $start,
-      'range' => $length,
+      'length' => $length,
     ];
 
     return $this;
@@ -125,11 +125,11 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
         }
         if ($operator == 'IN') {
           $row = function(RVar $doc) use ($condition) {
-            return \r\expr($condition['value'])->contains($doc->getField($condition['field']));
+            return \r\expr($condition['value'])->contains($doc->getField($condition['property']));
           };
         }
         else {
-          $row = \r\row($condition['field'])->{$this->operators[$operator]}($condition['value']);
+          $row = \r\row($condition['property'])->{$this->operators[$operator]}($condition['value']);
         }
 
         $query = $query->filter($row);
