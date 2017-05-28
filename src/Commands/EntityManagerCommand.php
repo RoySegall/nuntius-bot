@@ -45,6 +45,10 @@ class EntityManagerCommand extends Command {
 
     if ($arguments['operation'] == 'live_view') {
 
+      if (!Nuntius::getDb()->getMetadata()->supportRealTime()) {
+        throw new \Exception('Your current driver does not support real time. Try another one');
+      }
+
       $cursor = $results->changes()->run(Nuntius::getRethinkDB()->getConnection());
 
       $io->section('Starting live feeds');

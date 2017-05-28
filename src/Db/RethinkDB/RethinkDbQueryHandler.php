@@ -48,6 +48,13 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
   protected $sort = [];
 
   /**
+   * A flag which determine if the query need to in readl time or not.
+   *
+   * @var bool
+   */
+  protected $changes = FALSE;
+
+  /**
    * @var array
    *
    * Keep the allowed operators on the query.
@@ -116,6 +123,30 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
   }
 
   /**
+   * Set the mode of the changes flag.
+   *
+   * @param bool $mode
+   *   The mode of the flag.
+   *
+   * @return RethinkDbQueryHandler
+   *   The current instance.
+   */
+  public function setChanges($mode = TRUE) {
+    $this->changes = $mode;
+
+    return $this;
+  }
+
+  /**
+   * Return the changes flag.
+   *
+   * @return bool
+   */
+  public function getChanges() {
+    return $this->changes;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function execute() {
@@ -156,8 +187,7 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
     $items = [];
 
     foreach ($query->run($this->rethinkDB->getConnection()) as $item) {
-      $array_copy = $item->getArrayCopy();
-      $items[] = $array_copy['id'];
+      $items[] = $item->getArrayCopy();
     }
 
     $this->cleanUp();

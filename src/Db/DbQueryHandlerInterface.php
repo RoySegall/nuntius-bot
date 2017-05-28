@@ -59,7 +59,7 @@ interface DbQueryHandlerInterface {
    * Execute the query.
    *
    * @return array
-   *   List of IDs.
+   *   list of arrays representing the matching data.
    */
   public function execute();
 
