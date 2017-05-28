@@ -90,7 +90,14 @@ class DbDispatcherTest extends TestsAbstract {
     Nuntius::getRethinkDB()->deleteTable('superheroes');
   }
 
+  /**
+   * Testing all the available operators on.
+   *
+   * @param DbQueryHandlerInterface $query
+   *   The query object.
+   */
   protected function queryingTesting(DbQueryHandlerInterface $query) {
+    // Testing simple operators.
     $this->assertCount(3, $query->table('superheroes')->execute());
     $this->assertCount(1, $query->table('superheroes')->condition('name', 'Tony')->execute());
     $this->assertCount(2, $query->table('superheroes')->condition('name', 'Tony', '!=')->execute());
@@ -100,6 +107,15 @@ class DbDispatcherTest extends TestsAbstract {
     $this->assertCount(2, $query->table('superheroes')->condition('age', 20, '<=')->execute());
     $this->assertCount(1, $query->table('superheroes')->condition('alterego', 'America', 'CONTAINS')->execute());
     $this->assertCount(2, $query->table('superheroes')->condition('alterego', ['Captain America', 'SpiderMan'], 'IN')->execute());
+
+    // Testing complex querying.
+    $this->assertCount(1, $query->table('superheroes')->condition('name', 'Tony')->condition('age', 27)->execute());
+    $this->assertCount(0, $query->table('superheroes')->condition('name', 'Tony')->condition('age', 90)->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('name', 'Tony', '!=')->condition('age', 25, '<')->execute());
+    $this->assertCount(1, $query->table('superheroes')->condition('name', ['Tony'], 'IN')->condition('age', 18, '>')->execute());
+    $this->assertCount(3, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>=')->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>')->execute());
+    $this->assertCount(1, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 20, '<')->execute());
   }
 
 }
