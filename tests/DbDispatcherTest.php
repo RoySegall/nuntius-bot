@@ -12,7 +12,7 @@ class DbDispatcherTest extends TestsAbstract {
   /**
    * Testing the config DB controllers services.
    */
-  public function _testControllersInterfaces() {
+  public function testControllersInterfaces() {
     $db = Nuntius::getDb();
 
     foreach (array_keys(Nuntius::getSettings()->getSetting('db_drivers')) as $driver) {
@@ -29,7 +29,7 @@ class DbDispatcherTest extends TestsAbstract {
   /**
    * Testing what happens with un un valid diver.
    */
-  public function _testUnValidDriver() {
+  public function testUnValidDriver() {
     try {
       Nuntius::getDb()->setDriver('foo')->getMetadata();
       $this->fail();
@@ -42,7 +42,7 @@ class DbDispatcherTest extends TestsAbstract {
   /**
    * Testing the metadata controller.
    */
-  public function _testMetadata() {
+  public function testMetadata() {
     $dbs = [
       'rethinkdb' => [
         'dbType' => 'NoSQL',
