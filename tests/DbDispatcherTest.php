@@ -68,9 +68,9 @@ class DbDispatcherTest extends TestsAbstract {
   public function testQuery() {
     // Create a list of entries.
     $objects = [
-      ['name' => 'Tony', '≈' => 27, 'alterego' => 'Iron Man'],
+      ['name' => 'Tony', 'age' => 27, 'alterego' => 'Iron Man'],
       ['name' => 'Peter', 'age' => 20, 'alterego' => 'SpiderMan'],
-      ['mame' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
+      ['name' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
     ];
 
     // Create a random table.
@@ -94,6 +94,12 @@ class DbDispatcherTest extends TestsAbstract {
     $this->assertCount(3, $query->table('superheroes')->execute());
     $this->assertCount(1, $query->table('superheroes')->condition('name', 'Tony')->execute());
     $this->assertCount(2, $query->table('superheroes')->condition('name', 'Tony', '!=')->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('age', 18, '>')->execute());
+    $this->assertCount(3, $query->table('superheroes')->condition('age', 18, '>=')->execute());
+    $this->assertCount(0, $query->table('superheroes')->condition('age', 18, '<')->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('age', 20, '<=')->execute());
+    $this->assertCount(1, $query->table('superheroes')->condition('alterego', 'America', 'CONTAINS')->execute());
+    $this->assertCount(2, $query->table('superheroes')->condition('alterego', ['Captain America', 'SpiderMan'], 'IN')->execute());
   }
 
 }

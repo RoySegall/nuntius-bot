@@ -160,7 +160,19 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
       $items[] = $array_copy['id'];
     }
 
+    $this->cleanUp();
+
     return $items;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function cleanUp() {
+    $this->table = '';
+    $this->conditions = [];
+    $this->sort = [];
+    $this->range = [];
   }
 
 }

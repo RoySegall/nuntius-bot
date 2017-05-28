@@ -10,11 +10,14 @@ $db = \Nuntius\Nuntius::getDb();
 //  ->run($this->db->getConnection())
 //  ->toArray();
 
-$rows = $db->getQuery()
+
+$foo = $db->getQuery()->table('superheroes')->condition('age', 18)->execute();
+Kint::dump($foo);
+/*$rows = $db->getQuery()
   ->table('logger')
   ->condition('name', ['roy', 'david', 'noy'], 'IN')
   ->condition('age', 28, '<')
   ->execute();
 
-\Kint::dump($rows);
+\Kint::dump($rows);*/
 

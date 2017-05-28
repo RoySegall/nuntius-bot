@@ -63,4 +63,9 @@ interface DbQueryHandlerInterface {
    */
   public function execute();
 
+  /**
+   * Cleaning up the query definition after the execution.
+   */
+  public function cleanUp();
+
 }
