@@ -13,6 +13,7 @@ interface DbOperationHandlerInterface {
    * @param string $db
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function dbCreate($db);
 
@@ -23,6 +24,7 @@ interface DbOperationHandlerInterface {
    *   The DB name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function dbDrop($db);
 
@@ -50,6 +52,7 @@ interface DbOperationHandlerInterface {
    *   The table name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function tableCreate($table);
 
@@ -60,13 +63,14 @@ interface DbOperationHandlerInterface {
    *   The table name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function tableDrop($table);
 
   /**
    * Return list of tables.
    *
-   * @return bool
+   * @return array
    */
   public function tableList();
 
@@ -84,9 +88,12 @@ interface DbOperationHandlerInterface {
    * Create an index in a table.
    *
    * @param string $column
+   *   The column name.
    * @param string $table
+   *   The table name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function indexCreate($column, $table);
 
@@ -94,9 +101,12 @@ interface DbOperationHandlerInterface {
    * Drop the index.
    *
    * @param string $column
+   *   The column name.
    * @param string $table
+   *   The table name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
+   *   The current instance.
    */
   public function indexDrop($column, $table);
 
@@ -104,7 +114,9 @@ interface DbOperationHandlerInterface {
    * Get all the index in a table.
    *
    * @param string $column
+   *   The column name.
    * @param string $table
+   *   The table name.
    *
    * @return array
    *   The list of the indexes.
