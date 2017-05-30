@@ -27,15 +27,14 @@ class Message extends NuntiusPluginAbstract {
 
     if ($this->isDirectMessage()) {
       // Check if we in a conversation.
-      $running_conversations = $this->db
-        ->getTable('running_context')
-        ->filter(\r\row('user')->eq($this->data['user']))
-        ->run($this->db->getConnection())
-        ->toArray();
+      $running_conversations = $this->db->getQuery()
+        ->table('running_context')
+        ->condition('user', $this->data['user'])
+        ->execute();
 
       if ($running_conversations) {
         // This is a running conversation. get the conversation.
-        $running_conversation = reset($running_conversations)->getArrayCopy();
+        $running_conversation = reset($running_conversations);
 
         /** @var TaskConversationAbstract $task */
         $task = Nuntius::getTasksManager()->get($running_conversation['task'])
