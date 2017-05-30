@@ -66,34 +66,6 @@ class NuntiusRethinkdb {
   }
 
   /**
-   * Create a table in the DB.
-   *
-   * @param $table
-   *   The table name.
-   */
-  public function createTable($table) {
-    try {
-      r\db($this->db)->tableCreate($table)->run($this->connection);
-    } catch (\Exception $e) {
-      print($e->getMessage() . "\n");
-    }
-  }
-
-  /**
-   * Creating a DB.
-   *
-   * @param $db
-   *   The DB name.
-   */
-  public function createDB($db) {
-    try {
-      r\dbCreate($db)->run($this->connection);
-    } catch (\Exception $e) {
-      print($e->getMessage() . "\n");
-    }
-  }
-
-  /**
    * Adding entry to a table.
    *
    * @param $table

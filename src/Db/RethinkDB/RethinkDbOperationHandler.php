@@ -19,20 +19,29 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
 
   /**
    * The connection object.
-   * 
+   *
    * @var \r\Connection
    */
   protected $connection;
 
+  /**
+   * The DB name.
+   *
+   * @var string
+   */
+  protected $db;
+
   function __construct() {
     $this->rethinkDB = Nuntius::getRethinkDB();
     $this->connection = $this->rethinkDB->getConnection();
+    $this->db = Nuntius::getSettings()->getSetting('rethinkdb')['db'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function dbCreate($db) {
+    \r\dbCreate($db)->run($this->connection);
     return $this;
   }
 
@@ -61,6 +70,7 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    * {@inheritdoc}
    */
   public function tableCreate($table) {
+    \r\db($this->db)->tableCreate($table)->run($this->connection);
     return $this;
   }
 
