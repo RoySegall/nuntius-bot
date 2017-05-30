@@ -85,7 +85,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ->execute();
 
     $process = reset($process);
-    $payload = $process['payload']->getArrayCopy();
+    $payload = $process['payload'];
 
     $this->assertEquals($payload['body'], 'bar');
     $this->assertEquals($payload['created'], 'today');
