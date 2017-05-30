@@ -56,7 +56,7 @@ class EntityTest extends TestsAbstract {
     // Query the entity.
     $result = $this->query
       ->table($entity_type)
-      ->condition('title', 'fdd doo')
+      ->condition('title', 'foo')
       ->execute();
 
     $array_copy = reset($result);
