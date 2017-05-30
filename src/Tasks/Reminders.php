@@ -2,6 +2,7 @@
 
 namespace Nuntius\Tasks;
 
+use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\EntityManager;
 use Nuntius\NuntiusRethinkdb;
 use Nuntius\TaskBaseAbstract;
@@ -23,8 +24,8 @@ class Reminders extends TaskBaseAbstract implements TaskBaseInterface {
   /**
    * {@inheritdoc}
    */
-  function __construct(NuntiusRethinkdb $db, $task_id, EntityManager $entity_manager) {
-    parent::__construct($db, $task_id, $entity_manager);
+  function __construct(DbQueryHandlerInterface $query, $task_id, EntityManager $entity_manager) {
+    parent::__construct($query, $task_id, $entity_manager);
 
     $this->reminders = $this->entityManager->get('reminders');
   }
