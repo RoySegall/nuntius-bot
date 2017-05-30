@@ -78,21 +78,22 @@ class DbDispatcherTest extends TestsAbstract {
       ['name' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
     ];
 
+    $db = Nuntius::getDb();
+
     // Create a random table.
-    Nuntius::getRethinkDB()->createTable('superheroes');
+    $db->getOperations()->tableCreate('superheroes');
 
     // Create the objects.
     Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
 
     // Start querying the DB.
-    $db = Nuntius::getDb();
 
     $db->setDriver('rethinkdb');
 
     $this->queryingTesting($db->getQuery());
 
     // Delete the table.
-    Nuntius::getRethinkDB()->deleteTable('superheroes');
+    $db->getOperations()->tableDrop('superheroes');
   }
 
   /**
