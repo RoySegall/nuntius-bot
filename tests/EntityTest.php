@@ -48,13 +48,12 @@ class EntityTest extends TestsAbstract {
     $object = $entity->insert(['title' => 'foo']);
 
     // Query the entity.
-    $result = $this->rethinkdb
-      ->getTable($entity_type)
-      ->filter(\r\row('title')->eq('foo'))
-      ->run($this->rethinkdb->getConnection())
-      ->toArray();
+    $result = $this->query
+      ->table($entity_type)
+      ->condition('title', 'foo')
+      ->execute();
 
-    $array_copy = reset($result)->getArrayCopy();
+    $array_copy = reset($result);
     $this->assertEquals($object->id, $array_copy['id']);
     $this->assertArrayHasKey('time', $array_copy);
 

@@ -55,6 +55,7 @@ class RunCommand extends Command  {
     }
 
     try {
+      // todo: check if table exists.
       $db->getTable('system')->run($db->getConnection());
     }
     catch (RqlServerError $e) {
