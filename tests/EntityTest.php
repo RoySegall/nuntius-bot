@@ -17,18 +17,12 @@ class EntityTest extends TestsAbstract {
   protected $entities;
 
   /**
-   * @var \Nuntius\Db\DbQueryHandlerInterface
-   */
-  protected $query;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
     $this->entities = Nuntius::getEntityManager();
-    $this->query = Nuntius::getDb()->getQuery();
   }
 
   /**

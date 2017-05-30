@@ -192,6 +192,8 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
 
     foreach ($query->run($this->rethinkDB->getConnection()) as $item) {
       $items[] = $item->getArrayCopy();
+
+      // todo: check if sub properties need to be turn into arrays.
     }
 
     $this->cleanUp();

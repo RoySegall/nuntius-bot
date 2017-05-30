@@ -20,11 +20,10 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
     catch (ServerException $e) {
     }
 
-    $failed_success = $this->rethinkdb->getTable('logger')
-      ->filter(\r\row('type')->eq('error'))
-      ->filter(\r\row('error')->eq('There is no matching webhook controller for  webhook.'))
-      ->run($this->rethinkdb->getConnection())
-      ->toArray();
+    $failed_success = $this->query->table('logger')
+      ->condition('type', 'error')
+      ->condition('error', 'There is no matching webhook controller for  webhook.')
+      ->execute();
 
     // Making sure a request without payload failed.
     $this->assertNotEmpty($failed_success);
@@ -40,11 +39,10 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
     catch (ServerException $e) {
     }
 
-    $failed_success = $this->rethinkdb->getTable('logger')
-      ->filter(\r\row('type')->eq('error'))
-      ->filter(\r\row('error')->eq('There is no matching webhook controller for open webhook.'))
-      ->run($this->rethinkdb->getConnection())
-      ->toArray();
+    $failed_success = $this->query->table('logger')
+      ->condition('type', 'error')
+      ->condition('error', 'There is no matching webhook controller for open webhook.')
+      ->execute();
 
     // Making sure a request without payload failed.
     $this->assertNotEmpty($failed_success);
@@ -82,12 +80,11 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ]
     ]);
 
-    $process = $this->rethinkdb->getTable('logger')
-      ->filter(\r\row('logging')->eq('opened_' . $key))
-      ->run($this->rethinkdb->getConnection())
-      ->toArray();
+    $process = $this->query->table('logger')
+      ->condition('logging', 'opened_' . $key)
+      ->execute();
 
-    $process = reset($process)->getArrayCopy();
+    $process = reset($process);
     $payload = $process['payload']->getArrayCopy();
 
     $this->assertEquals($payload['body'], 'bar');

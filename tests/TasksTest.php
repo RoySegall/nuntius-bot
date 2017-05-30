@@ -77,13 +77,13 @@ class TasksTest extends TestsAbstract {
       ->setData(['user' => 'Major. Tom'])
       ->addReminder('foo bar is my best stuff!');
 
-    $results = $this->rethinkdb
-      ->getTable('reminders')
-      ->filter(\r\row('user')->eq('Major. Tom'))
-      ->filter(\r\row('reminder')->eq('foo bar is my best stuff!'))
-      ->run($this->rethinkdb->getConnection());
+    $results = $this->query
+      ->table('reminders')
+      ->condition('user', 'Major. Tom')
+      ->condition('reminder', 'foo bar is my best stuff!')
+      ->execute();
 
-    $this->assertEquals(count($results->toArray()), 1);
+    $this->assertEquals(count($results), 1);
   }
 
   /**
