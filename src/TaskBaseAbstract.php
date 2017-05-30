@@ -16,6 +16,11 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
   protected $db;
 
   /**
+   * @var \Nuntius\Db\DbQueryHandlerInterface
+   */
+  protected $query;
+
+  /**
    * The task ID.
    *
    * @var string
@@ -55,6 +60,7 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
    */
   function __construct(NuntiusRethinkdb $db, $task_id, EntityManager $entity_manager) {
     $this->db = $db;
+    $this->query = Nuntius::getDb()->getQuery();
     $this->taskId = $task_id;
     $this->entityManager = $entity_manager;
   }

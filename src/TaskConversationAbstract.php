@@ -30,13 +30,13 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     ];
 
     // Check if we have a running context for the user.
-    if (!$this->checkForContext($this->db->getTable('running_context'))) {
+    if (!$this->checkForContext('running_context')) {
       // Create a running context.
       $this->entityManager->get('running_context')->insert($context);
     }
 
     // Check if we have a context in the DB.
-    if (!$db_context = $this->checkForContext($this->db->getTable('context'))) {
+    if (!$db_context = $this->checkForContext('context')) {
       // Get the questions methods.
       foreach ($methods as $method) {
         if (strpos($method, 'question') === 0) {
@@ -48,10 +48,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
       $this->entityManager->get('context')->insert($context);
     }
     else {
-      $context = reset($db_context)->getArrayCopy();
-
-      // Converting the answers to normal array.
-      $context['questions'] = $context['questions']->getArrayCopy();
+      $context = reset($db_context);
     }
 
     // Fire the question.
@@ -85,9 +82,8 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
    */
   public function setAnswer($text) {
     // Prepare the context from the DB.
-    $context = $this->checkForContext($this->db->getTable('context'));
+    $context = $this->checkForContext('context');
     $context = reset($context);
-    $context['questions'] = $context['questions']->getArrayCopy();
 
     $constraint = $this->getConstraint();
 
@@ -119,27 +115,26 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
   /**
    * Checking the we have a context in the given table.
    *
-   * @param Table $table
+   * @param string $table
    *   The table object.
    *
    * @return array
    *   The array copy of the results.
    */
-  protected function checkForContext(Table $table) {
-    $results = $table
-      ->filter(\r\row('user')->eq($this->data['user']))
-      ->filter(\r\row('task')->eq($this->taskId))
-      ->run($this->db->getConnection());
-
-    return $results->toArray();
+  protected function checkForContext($table) {
+    return $this->query
+      ->table($table)
+      ->condition('user', $this->data['user'])
+      ->condition('task', $this->taskId)
+      ->execute();
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteRunningContext() {
-    $running_context = $this->checkForContext($this->db->getTable('running_context'));
-    $running_context = reset($running_context)->getArrayCopy();
+    $running_context = $this->checkForContext('running_context');
+    $running_context = reset($running_context);
     $this->entityManager->get('running_context')->delete($running_context['id']);
   }
 
@@ -147,8 +142,8 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
    * {@inheritdoc}
    */
   public function deleteContext() {
-    $running_context = $this->checkForContext($this->db->getTable('context'));
-    $running_context = reset($running_context)->getArrayCopy();
+    $running_context = $this->checkForContext('context');
+    $running_context = reset($running_context);
     $this->entityManager->get('context')->delete($running_context['id']);
   }
 
@@ -183,18 +178,12 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
       $user = $this->data['user'];
     }
 
-    $results = $this->db
-      ->getTable('context')
-      ->filter(\r\row('task')->eq($task_id))
-      ->filter(\r\row('user')->eq($user))
-      ->run(Nuntius::getRethinkDB()->getConnection());
+    $results = $this->query->table('context')
+      ->condition('task', $task_id)
+      ->condition('user', $user)
+      ->execute();
 
-    $rows = [];
-    foreach ($results as $result) {
-      $rows[] = $result->getArrayCopy();
-    }
-
-    return reset($rows);
+    return reset($results);
   }
 
 }
