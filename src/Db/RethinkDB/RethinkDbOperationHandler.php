@@ -3,11 +3,31 @@
 namespace Nuntius\Db\RethinkDB;
 
 use Nuntius\Db\DbOperationHandlerInterface;
+use Nuntius\Nuntius;
 
 /**
  * RethinkDB operation handler.
  */
 class RethinkDbOperationHandler implements DbOperationHandlerInterface {
+
+  /**
+   * The rethinkDB service.
+   *
+   * @var \Nuntius\NuntiusRethinkdb
+   */
+  protected $rethinkDB;
+
+  /**
+   * The connection object.
+   * 
+   * @var \r\Connection
+   */
+  protected $connection;
+
+  function __construct() {
+    $this->rethinkDB = Nuntius::getRethinkDB();
+    $this->connection = $this->rethinkDB->getConnection();
+  }
 
   /**
    * {@inheritdoc}
