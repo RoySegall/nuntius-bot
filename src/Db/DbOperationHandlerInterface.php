@@ -8,6 +8,20 @@ namespace Nuntius\Db;
 interface DbOperationHandlerInterface {
 
   /**
+   * Check if the connection to the DB is OK.
+   *
+   * @return bool
+   */
+  public function connected();
+
+  /**
+   * Get the DB errors, if any.
+   *
+   * @return string
+   */
+  public function getError();
+
+  /**
    * Create the DB.
    *
    * @param string $db
@@ -87,40 +101,38 @@ interface DbOperationHandlerInterface {
   /**
    * Create an index in a table.
    *
-   * @param string $column
-   *   The column name.
    * @param string $table
    *   The table name.
+   * @param string $column
+   *   The column name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
    *   The current instance.
    */
-  public function indexCreate($column, $table);
+  public function indexCreate($table, $column);
 
   /**
    * Drop the index.
    *
-   * @param string $column
-   *   The column name.
    * @param string $table
    *   The table name.
+   * @param string $column
+   *   The column name.
    *
    * @return \Nuntius\Db\DbOperationHandlerInterface
    *   The current instance.
    */
-  public function indexDrop($column, $table);
+  public function indexDrop($table, $column);
 
   /**
    * Get all the index in a table.
    *
-   * @param string $column
-   *   The column name.
    * @param string $table
    *   The table name.
    *
    * @return array
    *   The list of the indexes.
    */
-  public function indexList($column, $table);
+  public function indexList($table);
 
 }

@@ -31,10 +31,27 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    */
   protected $db;
 
+  /**
+   * Constructing.
+   */
   function __construct() {
-    $this->rethinkDB = Nuntius::getRethinkDB();
+    $this->rethinkDB = @Nuntius::getRethinkDB();
     $this->connection = $this->rethinkDB->getConnection();
     $this->db = Nuntius::getSettings()->getSetting('rethinkdb')['db'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function connected() {
+    return $this->connection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getError() {
+    return $this->rethinkDB->error;
   }
 
   /**
@@ -49,6 +66,7 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    * {@inheritdoc}
    */
   public function dbDrop($db) {
+    \r\dbDrop($db)->run($this->connection);
     return $this;
   }
 
@@ -56,14 +74,14 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    * {@inheritdoc}
    */
   public function dbList() {
-    return [];
+    return \r\dbList()->run($this->connection);
   }
 
   /**
    * {@inheritdoc}
    */
   public function dbExists($db) {
-    return TRUE;
+    return in_array($db, $this->dbList());
   }
 
   /**
@@ -78,6 +96,7 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    * {@inheritdoc}
    */
   public function tableDrop($table) {
+    \r\db($this->db)->tableDrop($table)->run($this->connection);
     return $this;
   }
 
@@ -85,35 +104,37 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
    * {@inheritdoc}
    */
   public function tableList() {
-    return [];
+    return \r\db($this->db)->tableList()->run($this->connection);
   }
 
   /**
    * {@inheritdoc}
    */
   public function tableExists($table) {
-    return TRUE;
+    return in_array($table, $this->tableList());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function indexCreate($column, $table) {
+  public function indexCreate($table, $column) {
+    \r\db($this->db)->table($table)->indexCreate($column)->run($this->connection);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function indexDrop($column, $table) {
+  public function indexDrop($table, $column) {
+    \r\db($this->db)->table($table)->indexDrop($column)->run($this->connection);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function indexList($column, $table) {
-    return [];
+  public function indexList($table) {
+    return \r\db($this->db)->table($table)->indexList()->run($this->connection);
   }
 
 }
