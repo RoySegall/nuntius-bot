@@ -1,19 +1,13 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbQueryHandlerInterface;
 use Slack\RealTimeClient;
 
 /**
  * Abstract class for the tasks plugins.
  */
 abstract class TaskBaseAbstract implements TaskBaseInterface {
-
-  /**
-   * The RethinkDB connection.
-   *
-   * @var \Nuntius\NuntiusRethinkdb
-   */
-  protected $db;
 
   /**
    * @var \Nuntius\Db\DbQueryHandlerInterface
@@ -51,16 +45,15 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
   /**
    * Constructor.
    *
-   * @param \Nuntius\NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbQueryHandlerInterface $query
    *   The RethinkDB connection.
    * @param string $task_id
    *   The task ID.
    * @param \Nuntius\EntityManager $entity_manager
    *   The entity manager.
    */
-  function __construct(NuntiusRethinkdb $db, $task_id, EntityManager $entity_manager) {
-    $this->db = $db;
-    $this->query = Nuntius::getDb()->getQuery();
+  function __construct(DbQueryHandlerInterface $query, $task_id, EntityManager $entity_manager) {
+    $this->query = $query;
     $this->taskId = $task_id;
     $this->entityManager = $entity_manager;
   }

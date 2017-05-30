@@ -24,7 +24,7 @@ services:
 
   manager.task:
     class: \Nuntius\TasksManager
-    arguments: ['@rethinkdb', '@manager.entity', '@config']
+    arguments: ['@db', '@manager.entity', '@config']
 
   manager.update:
     class: \Nuntius\UpdateManager

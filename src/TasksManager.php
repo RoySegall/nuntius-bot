@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Get te correct task which matches to the user input.
@@ -10,11 +11,11 @@ class TasksManager {
   use NuntiusServicesTrait;
 
   /**
-   * The DB service.
+   * The DB dispatcher service.
    *
-   * @var NuntiusRethinkdb
+   * @var DbDispatcher
    */
-  protected $db;
+  protected $DbDispatcher;
 
   /**
    * The entity manager service.
@@ -33,15 +34,15 @@ class TasksManager {
   /**
    * Constructing the tasks manager.
    *
-   * @param NuntiusRethinkdb $db
+   * @param DbDispatcher $db
    *   The DB service.
    * @param EntityManager $entity_manager
    *   The entity manager service.
    * @param NuntiusConfig $config
    *   The config service.
    */
-  function __construct(NuntiusRethinkdb $db, EntityManager $entity_manager, NuntiusConfig $config) {
-    $this->db = $db;
+  function __construct(DbDispatcher $db, EntityManager $entity_manager, NuntiusConfig $config) {
+    $this->DbDispatcher = $db;
     $this->entityManager = $entity_manager;
 
     $this->setTasks($config->getSetting('tasks'));
@@ -58,7 +59,7 @@ class TasksManager {
    */
   public function setTasks($tasks) {
     foreach ($tasks as $task => $namespace) {
-      $this->tasks[$task] = new $namespace($this->db, $task, $this->entityManager);
+      $this->tasks[$task] = new $namespace($this->DbDispatcher->getQuery(), $task, $this->entityManager);
     }
 
     return $this;
