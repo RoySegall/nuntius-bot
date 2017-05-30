@@ -184,6 +184,10 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
       }
     }
 
+    if ($this->changes) {
+      return $query->changes()->run($this->rethinkDB->getConnection());
+    }
+
     $items = [];
 
     foreach ($query->run($this->rethinkDB->getConnection()) as $item) {

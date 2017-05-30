@@ -32,6 +32,24 @@ interface DbQueryHandlerInterface {
   public function condition($property, $value, $operator = '=');
 
   /**
+   * Set the mode of the changes flag. Available only for real time DBs.
+   *
+   * @param bool $mode
+   *   The mode of the flag.
+   *
+   * @return DbQueryHandlerInterface
+   *   The current instance.
+   */
+  public function setChanges($mode = TRUE);
+
+  /**
+   * Return the changes flag.
+   *
+   * @return bool
+   */
+  public function getChanges();
+
+  /**
    * Set a pager to the query.
    *
    * @param $start
