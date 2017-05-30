@@ -2,7 +2,6 @@
 
 namespace tests;
 
-use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\Nuntius;
 
 /**
@@ -40,7 +39,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
         continue;
       }
 
-      $this->rethinkdb->truncateTable($table);
+      Nuntius::getRethinkDB()->truncateTable($table);
     }
   }
 
