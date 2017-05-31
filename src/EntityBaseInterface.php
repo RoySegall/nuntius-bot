@@ -8,14 +8,6 @@ namespace Nuntius;
 interface EntityBaseInterface {
 
   /**
-   * Loading all the entities.
-   *
-   * @return array
-   *   List of entities.
-   */
-  public function loadAll();
-
-  /**
    * Load a single entities.
    *
    * @param $id
