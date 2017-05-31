@@ -40,7 +40,7 @@ will see that the basic methods are enough.
 
 \Nuntius\Nuntius::getEntityManager()
   ->get('context')
-  ->loadAll();
+  ->loadMultiple();
 ```
 
 ### Update an entry

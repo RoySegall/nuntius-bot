@@ -34,7 +34,7 @@ interface EntityBaseInterface {
    *
    * @return EntityBaseInterface[]
    */
-  public function loadMultiple($ids);
+  public function loadMultiple(array $ids = []);
 
   /**
    * Inert an entry to the DB.

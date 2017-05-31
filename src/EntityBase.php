@@ -22,6 +22,13 @@ abstract class EntityBase implements EntityBaseInterface {
   protected $entityID;
 
   /**
+   * The storage of the DB.
+   *
+   * @var Db\DbStorageHandlerInterface
+   */
+  protected $storage;
+
+  /**
    * EntityBase constructor.
    *
    * @param \Nuntius\NuntiusRethinkdb $db
@@ -32,6 +39,7 @@ abstract class EntityBase implements EntityBaseInterface {
   function __construct(NuntiusRethinkdb $db, $entity_id) {
     $this->db = $db;
     $this->entityID = $entity_id;
+    $this->storage = Nuntius::getDb()->getStorage();
   }
 
   /**
@@ -65,21 +73,7 @@ abstract class EntityBase implements EntityBaseInterface {
   /**
    * {@inheritdoc}
    */
-  public function loadAll() {
-    $results = [];
-
-    foreach ($this->getTable()->run($this->db->getConnection()) as $result) {
-      $data = $result->getArrayCopy();
-      $results[$data['id']] = $this->createInstance($data);
-    }
-
-    return $results;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function loadMultiple($ids) {
+  public function loadMultiple(array $ids = []) {
     $results = [];
 
     foreach ($this->getTable()->getAll(\r\args($ids))->run($this->db->getConnection()) as $result) {
