@@ -48,24 +48,47 @@ class RethinkDbStorageHandler implements DbStorageHandlerInterface {
   }
 
   /**
+   * Get the table handler.
+   *
+   * @return \r\Queries\Tables\Table
+   */
+  public function getTable() {
+    return $this->rethinkdb->getTable($this->table);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function save($document) {
-    return [];
+
+    if (!isset($document['time'])) {
+      $document['time'] = time();
+    }
+
+    $result = $this->getTable()->insert($document)->run($this->connection)->getArrayCopy();
+
+    $document['id'] = reset($result['generated_keys']);
+
+    return $document;
   }
 
   /**
    * {@inheritdoc}
    */
   public function load($id) {
-    return [];
+    $items = $this->loadMultiple(array($id));
+
+    return reset($items);
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = []) {
-    return [];
+    return Nuntius::getDb()->getQuery()
+      ->table($this->table)
+      ->condition('id', $ids, 'IN')
+      ->execute();
   }
 
   /**
