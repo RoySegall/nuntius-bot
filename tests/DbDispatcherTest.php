@@ -39,9 +39,6 @@ class DbDispatcherTest extends TestsAbstract {
     catch (\Exception $e) {
       $this->assertEquals($e->getMessage(), 'The DB driver foo does not exists');
     }
-
-    // Set the DB driver for other to pass as the foo driver will impact them.
-    Nuntius::getDb()->setDriver($driver)->getMetadata();
   }
 
   /**
@@ -122,6 +119,16 @@ class DbDispatcherTest extends TestsAbstract {
     $this->assertCount(3, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>=')->execute());
     $this->assertCount(2, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>')->execute());
     $this->assertCount(1, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 20, '<')->execute());
+  }
+
+  /**
+   * Testing the operation on the DB.
+   */
+  public function testOperation() {
+    $db = Nuntius::getDb();
+
+    $db->setDriver('rethinkb');
+
   }
 
 }
