@@ -135,4 +135,16 @@ interface DbOperationHandlerInterface {
    */
   public function indexList($table);
 
+  /**
+   * Making sure the index exists in a table.
+   *
+   * @param $table
+   *   The table name.
+   * @param $column
+   *   The columns name.
+   *
+   * @return bool
+   */
+  public function indexExists($table, $column);
+
 }

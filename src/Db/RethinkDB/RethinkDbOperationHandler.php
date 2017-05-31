@@ -137,4 +137,18 @@ class RethinkDbOperationHandler implements DbOperationHandlerInterface {
     return \r\db($this->db)->table($table)->indexList()->run($this->connection);
   }
 
+  /**
+   * Making sure the index exists in a table.
+   *
+   * @param $table
+   *   The table name.
+   * @param $column
+   *   The columns name.
+   *
+   * @return bool
+   */
+  public function indexExists($table, $column) {
+    return in_array($column, $this->indexList($table));
+  }
+
 }
