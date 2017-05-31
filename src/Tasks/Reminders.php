@@ -4,7 +4,6 @@ namespace Nuntius\Tasks;
 
 use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\EntityManager;
-use Nuntius\NuntiusRethinkdb;
 use Nuntius\TaskBaseAbstract;
 use Nuntius\TaskBaseInterface;
 use Slack\DirectMessageChannel;

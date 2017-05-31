@@ -31,7 +31,6 @@ class DbDispatcherTest extends TestsAbstract {
    */
   public function testUnValidDriver() {
     // Save that for later.
-    $driver = Nuntius::getSettings()->getSetting('db_driver');
     try {
       Nuntius::getDb()->setDriver('foo')->getMetadata();
       $this->fail();
@@ -39,9 +38,6 @@ class DbDispatcherTest extends TestsAbstract {
     catch (\Exception $e) {
       $this->assertEquals($e->getMessage(), 'The DB driver foo does not exists');
     }
-
-    // Set the DB driver for other to pass as the foo driver will impact them.
-    Nuntius::getDb()->setDriver($driver)->getMetadata();
   }
 
   /**
@@ -78,21 +74,22 @@ class DbDispatcherTest extends TestsAbstract {
       ['name' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
     ];
 
+    $db = Nuntius::getDb();
+
     // Create a random table.
-    Nuntius::getRethinkDB()->createTable('superheroes');
+    $db->getOperations()->tableCreate('superheroes');
 
     // Create the objects.
     Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
 
     // Start querying the DB.
-    $db = Nuntius::getDb();
 
     $db->setDriver('rethinkdb');
 
     $this->queryingTesting($db->getQuery());
 
     // Delete the table.
-    Nuntius::getRethinkDB()->deleteTable('superheroes');
+    $db->getOperations()->tableDrop('superheroes');
   }
 
   /**
@@ -121,6 +118,36 @@ class DbDispatcherTest extends TestsAbstract {
     $this->assertCount(3, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>=')->execute());
     $this->assertCount(2, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 18, '>')->execute());
     $this->assertCount(1, $query->table('superheroes')->condition('name', ['Peter', 'Tony', 'Steve'], 'IN')->condition('age', 20, '<')->execute());
+  }
+
+  /**
+   * Testing the operation on the DB.
+   */
+  public function testOperation() {
+    $db = Nuntius::getDb();
+
+    $db->setDriver('rethinkdb');
+
+    // Testing DB related operations.
+    $operations = $db->getOperations();
+    $operations->dbCreate('testing_db');
+    $this->assertTrue($operations->dbExists('testing_db'));
+    $operations->dbDrop('testing_db');
+    $this->assertFalse($operations->dbExists('testing_db'));
+
+    // Testing table related operations.
+    $operations->tableCreate('testing_table');
+    $this->assertTrue($operations->tableExists('testing_table'));
+    $operations->tableDrop('testing_table');
+    $this->assertFalse($operations->tableExists('testing_table'));
+
+    // Testing index related operations.
+    $operations->tableCreate('testing_table');
+    $operations->indexCreate('testing_table', 'index');
+    $this->assertTrue($operations->indexExists('testing_table', 'index'));
+    $operations->indexDrop('testing_table', 'index');
+    $this->assertFalse($operations->indexExists('testing_table', 'index'));
+    $operations->tableDrop('testing_table');
   }
 
 }

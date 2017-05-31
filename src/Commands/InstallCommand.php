@@ -45,10 +45,11 @@ class InstallCommand extends Command  {
 
     $value = Nuntius::getSettings()->getSettings();
     $db = Nuntius::getRethinkDB();
+    $operations = Nuntius::getDb()->getOperations();
 
     $io->section("Setting up the DB.");
 
-    $db->createDB($value['rethinkdb']['db']);
+    $operations->dbCreate($value['rethinkdb']['db']);
     $io->success("The DB was created");
 
     sleep(5);
@@ -56,7 +57,7 @@ class InstallCommand extends Command  {
     $io->section("Creating entities tables.");
 
     foreach (array_keys($value['entities']) as $scheme) {
-      $db->createTable($scheme);
+      $operations->tableCreate($scheme);
       $io->success("The table {$scheme} has created");
     }
 

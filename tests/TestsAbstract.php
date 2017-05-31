@@ -39,8 +39,12 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
         continue;
       }
 
+      // todo: move to storage.
       Nuntius::getRethinkDB()->truncateTable($table);
     }
+
+    // Set the default just in case.
+    Nuntius::getDb()->setDriver(Nuntius::getSettings()->getSetting('db_driver'));
   }
 
 }
