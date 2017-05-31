@@ -44,7 +44,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
     }
 
     // Set the default just in case.
-    Nuntius::getDb()->setDriver(Nuntius::getSettings()->getSetting('db_driver'));
+//    Nuntius::getDb()->setDriver(Nuntius::getSettings()->getSetting('db_driver'));
   }
 
 }

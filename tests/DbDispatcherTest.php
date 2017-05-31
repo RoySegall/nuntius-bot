@@ -31,7 +31,6 @@ class DbDispatcherTest extends TestsAbstract {
    */
   public function testUnValidDriver() {
     // Save that for later.
-    $driver = Nuntius::getSettings()->getSetting('db_driver');
     try {
       Nuntius::getDb()->setDriver('foo')->getMetadata();
       $this->fail();
