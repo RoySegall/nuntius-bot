@@ -42,7 +42,7 @@ interface EntityBaseInterface {
    * @param array $item
    *   The item to insert into the DB.
    */
-  public function insert(array $item);
+  public function save(array $item);
 
   /**
    * Delete an entry from the DB.
@@ -55,11 +55,9 @@ interface EntityBaseInterface {
   /**
    * Updating an entry in the DB.
    *
-   * @param $id
-   *   The entity ID.
    * @param $data
    *   The data to update.
    */
-  public function update($id, $data);
+  public function update($data);
 
 }

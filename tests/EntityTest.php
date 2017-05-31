@@ -45,7 +45,7 @@ class EntityTest extends TestsAbstract {
     $entity = $this->entities->get($entity_type);
 
     // Create entity.
-    $object = $entity->insert(['title' => 'foo']);
+    $object = $entity->save(['title' => 'foo']);
 
     // Query the entity.
     $result = $this->query
@@ -61,7 +61,7 @@ class EntityTest extends TestsAbstract {
     $this->assertEquals($entity->load($array_copy['id'])->id, $object->id);
 
     // Update entity.
-    $entity->update($object->id, ['bar' => 'foo']);
+    $entity->update(['id' => $object->id, 'bar' => 'foo']);
     $fresh_copy = $entity->load($object->id);
     $this->assertEquals($fresh_copy->bar, 'foo');
     $this->assertEquals($fresh_copy->title, 'foo');

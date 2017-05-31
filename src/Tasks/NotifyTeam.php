@@ -72,7 +72,7 @@ class NotifyTeam extends TaskConversationAbstract implements TaskConversationInt
 
     // Delete the answer so nuntius will ask again next time what to notify.
     $row['questions']['questionWhatToSay'] = FALSE;
-    $this->entityManager->get('context')->update($row['id'], $row);
+    $this->entityManager->get('context')->update($row);
 
     return 'Awesome! I notified the team.';
   }

@@ -20,7 +20,7 @@ class NuntiusGitHubOpenedExampleOverride extends NuntiusGitHubOpenedExample {
   public function act(GitHubEvent $event) {
     $payload = $this->getPayload($event);
 
-    Nuntius::getEntityManager()->get('logger')->insert([
+    Nuntius::getEntityManager()->get('logger')->save([
       'logging' => 'opened_' . $payload['key'],
       'payload' => $payload,
     ]);

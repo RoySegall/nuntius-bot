@@ -135,7 +135,7 @@ class UpdateManager {
     $updates = $this->entityManager->get('system')->load('updates');
     $processed = $updates->processed;
     $processed[] = $name;
-    $this->entityManager->get('system')->update('updates', ['processed' => $processed]);
+    $this->entityManager->get('system')->update(['id' => 'updates', 'processed' => $processed]);
   }
 
 }
