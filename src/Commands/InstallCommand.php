@@ -46,6 +46,7 @@ class InstallCommand extends Command  {
     $value = Nuntius::getSettings()->getSettings();
     $db = Nuntius::getRethinkDB();
     $operations = Nuntius::getDb()->getOperations();
+    $storage = Nuntius::getDb()->getStorage();
 
     $io->section("Setting up the DB.");
 
@@ -62,8 +63,9 @@ class InstallCommand extends Command  {
     }
 
     // Run this again.
-    $db->getTable('system')->insert(['id' => 'updates', 'processed' => []])->run($db->getConnection());
+    $storage->table('system')->save(['id' => 'updates', 'processed' => []]);
 
+    // todo: Check if we can move this to up.
     Nuntius::getEntityManager()->get('system')->update('updates', ['processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
 
     $io->section("The install has completed.");

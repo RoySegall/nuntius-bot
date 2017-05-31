@@ -15,11 +15,6 @@ class NuntiusRethinkdb {
   protected $connection;
 
   /**
-   * @var integer
-   */
-  protected $prefix;
-
-  /**
    * The DB name.
    *
    * @var string
@@ -50,34 +45,12 @@ class NuntiusRethinkdb {
   }
 
   /**
-   * @return int
-   */
-  public function getPrefix() {
-    return $this->prefix;
-  }
-
-  /**
    * Getting the connect object.
    *
    * @return r\Connection
    */
   public function getConnection() {
     return $this->connection;
-  }
-
-  /**
-   * Adding entry to a table.
-   *
-   * @param $table
-   *   The table name.
-   * @param $array
-   *   The record.
-   */
-  public function addEntry($table, $array) {
-    r\db($this->db)
-      ->table($table)
-      ->insert($array)
-      ->run($this->connection);
   }
 
   /**
@@ -91,31 +64,6 @@ class NuntiusRethinkdb {
   public function getTable($table) {
     return r\db($this->db)
       ->table($table);
-  }
-
-  /**
-   * Delete the table.
-   *
-   * @param $table
-   *   The table name.
-   */
-  public function deleteTable($table) {
-    r\db($this->db)
-      ->tableDrop($table)
-      ->run($this->connection);
-  }
-
-  /**
-   * Truncate the table.
-   *
-   * @param $table
-   *   The table name.
-   */
-  public function truncateTable($table) {
-    r\db($this->db)
-      ->table($table)
-      ->delete()
-      ->run($this->connection);
   }
 
 }

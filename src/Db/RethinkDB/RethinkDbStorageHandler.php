@@ -53,7 +53,8 @@ class RethinkDbStorageHandler implements DbStorageHandlerInterface {
    * @return \r\Queries\Tables\Table
    */
   public function getTable() {
-    return $this->rethinkdb->getTable($this->table);
+    return \r\db(Nuntius::getSettings()->getSetting('rethinkdb')['db'])
+      ->table($this->table);
   }
 
   /**
@@ -85,29 +86,42 @@ class RethinkDbStorageHandler implements DbStorageHandlerInterface {
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = []) {
-    return Nuntius::getDb()->getQuery()
-      ->table($this->table)
-      ->condition('id', $ids, 'IN')
-      ->execute();
+    $query = Nuntius::getDb()->getQuery()
+      ->table($this->table);
+
+    if ($ids) {
+      $query->condition('id', $ids, 'IN');
+    }
+
+    return $query->execute();
   }
 
   /**
    * {@inheritdoc}
    */
   public function update($document) {
-    return [];
+    $this->getTable()->get($document['id'])->update($document)->run($this->connection);
+    return $document;
   }
 
   /**
    * {@inheritdoc}
    */
   public function delete($id) {
+    $this->deleteMultiple([$id]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteMultiple(array $ids = []) {
+    $query = $this->getTable();
+
+    if ($ids) {
+      $query->getAll(\r\args($ids));
+    }
+
+    $query->delete()->run($this->connection);
   }
 
 }

@@ -80,7 +80,7 @@ class DbDispatcherTest extends TestsAbstract {
     $db->getOperations()->tableCreate('superheroes');
 
     // Create the objects.
-    Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
+    $db->getStorage()->table('superheroes')->save($objects);
 
     // Start querying the DB.
 

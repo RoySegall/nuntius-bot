@@ -39,8 +39,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
         continue;
       }
 
-      // todo: move to storage.
-      Nuntius::getRethinkDB()->truncateTable($table);
+      Nuntius::getDb()->getStorage()->table($table)->deleteMultiple();
     }
 
     // Set the default just in case.
