@@ -6,6 +6,7 @@ use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\Nuntius;
 use r\Exceptions\RqlException;
 use r\ValuedQuery\RVar;
+use Zend\Stdlib\ArrayObject;
 
 /**
  * RethinkDB query handler.
