@@ -54,21 +54,21 @@ class EntityTest extends TestsAbstract {
       ->execute();
 
     $array_copy = reset($result);
-    $this->assertEquals($object->id, $array_copy['id']);
+    $this->assertEquals($object['id'], $array_copy['id']);
     $this->assertArrayHasKey('time', $array_copy);
 
     // Load entity.
-    $this->assertEquals($entity->load($array_copy['id'])->id, $object->id);
+    $this->assertEquals($entity->load($array_copy['id'])->id, $object['id']);
 
     // Update entity.
-    $entity->update(['id' => $object->id, 'bar' => 'foo']);
-    $fresh_copy = $entity->load($object->id);
+    $entity->update(['id' => $object['id'], 'bar' => 'foo']);
+    $fresh_copy = $entity->load($object['id']);
     $this->assertEquals($fresh_copy->bar, 'foo');
     $this->assertEquals($fresh_copy->title, 'foo');
 
     // Delete the entity.
-    $entity->delete($fresh_copy->id);
-    $this->assertFalse($entity->load($fresh_copy->id));
+    $entity->delete($fresh_copy['id']);
+    $this->assertFalse($entity->load($fresh_copy['id']));
   }
 
 }
