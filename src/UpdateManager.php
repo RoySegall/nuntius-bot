@@ -120,7 +120,11 @@ class UpdateManager {
    *   List of processed updates.
    */
   public function getDbProcessedUpdates() {
-    return $this->entityManager->get('system')->load('updates')->processed;
+    $updates = $this->entityManager->get('system')->load('updates');
+    if (empty($updates->processed)) {
+      return [];
+    }
+    return $updates->processed;
   }
 
   /**
