@@ -72,8 +72,8 @@ class InstallCommand extends Command  {
     }
 
     // Run this again.
-    var_dump(array_keys(Nuntius::getUpdateManager()->getUpdates()));
-    $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
+    $foo = $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
+    var_dump($foo);
 
     $io->section("The install has completed.");
     $io->text('run php console.php nuntius:run');

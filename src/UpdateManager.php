@@ -41,7 +41,6 @@ class UpdateManager {
   function __construct(NuntiusRethinkdb $db, EntityManager $entity_manager, NuntiusConfig $config) {
     $this->db = $db;
     $this->entityManager = $entity_manager;
-var_dump($config->getSetting('updates'));
     $this->setUpdates($config->getSetting('updates'));
   }
 
