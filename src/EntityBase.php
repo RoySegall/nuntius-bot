@@ -68,7 +68,7 @@ abstract class EntityBase implements EntityBaseInterface {
     $results = [];
 
     foreach ($this->storage->loadMultiple($ids) as $result) {
-      $results[$result] = $this->createInstance($result);
+      $results[$result['id']] = $this->createInstance($result);
     }
 
     return $results;
