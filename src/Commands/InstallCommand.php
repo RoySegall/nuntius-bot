@@ -44,7 +44,6 @@ class InstallCommand extends Command  {
     }
 
     $value = Nuntius::getSettings()->getSettings();
-    $db = Nuntius::getRethinkDB();
     $operations = Nuntius::getDb()->getOperations();
     $storage = Nuntius::getDb()->getStorage();
 

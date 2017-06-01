@@ -66,8 +66,9 @@ class RethinkDbStorageHandler implements DbStorageHandlerInterface {
       $document['time'] = time();
     }
 
+    $result = $this->getTable()->insert($document)->run($this->connection)->getArrayCopy();
+
     if (!isset($document['id'])) {
-      $result = $this->getTable()->insert($document)->run($this->connection)->getArrayCopy();
       $document['id'] = isset($result['generated_keys']) ? reset($result['generated_keys']) : $result['id'];
     }
 
