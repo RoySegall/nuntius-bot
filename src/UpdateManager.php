@@ -121,6 +121,7 @@ class UpdateManager {
    *   List of processed updates.
    */
   public function getDbProcessedUpdates() {
+    var_dump($this->entityManager->get('system')->load('updates'));
     return $this->entityManager->get('system')->load('updates')->processed;
   }
 
