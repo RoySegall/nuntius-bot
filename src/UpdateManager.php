@@ -136,6 +136,11 @@ class UpdateManager {
   public function addProcessedUpdate($name) {
     /** @var \Nuntius\Entity\System $updates */
     $updates = $this->entityManager->get('system')->load('updates');
+
+    if (empty($updates->processed)) {
+      $updates->processed = [];
+    }
+
     $processed = $updates->processed;
     $processed[] = $name;
     $this->entityManager->get('system')->update(['id' => 'updates', 'processed' => $processed]);
