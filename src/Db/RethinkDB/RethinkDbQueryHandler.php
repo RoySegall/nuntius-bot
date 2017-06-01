@@ -213,7 +213,7 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
     foreach ($item as &$value) {
       if (is_array($value)) {
         foreach ($value as &$sub_value) {
-          $sub_value = $sub_value instanceof ArrayObject ? $sub_value->getArrayCopy() : $sub_value;
+          $sub_value = is_object($sub_value) ? $sub_value->getArrayCopy() : $sub_value;
         }
       }
 
