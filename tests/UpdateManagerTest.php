@@ -32,7 +32,6 @@ class UpdateManagerTest extends TestsAbstract {
    * Testing update manager.
    */
   public function testEntitiesCrud() {
-    $this->assertEquals($this->updateManger->getUpdates(), $this->updateManger->getUnProcessedUpdates());
 
     // Run the updates. Checking they not throw any error.
     foreach ($this->updateManger->getUpdates() as $name => $update) {

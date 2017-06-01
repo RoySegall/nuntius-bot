@@ -120,6 +120,8 @@ class UpdateManager {
    *   List of processed updates.
    */
   public function getDbProcessedUpdates() {
+    \Kint::dump($this->entityManager->get('system')->load('updates'));
+    \Kint::dump($this->getUpdates());
     return $this->entityManager->get('system')->load('updates')->processed;
   }
 
