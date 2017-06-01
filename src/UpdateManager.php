@@ -41,7 +41,7 @@ class UpdateManager {
   function __construct(NuntiusRethinkdb $db, EntityManager $entity_manager, NuntiusConfig $config) {
     $this->db = $db;
     $this->entityManager = $entity_manager;
-
+var_dump($config->getSetting('updates'));
     $this->setUpdates($config->getSetting('updates'));
   }
 
@@ -121,7 +121,6 @@ class UpdateManager {
    *   List of processed updates.
    */
   public function getDbProcessedUpdates() {
-    var_dump($this->entityManager->get('system')->load('updates'));
     return $this->entityManager->get('system')->load('updates')->processed;
   }
 
