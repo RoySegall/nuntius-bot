@@ -84,7 +84,9 @@ class DbDispatcherTest extends TestsAbstract {
     $db->getOperations()->tableCreate('superheroes');
 
     // Create the objects.
-    $db->getStorage()->table('superheroes')->save($objects);
+    foreach ($objects as $object) {
+      $db->getStorage()->table('superheroes')->save($object);
+    }
 
     // Start querying the DB.
 
