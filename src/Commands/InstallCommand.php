@@ -60,22 +60,18 @@ class InstallCommand extends Command  {
 
     $io->section("Creating entities tables.");
 
-    foreach ($value['entities'] as $table => $scheme) {
+    foreach (array_keys($value['entities']) as $table) {
       if ($operations->tableExists($table)) {
         $io->success("The table {$table} already exists, skipping.");
       }
       else {
-        $operations->tableCreate($scheme);
-        $io->success("The table {$scheme} has created");
+        $operations->tableCreate($table);
+        $io->success("The table {$table} has created");
       }
     }
 
     // Run this again.
-    $foo = $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
-    \Kint::dump($foo);
-
-    $bar = Nuntius::getEntityManager()->get('system')->loadMultiple();
-    \Kint::dump($bar);
+    $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
 
     $io->section("The install has completed.");
     $io->text('run php console.php nuntius:run');
