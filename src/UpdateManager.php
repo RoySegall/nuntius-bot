@@ -135,9 +135,10 @@ class UpdateManager {
    */
   public function addProcessedUpdate($name) {
     /** @var \Nuntius\Entity\System $updates */
-    $updates = $this->entityManager->get('system')->loadMultiple();
+    $updates = $this->entityManager->get('system')->load('updates');
 
     \Kint::dump($updates);
+
     if (empty($updates->processed)) {
       $updates->processed = [];
     }
