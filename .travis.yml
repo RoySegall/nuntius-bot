@@ -11,12 +11,11 @@ addons:
 
 cache:
   directories:
-    - /home/travis/build/RoySegall/nuntius/vendor
+    - /home/travis/build/RoySegall/nuntius-bot/vendor
 
 before_script:
   # Installing composer
   - curl -sS https://getcomposer.org/installer | php
-  - pwd
   - php composer.phar install --dev
 
   # Set up stuff for the webhooks tests.

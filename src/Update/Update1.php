@@ -2,12 +2,13 @@
 
 namespace Nuntius\Update;
 
+use Nuntius\UpdateBaseAbstract;
 use Nuntius\UpdateBaseInterface;
 
 /**
  * Update for example.
  */
-class Update1 implements UpdateBaseInterface {
+class Update1 extends UpdateBaseAbstract implements UpdateBaseInterface {
 
   /**
    * Describe what the update going to do.

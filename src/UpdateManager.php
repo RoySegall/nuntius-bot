@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Manage updates.
@@ -17,7 +18,7 @@ class UpdateManager {
   /**
    * The DB service.
    *
-   * @var NuntiusRethinkdb
+   * @var \Nuntius\Db\DbDispatcher
    */
   protected $db;
 
@@ -31,14 +32,14 @@ class UpdateManager {
   /**
    * Constructing the update manager.
    *
-   * @param NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbDispatcher $db
    *   The DB service.
    * @param EntityManager $entity_manager
    *   The entity manager service.
    * @param NuntiusConfig $config
    *   The config service.
    */
-  function __construct(NuntiusRethinkdb $db, EntityManager $entity_manager, NuntiusConfig $config) {
+  function __construct(DbDispatcher $db, EntityManager $entity_manager, NuntiusConfig $config) {
     $this->db = $db;
     $this->entityManager = $entity_manager;
     $this->setUpdates($config->getSetting('updates'));
@@ -103,7 +104,7 @@ class UpdateManager {
         continue;
       }
 
-      $updates[$update] = new $namespace;
+      $updates[$update] = new $namespace($this->db, $update, $this->entityManager);;
     }
 
     if (empty($db_updates)) {
