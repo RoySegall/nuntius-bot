@@ -12,7 +12,6 @@ addons:
 cache:
   directories:
     - /home/travis/build/RoySegall/nuntius-bot/vendor
-    
 
 before_script:
   # Installing composer
