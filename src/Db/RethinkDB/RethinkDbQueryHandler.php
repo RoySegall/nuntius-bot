@@ -203,26 +203,6 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
   }
 
   /**
-   * Going over the array of the row and look for ArrayObject and convert them.
-   *
-   * @param $item
-   *   The array copy.
-   */
-  protected function processSubArrays(&$item) {
-    foreach ($item as &$value) {
-      if (is_array($value)) {
-        foreach ($value as &$sub_value) {
-          if (!is_object($sub_value) && method_exists($sub_value, 'getArrayCopy')) {
-            continue;
-          }
-          $sub_value = $sub_value->getArrayCopy();
-        }
-      }
-
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function cleanUp() {
