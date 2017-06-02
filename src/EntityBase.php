@@ -1,18 +1,12 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Abstract class for entities.
  */
 abstract class EntityBase implements EntityBaseInterface {
-
-  /**
-   * The RethinkDB connection.
-   *
-   * @var \Nuntius\NuntiusRethinkdb
-   */
-  protected $db;
 
   /**
    * The entity ID.
@@ -31,15 +25,14 @@ abstract class EntityBase implements EntityBaseInterface {
   /**
    * EntityBase constructor.
    *
-   * @param \Nuntius\NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbDispatcher $db
    *   The RethinkDB connection.
    * @param string $entity_id
    *   The entity ID.
    */
-  function __construct(NuntiusRethinkdb $db, $entity_id) {
-    $this->db = $db;
+  function __construct(DbDispatcher $db, $entity_id) {
     $this->entityID = $entity_id;
-    $this->storage = Nuntius::getDb()->getStorage()->table($entity_id);
+    $this->storage = $db->getStorage()->table($entity_id);
   }
 
   /**
