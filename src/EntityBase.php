@@ -1,18 +1,12 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Abstract class for entities.
  */
 abstract class EntityBase implements EntityBaseInterface {
-
-  /**
-   * The RethinkDB connection.
-   *
-   * @var \Nuntius\NuntiusRethinkdb
-   */
-  protected $db;
 
   /**
    * The entity ID.
@@ -22,16 +16,23 @@ abstract class EntityBase implements EntityBaseInterface {
   protected $entityID;
 
   /**
+   * The storage of the DB.
+   *
+   * @var Db\DbStorageHandlerInterface
+   */
+  protected $storage;
+
+  /**
    * EntityBase constructor.
    *
-   * @param \Nuntius\NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbDispatcher $db
    *   The RethinkDB connection.
    * @param string $entity_id
    *   The entity ID.
    */
-  function __construct(NuntiusRethinkdb $db, $entity_id) {
-    $this->db = $db;
+  function __construct(DbDispatcher $db, $entity_id) {
     $this->entityID = $entity_id;
+    $this->storage = $db->getStorage()->table($entity_id);
   }
 
   /**
@@ -54,37 +55,13 @@ abstract class EntityBase implements EntityBaseInterface {
   }
 
   /**
-   * Get the table handler.
-   *
-   * @return \r\Queries\Tables\Table
-   */
-  public function getTable() {
-    return $this->db->getTable($this->entityID);
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadAll() {
+  public function loadMultiple(array $ids = []) {
     $results = [];
 
-    foreach ($this->getTable()->run($this->db->getConnection()) as $result) {
-      $data = $result->getArrayCopy();
-      $results[$data['id']] = $this->createInstance($data);
-    }
-
-    return $results;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function loadMultiple($ids) {
-    $results = [];
-
-    foreach ($this->getTable()->getAll(\r\args($ids))->run($this->db->getConnection()) as $result) {
-      $data = $result->getArrayCopy();
-      $results[$data['id']] = $this->createInstance($data);
+    foreach ($this->storage->loadMultiple($ids) as $result) {
+      $results[$result['id']] = $this->createInstance($result);
     }
 
     return $results;
@@ -94,40 +71,29 @@ abstract class EntityBase implements EntityBaseInterface {
    * {@inheritdoc}
    */
   public function load($id) {
-    if (!$data = $this->getTable()->get($id)->run($this->db->getConnection())) {
-      return FALSE;
-    }
-
-    $data = $data->getArrayCopy();
-    return $this->createInstance($data);
+    $results = $this->loadMultiple([$id]);
+    return reset($results);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function insert(array $item) {
-
-    if (!isset($item['time'])) {
-      $item['time'] = time();
-    }
-
-    $result = $this->getTable()->insert($item)->run($this->db->getConnection())->getArrayCopy();
-
-    return $this->load(reset($result['generated_keys']));
+  public function save(array $item) {
+    return $this->storage->save($item);
   }
 
   /**
    * {@inheritdoc}
    */
   public function delete($id) {
-    $this->getTable()->get($id)->delete()->run($this->db->getConnection());
+    $this->storage->delete($id);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function update($id, $data) {
-    $this->getTable()->get($id)->update($data)->run($this->db->getConnection());
+  public function update($data) {
+    $this->storage->update($data);
   }
 
 }

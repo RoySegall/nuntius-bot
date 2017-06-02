@@ -30,6 +30,7 @@ class DbDispatcherTest extends TestsAbstract {
    * Testing what happens with un un valid diver.
    */
   public function testUnValidDriver() {
+    $driver = Nuntius::getSettings()->getSetting('db_driver');
     // Save that for later.
     try {
       Nuntius::getDb()->setDriver('foo')->getMetadata();
@@ -38,6 +39,9 @@ class DbDispatcherTest extends TestsAbstract {
     catch (\Exception $e) {
       $this->assertEquals($e->getMessage(), 'The DB driver foo does not exists');
     }
+
+    // Set the default just in case.
+    Nuntius::getDb()->setDriver($driver);
   }
 
   /**
@@ -80,7 +84,9 @@ class DbDispatcherTest extends TestsAbstract {
     $db->getOperations()->tableCreate('superheroes');
 
     // Create the objects.
-    Nuntius::getRethinkDB()->addEntry('superheroes', $objects);
+    foreach ($objects as $object) {
+      $db->getStorage()->table('superheroes')->save($object);
+    }
 
     // Start querying the DB.
 

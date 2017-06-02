@@ -11,7 +11,7 @@ addons:
 
 cache:
   directories:
-    - /home/travis/build/RoySegall/gizra_slack_bot/vendor
+    - /home/travis/build/RoySegall/nuntius-bot/vendor
 
 before_script:
   # Installing composer
@@ -25,6 +25,5 @@ before_script:
 script:
   - cp settings/credentials.local.travis.yml settings/credentials.local.yml
   - cp settings/hooks.local.travis.yml settings/hooks.local.yml
-  - rethinkdb > /dev/null &
   - php console.php nuntius:install
   - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/

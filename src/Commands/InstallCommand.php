@@ -44,27 +44,34 @@ class InstallCommand extends Command  {
     }
 
     $value = Nuntius::getSettings()->getSettings();
-    $db = Nuntius::getRethinkDB();
     $operations = Nuntius::getDb()->getOperations();
+    $storage = Nuntius::getDb()->getStorage();
 
     $io->section("Setting up the DB.");
 
-    $operations->dbCreate($value['rethinkdb']['db']);
-    $io->success("The DB was created");
-
-    sleep(5);
+    if ($operations->dbExists($value['rethinkdb']['db'])) {
+      $io->success("The DB already exists, skipping.");
+    }
+    else {
+      $operations->dbCreate($value['rethinkdb']['db']);
+      $io->success("The DB was created");
+      sleep(5);
+    }
 
     $io->section("Creating entities tables.");
 
-    foreach (array_keys($value['entities']) as $scheme) {
-      $operations->tableCreate($scheme);
-      $io->success("The table {$scheme} has created");
+    foreach (array_keys($value['entities']) as $table) {
+      if ($operations->tableExists($table)) {
+        $io->success("The table {$table} already exists, skipping.");
+      }
+      else {
+        $operations->tableCreate($table);
+        $io->success("The table {$table} has created");
+      }
     }
 
     // Run this again.
-    $db->getTable('system')->insert(['id' => 'updates', 'processed' => []])->run($db->getConnection());
-
-    Nuntius::getEntityManager()->get('system')->update('updates', ['processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
+    $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
 
     $io->section("The install has completed.");
     $io->text('run php console.php nuntius:run');

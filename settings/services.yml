@@ -20,7 +20,7 @@ services:
 
   manager.entity:
     class: \Nuntius\EntityManager
-    arguments: ['@rethinkdb', '@config']
+    arguments: ['@db', '@config']
 
   manager.task:
     class: \Nuntius\TasksManager
@@ -28,7 +28,7 @@ services:
 
   manager.update:
     class: \Nuntius\UpdateManager
-    arguments: ['@rethinkdb', '@manager.entity', '@config']
+    arguments: ['@db', '@manager.entity', '@config']
 
   manager.cron:
     class: \Nuntius\CronManager

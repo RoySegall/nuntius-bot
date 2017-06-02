@@ -32,7 +32,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
     // Check if we have a running context for the user.
     if (!$this->checkForContext('running_context')) {
       // Create a running context.
-      $this->entityManager->get('running_context')->insert($context);
+      $this->entityManager->get('running_context')->save($context);
     }
 
     // Check if we have a context in the DB.
@@ -45,7 +45,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
       }
 
       // Insert it into the DB.
-      $this->entityManager->get('context')->insert($context);
+      $this->entityManager->get('context')->save($context);
     }
     else {
       $context = reset($db_context);
@@ -70,7 +70,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
 
     if ($this->conversationScope() != 'forever') {
       unset($context['id']);
-      $this->entityManager->get('context_archive')->insert($context);
+      $this->entityManager->get('context_archive')->save($context);
       $this->deleteContext();
     }
 
@@ -107,7 +107,7 @@ abstract class TaskConversationAbstract extends TaskBaseAbstract implements Task
 
       $this->entityManager->get('context')
         ->load($context['id'])
-        ->update($context['id'], $context);
+        ->update($context);
       break;
     }
   }

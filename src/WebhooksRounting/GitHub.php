@@ -23,7 +23,7 @@ class GitHub implements WebhooksRoutingControllerInterface {
         'type' => 'error',
         'error' => 'No payload found in the post.',
       ];
-      \Nuntius\Nuntius::getEntityManager()->get('logger')->insert($data);
+      \Nuntius\Nuntius::getEntityManager()->get('logger')->save($data);
 
       return new JsonResponse($data, 501);
     }
@@ -36,7 +36,7 @@ class GitHub implements WebhooksRoutingControllerInterface {
         'type' => 'error',
         'error' => 'There is no matching webhook controller for ' . $event . ' webhook.',
       ];
-      \Nuntius\Nuntius::getEntityManager()->get('logger')->insert($data);
+      \Nuntius\Nuntius::getEntityManager()->get('logger')->save($data);
 
       return new JsonResponse($data, 501);
     }

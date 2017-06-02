@@ -8,14 +8,6 @@ namespace Nuntius;
 interface EntityBaseInterface {
 
   /**
-   * Loading all the entities.
-   *
-   * @return array
-   *   List of entities.
-   */
-  public function loadAll();
-
-  /**
    * Load a single entities.
    *
    * @param $id
@@ -34,7 +26,7 @@ interface EntityBaseInterface {
    *
    * @return EntityBaseInterface[]
    */
-  public function loadMultiple($ids);
+  public function loadMultiple(array $ids = []);
 
   /**
    * Inert an entry to the DB.
@@ -42,7 +34,7 @@ interface EntityBaseInterface {
    * @param array $item
    *   The item to insert into the DB.
    */
-  public function insert(array $item);
+  public function save(array $item);
 
   /**
    * Delete an entry from the DB.
@@ -55,11 +47,9 @@ interface EntityBaseInterface {
   /**
    * Updating an entry in the DB.
    *
-   * @param $id
-   *   The entity ID.
    * @param $data
    *   The data to update.
    */
-  public function update($id, $data);
+  public function update($data);
 
 }

@@ -6,6 +6,7 @@ use Nuntius\Db\DbQueryHandlerInterface;
 use Nuntius\Nuntius;
 use r\Exceptions\RqlException;
 use r\ValuedQuery\RVar;
+use Zend\Stdlib\ArrayObject;
 
 /**
  * RethinkDB query handler.
@@ -193,30 +194,12 @@ class RethinkDbQueryHandler implements DbQueryHandlerInterface {
     foreach ($query->run($this->rethinkDB->getConnection()) as $item) {
       $item_copy = $item->getArrayCopy();
 
-      $this->processSubArrays($item_copy);
       $items[] = $item_copy;
     }
 
     $this->cleanUp();
 
     return $items;
-  }
-
-  /**
-   * Going over the array of the row and look for ArrayObject and convert them.
-   *
-   * @param $item
-   *   The array copy.
-   */
-  protected function processSubArrays(&$item) {
-    foreach ($item as &$value) {
-      if (is_array($value)) {
-        foreach ($value as &$sub_value) {
-          $sub_value = $sub_value->getArrayCopy();
-        }
-      }
-
-    }
   }
 
   /**
