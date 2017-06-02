@@ -33,7 +33,9 @@ will see that the basic methods are enough.
   ->load(ID);
 ```
 
-### Load all the entries
+### Load multiple entries
+
+You can ask for all of them:
 
 ```php
 <?php
@@ -41,6 +43,15 @@ will see that the basic methods are enough.
 \Nuntius\Nuntius::getEntityManager()
   ->get('context')
   ->loadMultiple();
+```
+
+Or you can ask for multiple entities:
+```php
+<?php
+
+\Nuntius\Nuntius::getEntityManager()
+  ->get('context')
+  ->loadMultiple(['id1', 'id2', 'id3']);
 ```
 
 ### Update an entry
@@ -53,25 +64,34 @@ will see that the basic methods are enough.
   ->update(['id' => 'ID', 'foo' => 'bar']);
 ```
 
-### Delete an entry
+### Delete from the DB
+
+You can delete a single entity:
 
 ```php
 <?php
 
 \Nuntius\Nuntius::getEntityManager()
   ->get('context')
-  ->delete(ID);
+  ->delete('id');
 ```
 
-### Query in the DB
-Except for the CRUD layer, sometimes you need to look for items. Have a look at
-the code:
+You can multiple entities:
+
 ```php
 <?php
-  \Nuntius\Nuntius::getRethinkDB()
-    ->getTable('running_context')
-    ->filter(\r\row('foo')->eq('bar'))
-    ->filter(\r\row('bar')->ne('fo'))
-    ->run($this->db->getConnection())
-    ->toArray();
+
+\Nuntius\Nuntius::getEntityManager()
+  ->get('context')
+  ->deleteMultiple(['id1', 'id2', 'id3']);
+```
+
+Or you can delete all the entities:
+
+```php
+<?php
+
+\Nuntius\Nuntius::getEntityManager()
+  ->get('context')
+  ->deleteMultiple();
 ```

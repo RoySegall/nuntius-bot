@@ -92,6 +92,13 @@ abstract class EntityBase implements EntityBaseInterface {
   /**
    * {@inheritdoc}
    */
+  public function deleteMultiple(array $ids = []) {
+    $this->storage->delete($ids);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function update($data) {
     $this->storage->update($data);
   }
