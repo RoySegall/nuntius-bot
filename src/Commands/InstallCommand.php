@@ -55,15 +55,14 @@ class InstallCommand extends Command  {
     else {
       $operations->dbCreate($value['rethinkdb']['db']);
       $io->success("The DB was created");
+      sleep(5);
     }
-
-    sleep(5);
 
     $io->section("Creating entities tables.");
 
-    foreach (array_keys($value['entities']) as $scheme) {
-      if ($operations->tableExists($value['entities'])) {
-        $io->success("The table {$value['entities']} already exists, skipping.");
+    foreach ($value['entities'] as $table => $scheme) {
+      if ($operations->tableExists($table)) {
+        $io->success("The table {$table} already exists, skipping.");
       }
       else {
         $operations->tableCreate($scheme);

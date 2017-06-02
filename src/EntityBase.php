@@ -68,7 +68,6 @@ abstract class EntityBase implements EntityBaseInterface {
     $results = [];
 
     foreach ($this->storage->loadMultiple($ids) as $result) {
-      \Kint::dump($result);
       $results[$result['id']] = $this->createInstance($result);
     }
 

@@ -137,8 +137,6 @@ class UpdateManager {
     /** @var \Nuntius\Entity\System $updates */
     $updates = $this->entityManager->get('system')->load('updates');
 
-    \Kint::dump($updates);
-
     if (empty($updates->processed)) {
       $updates->processed = [];
     }
