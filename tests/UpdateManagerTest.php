@@ -25,7 +25,7 @@ class UpdateManagerTest extends TestsAbstract {
     $this->updateManger = Nuntius::getUpdateManager();
 
     // Empty the processed updates.
-    Nuntius::getEntityManager()->get('system')->update(['id' => 'updates', 'processed' => []]);
+//    Nuntius::getEntityManager()->get('system')->update(['id' => 'updates', 'processed' => []]);
   }
 
   /**

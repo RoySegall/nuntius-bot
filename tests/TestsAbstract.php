@@ -39,7 +39,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
         continue;
       }
 
-//      Nuntius::getDb()->getStorage()->table($table)->deleteMultiple();
+      Nuntius::getDb()->getStorage()->table($table)->deleteMultiple();
     }
 
 
