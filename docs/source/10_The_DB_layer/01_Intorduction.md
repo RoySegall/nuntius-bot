@@ -31,6 +31,5 @@ Not very nice and intuitive. After the abstraction you need to do:
     ->execute();
 ```
 
-Much better. Go the the [Query the DB](The_DB_layer/Query_the_DB.html) part to
+Much better. Go [Deep into the rabbit hole](The_DB_layer/Deep_into_the_rabbit_hole.html) part to
 see the available methods and what you can do.
- 
