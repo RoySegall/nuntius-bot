@@ -51,11 +51,9 @@ Let's look on how the message:
 namespace Nuntius\Plugin;
 
 /**
- * Class Message.
- *
- * Triggered when a message eas sent.
+ * Remind to the user something to do.
  */
-class Message extends NuntiusPluginAbstract {
+class Reminders extends TaskBaseAbstract implements TaskBaseInterface {
 
   /**
    * {@inheritdoc}
@@ -65,21 +63,19 @@ class Message extends NuntiusPluginAbstract {
       return;
     }
 
-    $rows = $this->db
-      ->getTable('reminders')
-      ->filter(\r\row('user')->eq($this->data['user']))
-      ->run($this->db->getConnection());
+    $rows = $this->query
+      ->table('reminders')
+      ->condition('user', $this->data['user'])
+      ->execute();
 
     foreach ($rows as $row) {
-      $result = $row->getArrayCopy();
-
-      $this->client->getDMByUserId($result['user'])->then(function (DirectMessageChannel $channel) use ($result) {
+      $this->client->getDMByUserId($row['user'])->then(function (DirectMessageChannel $channel) use ($row) {
         // Send the reminder.
-        $text = 'Hi! You asked me to remind you: ' . $result['reminder'];
+        $text = 'Hi! You asked me to remind you: ' . $row['reminder'];
         $this->client->send($text, $channel);
 
         // Delete the reminder from the DB.
-        $this->reminders->delete($result['id']);
+        $this->reminders->delete($row['id']);
       });
     }
   }

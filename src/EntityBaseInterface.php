@@ -45,6 +45,16 @@ interface EntityBaseInterface {
   public function delete($id);
 
   /**
+   * Delete multiple items from the DB.
+   *
+   * In order to delete all the items pass an empty array.
+   *
+   * @param array $ids
+   *   List of IDs.
+   */
+  public function deleteMultiple(array $ids = []);
+
+  /**
    * Updating an entry in the DB.
    *
    * @param $data
