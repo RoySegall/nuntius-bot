@@ -38,13 +38,12 @@ class RunCommand extends Command  {
     }
 
     // Get the DB connection.
-    $db = @Nuntius::getRethinkDB();
-
-    if (!$db->getConnection()) {
+    $operations = Nuntius::getDb()->getOperations();
+    if (!$operations->connected()) {
       $text = 'The DB is not responding. Initialize the DB first and then start the bot.';
 
       if ($input->getOption('verbose')) {
-        $text .= "\n" . $db->error;
+        $text .= "\n" . $operations->getError();
       }
       else {
         $text .= ' Use --verbose form more info';
@@ -54,10 +53,7 @@ class RunCommand extends Command  {
       return;
     }
 
-    try {
-      $db->getTable('system')->run($db->getConnection());
-    }
-    catch (RqlServerError $e) {
+    if (!Nuntius::getDb()->getOperations()->tableExists('system')) {
       $io->error('It seems that the DB is not properly. Run php console.php nuntius:install');
       return;
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 use Slack\RealTimeClient;
 
 /**
@@ -13,7 +14,7 @@ abstract class NuntiusPluginAbstract {
   use NuntiusServicesTrait;
 
   /**
-   * @var \Nuntius\NuntiusRethinkdb
+   * @var DbDispatcher
    */
   protected $db;
 
@@ -43,7 +44,7 @@ abstract class NuntiusPluginAbstract {
    *   The client object.
    */
   function __construct(RealTimeClient $client) {
-    $this->db = Nuntius::getRethinkDB();
+    $this->db = Nuntius::getDb();
     $this->client = $client;
     $this->entityManager = Nuntius::getEntityManager();
   }

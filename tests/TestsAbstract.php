@@ -10,20 +10,20 @@ use Nuntius\Nuntius;
 abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
 
   /**
-   * @var \Nuntius\NuntiusRethinkdb
-   */
-  protected $rethinkdb;
-
-  /**
    * @var string[]
    */
   protected $tables;
 
   /**
+   * @var \Nuntius\Db\DbQueryHandlerInterface
+   */
+  protected $query;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
-    $this->rethinkdb = Nuntius::getRethinkDB();
+    $this->query = Nuntius::getDb()->getQuery();
   }
 
   /**
@@ -39,8 +39,9 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
         continue;
       }
 
-      $this->rethinkdb->truncateTable($table);
+      Nuntius::getDb()->getStorage()->table($table)->deleteMultiple();
     }
+
   }
 
 }

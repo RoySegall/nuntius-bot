@@ -31,30 +31,48 @@ class InstallCommand extends Command  {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-
     $io = new SymfonyStyle($input, $output);
 
-    $value = Nuntius::getSettings();
-    $db = Nuntius::getRethinkDB();
+    if (!file_exists(__DIR__ . '/../../settings/credentials.local.yml')) {
+      $question = new ConfirmationQuestion('The credentials yml file is missing. Would you like to generate the file?');
+
+      if (!$io->askQuestion($question)) {
+        $io->block('Well then, you need to create a copy of the file credentials.yml to credentials.local.yml and populate the values. Good luck!');
+        return;
+      }
+
+      $this->generateCredentials($io);
+    }
+
+    $value = Nuntius::getSettings()->getSettings();
+    $operations = Nuntius::getDb()->getOperations();
+    $storage = Nuntius::getDb()->getStorage();
 
     $io->section("Setting up the DB.");
 
-    $db->createDB($value['rethinkdb']['db']);
-    $io->success("The DB was created");
-
-    sleep(5);
+    if ($operations->dbExists($value['rethinkdb']['db'])) {
+      $io->success("The DB already exists, skipping.");
+    }
+    else {
+      $operations->dbCreate($value['rethinkdb']['db']);
+      $io->success("The DB was created");
+      sleep(5);
+    }
 
     $io->section("Creating entities tables.");
 
-    foreach (array_keys($value['entities']) as $scheme) {
-      $db->createTable($scheme);
-      $io->success("The table {$scheme} has created");
+    foreach (array_keys($value['entities']) as $table) {
+      if ($operations->tableExists($table)) {
+        $io->success("The table {$table} already exists, skipping.");
+      }
+      else {
+        $operations->tableCreate($table);
+        $io->success("The table {$table} has created");
+      }
     }
 
     // Run this again.
-    $db->getTable('system')->insert(['id' => 'updates', 'processed' => []])->run($db->getConnection());
-
-    Nuntius::getEntityManager()->get('system')->update('updates', ['processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
+    $storage->table('system')->save(['id' => 'updates', 'processed' => array_keys(Nuntius::getUpdateManager()->getUpdates())]);
 
     $io->section("The install has completed.");
     $io->text('run php console.php nuntius:run');

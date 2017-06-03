@@ -2,5 +2,4 @@
 
 require_once 'vendor/autoload.php';
 
-$dispatcher = \Nuntius\Nuntius::getDispatcher();
-
+Kint::dump(\Nuntius\Nuntius::getUpdateManager());

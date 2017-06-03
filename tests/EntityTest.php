@@ -45,25 +45,24 @@ class EntityTest extends TestsAbstract {
     $entity = $this->entities->get($entity_type);
 
     // Create entity.
-    $object = $entity->insert(['title' => 'foo']);
+    $object = $entity->save(['title' => 'foo']);
 
     // Query the entity.
-    $result = $this->rethinkdb
-      ->getTable($entity_type)
-      ->filter(\r\row('title')->eq('foo'))
-      ->run($this->rethinkdb->getConnection())
-      ->toArray();
+    $result = $this->query
+      ->table($entity_type)
+      ->condition('title', 'foo')
+      ->execute();
 
-    $array_copy = reset($result)->getArrayCopy();
-    $this->assertEquals($object->id, $array_copy['id']);
+    $array_copy = reset($result);
+    $this->assertEquals($object['id'], $array_copy['id']);
     $this->assertArrayHasKey('time', $array_copy);
 
     // Load entity.
-    $this->assertEquals($entity->load($array_copy['id'])->id, $object->id);
+    $this->assertEquals($entity->load($array_copy['id'])->id, $object['id']);
 
     // Update entity.
-    $entity->update($object->id, ['bar' => 'foo']);
-    $fresh_copy = $entity->load($object->id);
+    $entity->update(['id' => $object['id'], 'bar' => 'foo']);
+    $fresh_copy = $entity->load($object['id']);
     $this->assertEquals($fresh_copy->bar, 'foo');
     $this->assertEquals($fresh_copy->title, 'foo');
 

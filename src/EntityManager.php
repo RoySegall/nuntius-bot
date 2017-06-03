@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Entity mananger.
@@ -17,19 +18,19 @@ class EntityManager {
   /**
    * The DB service.
    *
-   * @var NuntiusRethinkdb
+   * @var \Nuntius\Db\DbDispatcher
    */
   protected $db;
 
   /**
    * Constructing the entity manager.
    *
-   * @param NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbDispatcher $db
    *   List of all the entities.
    * @param NuntiusConfig $config
    *   The config service.
    */
-  function __construct(NuntiusRethinkdb $db, NuntiusConfig $config) {
+  function __construct(DbDispatcher $db, NuntiusConfig $config) {
     $this->db = $db;
 
     $this->setEntities($config->getSetting('entities'));

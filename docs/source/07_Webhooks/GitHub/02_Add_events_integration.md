@@ -63,7 +63,7 @@ abstract class GitHubWebhooksAbstract implements GitHubWebhooksInterface {
    * {@inheritdoc}
    */
   public function postAct() {
-    $this->logger->insert((array) $this->getData());
+    $this->logger->save((array) $this->getData());
   }
 
 }

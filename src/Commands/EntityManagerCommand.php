@@ -40,12 +40,15 @@ class EntityManagerCommand extends Command {
       return;
     }
 
-    $results = Nuntius::getRethinkDB()
-      ->getTable($arguments['name']);
+    $results = Nuntius::getDb()->getQuery()->table($arguments['name']);
 
     if ($arguments['operation'] == 'live_view') {
 
-      $cursor = $results->changes()->run(Nuntius::getRethinkDB()->getConnection());
+      if (!Nuntius::getDb()->getMetadata()->supportRealTime()) {
+        throw new \Exception('Your current driver does not support real time. Try another one');
+      }
+
+      $cursor = $results->setChanges()->execute();
 
       $io->section('Starting live feeds');
       foreach ($cursor as $row) {
@@ -54,12 +57,10 @@ class EntityManagerCommand extends Command {
 
     }
 
-    $results = $results
-      ->limit($arguments['limit'])
-      ->run(Nuntius::getRethinkDB()->getConnection());
+    $rows = $results->pager(0, intval($arguments['limit']))->execute();
 
-    foreach ($results as $result) {
-      var_dump($result->getArrayCopy());
+    foreach ($rows as $row) {
+      \Kint::dump($row);
     }
 
   }

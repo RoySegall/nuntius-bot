@@ -4,7 +4,11 @@ services:
     class: \Nuntius\NuntiusConfig
 
   http:
-    class: '\GuzzleHttp\Client'
+    class: \GuzzleHttp\Client
+
+  db:
+    class: \Nuntius\Db\DbDispatcher
+    arguments: ['@config']
 
   dispatcher:
     class: \Nuntius\NuntiusDispatcher
@@ -16,15 +20,15 @@ services:
 
   manager.entity:
     class: \Nuntius\EntityManager
-    arguments: ['@rethinkdb', '@config']
+    arguments: ['@db', '@config']
 
   manager.task:
     class: \Nuntius\TasksManager
-    arguments: ['@rethinkdb', '@manager.entity', '@config']
+    arguments: ['@db', '@manager.entity', '@config']
 
   manager.update:
     class: \Nuntius\UpdateManager
-    arguments: ['@rethinkdb', '@manager.entity', '@config']
+    arguments: ['@db', '@manager.entity', '@config']
 
   manager.cron:
     class: \Nuntius\CronManager

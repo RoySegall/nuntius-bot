@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use Nuntius\Db\DbQueryHandlerInterface;
 use Slack\RealTimeClient;
 
 /**
@@ -9,11 +10,9 @@ use Slack\RealTimeClient;
 abstract class TaskBaseAbstract implements TaskBaseInterface {
 
   /**
-   * The RethinkDB connection.
-   *
-   * @var \Nuntius\NuntiusRethinkdb
+   * @var \Nuntius\Db\DbQueryHandlerInterface
    */
-  protected $db;
+  protected $query;
 
   /**
    * The task ID.
@@ -46,15 +45,15 @@ abstract class TaskBaseAbstract implements TaskBaseInterface {
   /**
    * Constructor.
    *
-   * @param \Nuntius\NuntiusRethinkdb $db
+   * @param \Nuntius\Db\DbQueryHandlerInterface $query
    *   The RethinkDB connection.
    * @param string $task_id
    *   The task ID.
    * @param \Nuntius\EntityManager $entity_manager
    *   The entity manager.
    */
-  function __construct(NuntiusRethinkdb $db, $task_id, EntityManager $entity_manager) {
-    $this->db = $db;
+  function __construct(DbQueryHandlerInterface $query, $task_id, EntityManager $entity_manager) {
+    $this->query = $query;
     $this->taskId = $task_id;
     $this->entityManager = $entity_manager;
   }

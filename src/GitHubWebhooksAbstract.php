@@ -51,7 +51,7 @@ abstract class GitHubWebhooksAbstract implements GitHubWebhooksInterface {
    */
   public function postAct() {
     // todo: add a flag which control of we want to log the payload.
-    $this->logger->insert((array) $this->getData());
+    $this->logger->save((array) $this->getData());
   }
 
 }
