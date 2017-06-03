@@ -46,7 +46,7 @@
 
         <div class="Collapsible__content">
             <!-- Navigation -->
-            <ul class='Nav'><li class='Nav__item '><a href="Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="Events.html">Events</a></li><li class='Nav__item Nav__item--active'><a href="Entities.html">Entities</a></li><li class='Nav__item  has-children'><a href="Tasks/introduction.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Tasks</a><ul class='Nav'><li class='Nav__item '><a href="Tasks/introduction.html">introduction</a></li><li class='Nav__item '><a href="Tasks/Black_box_task.html">Black box task</a></li><li class='Nav__item '><a href="Tasks/Conversation_task.html">Conversation task</a></li><li class='Nav__item '><a href="Tasks/Validating_user_input.html">Validating user input</a></li></ul></li><li class='Nav__item '><a href="Updates.html">Updates</a></li><li class='Nav__item '><a href="Commands.html">Commands</a></li><li class='Nav__item  has-children'><a href="Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item '><a href="Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="Services.html">Services</a></li><li class='Nav__item '><a href="Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="Tests.html">Tests</a></li></ul>
+            <ul class='Nav'><li class='Nav__item '><a href="Nuntius_Slack_Bot.html">Nuntius Slack Bot</a></li><li class='Nav__item '><a href="Events.html">Events</a></li><li class='Nav__item Nav__item--active'><a href="Entities.html">Entities</a></li><li class='Nav__item  has-children'><a href="Tasks/introduction.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Tasks</a><ul class='Nav'><li class='Nav__item '><a href="Tasks/introduction.html">introduction</a></li><li class='Nav__item '><a href="Tasks/Black_box_task.html">Black box task</a></li><li class='Nav__item '><a href="Tasks/Conversation_task.html">Conversation task</a></li><li class='Nav__item '><a href="Tasks/Validating_user_input.html">Validating user input</a></li></ul></li><li class='Nav__item '><a href="Updates.html">Updates</a></li><li class='Nav__item '><a href="Commands.html">Commands</a></li><li class='Nav__item  has-children'><a href="Webhooks/What_is_webhook.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Webhooks</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/What_is_webhook.html">What is webhook</a></li><li class='Nav__item '><a href="Webhooks/Adding_webhook_support.html">Adding webhook support</a></li><li class='Nav__item  has-children'><a href="Webhooks/GitHub/Configure_the_integration.html" class="folder"><i class="Nav__arrow">&nbsp;</i>GitHub</a><ul class='Nav'><li class='Nav__item '><a href="Webhooks/GitHub/Configure_the_integration.html">Configure the integration</a></li><li class='Nav__item '><a href="Webhooks/GitHub/Add_events_integration.html">Add events integration</a></li></ul></li></ul></li><li class='Nav__item '><a href="Services.html">Services</a></li><li class='Nav__item '><a href="Cron_tasks.html">Cron tasks</a></li><li class='Nav__item  has-children'><a href="The_DB_layer/Intorduction.html" class="folder"><i class="Nav__arrow">&nbsp;</i>The DB layer</a><ul class='Nav'><li class='Nav__item '><a href="The_DB_layer/Intorduction.html">Intorduction</a></li><li class='Nav__item '><a href="The_DB_layer/Deep_into_the_rabbit_hole.html">Deep into the rabbit hole</a></li><li class='Nav__item  has-children'><a href="The_DB_layer/Writing_a_custom_driver/Writing_a_custom_driver.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Writing a custom driver</a><ul class='Nav'><li class='Nav__item '><a href="The_DB_layer/Writing_a_custom_driver/Writing_a_custom_driver.html">Writing a custom driver</a></li><li class='Nav__item '><a href="The_DB_layer/Writing_a_custom_driver/Metadata.html">Metadata</a></li><li class='Nav__item '><a href="The_DB_layer/Writing_a_custom_driver/Operation.html">Operation</a></li><li class='Nav__item '><a href="The_DB_layer/Writing_a_custom_driver/Query.html">Query</a></li><li class='Nav__item '><a href="The_DB_layer/Writing_a_custom_driver/Storage.html">Storage</a></li></ul></li></ul></li><li class='Nav__item  has-children'><a href="Uncovered_API/Managers.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Uncovered API</a><ul class='Nav'><li class='Nav__item '><a href="Uncovered_API/Managers.html">Managers</a></li><li class='Nav__item '><a href="Uncovered_API/Slack_how_to.html">Slack how to</a></li></ul></li><li class='Nav__item '><a href="Tests.html">Tests</a></li></ul>
 
             <div class="Links">
                                     <hr/>
@@ -98,37 +98,49 @@ will see that the basic methods are enough.</p>
   -&gt;get('context')
   -&gt;load(ID);
 </code></pre>
-<h3 id="page_Load+all+the+entries">Load all the entries</h3>
+<h3 id="page_Load+multiple+entries">Load multiple entries</h3>
+<p>You can ask for all of them:</p>
 <pre><code class="language-php">&lt;?php
 
 \Nuntius\Nuntius::getEntityManager()
   -&gt;get('context')
-  -&gt;loadAll();
+  -&gt;loadMultiple();
+</code></pre>
+<p>Or you can ask for multiple entities:</p>
+<pre><code class="language-php">&lt;?php
+
+\Nuntius\Nuntius::getEntityManager()
+  -&gt;get('context')
+  -&gt;loadMultiple(['id1', 'id2', 'id3']);
 </code></pre>
 <h3 id="page_Update+an+entry">Update an entry</h3>
 <pre><code class="language-php">&lt;?php
 
 \Nuntius\Nuntius::getEntityManager()
   -&gt;get('context')
-  -&gt;update(ID, ['foo' =&gt; 'bar']);
+  -&gt;update(['id' =&gt; 'ID', 'foo' =&gt; 'bar']);
 </code></pre>
-<h3 id="page_Delete+an+entry">Delete an entry</h3>
+<h3 id="page_Delete+from+the+DB">Delete from the DB</h3>
+<p>You can delete a single entity:</p>
 <pre><code class="language-php">&lt;?php
 
 \Nuntius\Nuntius::getEntityManager()
   -&gt;get('context')
-  -&gt;delete(ID);
+  -&gt;delete('id');
 </code></pre>
-<h3 id="page_Query+in+the+DB">Query in the DB</h3>
-<p>Except for the CRUD layer, sometimes you need to look for items. Have a look at
-the code:</p>
+<p>You can multiple entities:</p>
 <pre><code class="language-php">&lt;?php
-  \Nuntius\Nuntius::getRethinkDB()
-    -&gt;getTable('running_context')
-    -&gt;filter(\r\row('foo')-&gt;eq('bar'))
-    -&gt;filter(\r\row('bar')-&gt;ne('fo'))
-    -&gt;run($this-&gt;db-&gt;getConnection())
-    -&gt;toArray();
+
+\Nuntius\Nuntius::getEntityManager()
+  -&gt;get('context')
+  -&gt;deleteMultiple(['id1', 'id2', 'id3']);
+</code></pre>
+<p>Or you can delete all the entities:</p>
+<pre><code class="language-php">&lt;?php
+
+\Nuntius\Nuntius::getEntityManager()
+  -&gt;get('context')
+  -&gt;deleteMultiple();
 </code></pre>
     </div>
 
