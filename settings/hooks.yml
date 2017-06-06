@@ -46,6 +46,7 @@ webhooks:
 # List of webhooks and te matcher handler.
 webhooks_routing:
   'github': '\Nuntius\WebhooksRounting\GitHub'
+  'facebook': '\Nuntius\WebhooksRounting\Facebook'
 
 # List of event objects for event dispatcher.
 dispatcher:
