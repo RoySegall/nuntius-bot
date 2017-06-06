@@ -2,57 +2,73 @@
 
 namespace Nuntius\WebhooksRounting;
 
+use Nuntius\Nuntius;
 use Nuntius\WebhooksRoutingControllerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Handling incoming webhooks from GitHub.
+ * Handeling facebook bot.
  */
-class GitHub implements WebhooksRoutingControllerInterface {
+class Facebook implements WebhooksRoutingControllerInterface {
+
+  protected $accessToken;
 
   /**
    * {@inheritdoc}
    */
   public function response(Request $request) {
 
-    $payload = empty($_POST['payload']) ? file_get_contents("php://input") : $_POST['payload'];
-
-    if (empty($payload)) {
-      $data = [
-        'type' => 'error',
-        'error' => 'No payload found in the post.',
-      ];
-      \Nuntius\Nuntius::getEntityManager()->get('logger')->save($data);
-
-      return new JsonResponse($data, 501);
+    if (!empty($_GET['hub_challenge'])) {
+      // Validating facebook testing request.
+      return new Response($_GET['hub_challenge']);
     }
 
-    $payload = json_decode($payload);
-    $event = $payload->action;
+    $this->accessToken = Nuntius::getSettings()->getSetting('fb_token');
+    $fb_request = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
 
-    if (!$namespace = \Nuntius\Nuntius::getSettings()->getSetting('webhooks')['github'][$event]) {
-      $data = [
-        'type' => 'error',
-        'error' => 'There is no matching webhook controller for ' . $event . ' webhook.',
-      ];
-      \Nuntius\Nuntius::getEntityManager()->get('logger')->save($data);
-
-      return new JsonResponse($data, 501);
+    if (empty($fb_request['text'])) {
+      return;
     }
 
-    /** @var \Nuntius\GitHubWebhooksAbstract $webhook */
-    $webhook = new $namespace;
+    $info = $this->getSenderInfo($fb_request['sender']);
+    $options = [
+      'form_params' => [
+        'recipient' => [
+          'id' => $fb_request['sender']
+        ],
+        'message' => [
+          'text' => 'Hi there ' . $info->first_name . ' ' . $info->last_name,
+        ]
+      ],
+    ];
 
-    // Acting.
-    $webhook
-      ->setData($payload)
-      ->act();
+    Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
 
-    // Post acting.
-    $webhook->postAct();
+  }
 
-    return new JsonResponse(['type' => 'success', 'message' => 'The request has been processed.']);
+  protected function extractFacebookRequest(\stdClass $request) {
+    $payload = $request->entry[0];
+    $message = $payload->messaging[0];
+
+    return [
+      'id' => $payload->id,
+      'time' => $payload->time,
+      'sender' => $message->sender->id,
+      'recipient' => $message->recipient->id,
+      'text' => $message->message->text,
+      'mid' => $message->message->mid,
+      'seq' => $message->message->seq,
+    ];
+  }
+
+  protected function getSenderInfo($id) {
+    return json_decode(Nuntius::getGuzzle()->get('https://graph.facebook.com/v2.6/' . $id, [
+      'query' => [
+        'access_token' => $this->accessToken,
+        'fields' => 'first_name,last_name',
+      ],
+    ])->getBody());
   }
 
 }
