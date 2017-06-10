@@ -3,6 +3,7 @@
 namespace Nuntius\WebhooksRounting;
 
 use Nuntius\Nuntius;
+use Nuntius\TaskConversationInterface;
 use Nuntius\WebhooksRoutingControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,18 +29,63 @@ class Facebook implements WebhooksRoutingControllerInterface {
     $fb_request = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
 
     if (empty($fb_request['text'])) {
-      return;
+      return new Response();
     }
 
-    $info = $this->getSenderInfo($fb_request['sender']);
+    $task_info = Nuntius::getTasksManager()->getMatchingTask($fb_request['text']);
+
+    $sender_info = $this->getSenderInfo($fb_request['sender']);
+    list($plugin, $callback, $arguments) = $task_info;
+
+    if ($plugin instanceof TaskConversationInterface) {
+//      $this->client->send($plugin->startTalking(), $channel);
+      // todo: handle.
+    }
+
+    if (!$text = call_user_func_array([$plugin, $callback], $arguments)) {
+      $text = '<b>asdasd</b>';
+    }
+
+    $text = '
+    {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+           {
+            "title":"Welcome to Peters Hats",
+            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "subtitle":"Weve got the right hat for everyone.",
+            "default_action": {
+      "type": "web_url",
+              "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+              "messenger_extensions": true,
+              "webview_height_ratio": "tall",
+              "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+            },
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersfancybrownhats.com",
+                "title":"View Website"
+              },{
+      "type":"postback",
+                "title":"Start Chatting",
+                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+              }              
+            ]      
+          }]
+}
+}
+}';
+
     $options = [
       'form_params' => [
         'recipient' => [
           'id' => $fb_request['sender']
         ],
-        'message' => [
-          'text' => 'Hi there ' . $info->first_name . ' ' . $info->last_name,
-        ]
+        'message' => (array)json_decode($text),
       ],
     ];
 

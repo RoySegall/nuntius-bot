@@ -21,7 +21,7 @@ class LogThings extends CronTaskAbstract implements CronTaskInterface {
   public function run() {
     $this->container->get('manager.entity')
       ->get('logger')
-      ->insert([
+      ->save([
         'inside' => 'yes',
         'time' => date('d/m/Y H:i', time()),
       ]);
