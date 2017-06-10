@@ -166,4 +166,13 @@ class Nuntius {
     return self::container()->get('db');
   }
 
+  /**
+   * Get the context manager.
+   *
+   * @return ContextManager
+   */
+  public static function getContextManager() {
+    return self::container()->get('context');
+  }
+
 }
