@@ -77,6 +77,7 @@ class RunCommand extends Command  {
 
     // Login something to screen when the bot started to work.
     $client->connect()->then(function () use($io) {
+      Nuntius::getContextManager()->setContext('slack');
       $io->success("Nuntius started to work at " . date('d/m/Y H:i'));
     });
 
