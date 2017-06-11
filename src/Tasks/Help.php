@@ -19,7 +19,10 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
       '/help/' => [
         'human_command' => 'help',
         'description' => 'Giving you help',
-        'callback' => 'listOfScopes',
+        'callback' => [
+          'slack' => 'slackListOfScopes',
+          'facebook' => 'facebookListOfScopes',
+        ],
       ],
     ];
   }
@@ -27,7 +30,7 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
   /**
    * Get all the tasks and their scope(except for this one).
    */
-  public function listOfScopes() {
+  public function slackListOfScopes() {
     $task_manager = Nuntius::getTasksManager();
 
     $text = [];
@@ -43,6 +46,13 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
     }
 
     return implode("\n", $text);
+  }
+
+  /**
+   * A Facebook only text.
+   */
+  public function facebookListOfScopes() {
+    return 'a';
   }
 
 }

@@ -116,7 +116,19 @@ class TasksManager {
           return [$task, '', $arguments];
         }
 
-        return [$task, $scope['callback'], $arguments];
+        if (!is_array($scope['callback'])) {
+          $callback = $scope['callback'];
+        }
+        else {
+          $context = Nuntius::getContextManager()->getContext();
+          if (empty($scope['callback'][$context])) {
+            return FALSE;
+          }
+
+          $callback = $scope['callback'][$context];
+        }
+
+        return [$task, $callback, $arguments];
       }
     }
 

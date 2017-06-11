@@ -38,7 +38,7 @@ class Reminders extends TaskBaseAbstract implements TaskBaseInterface {
         'human_command' => 'remind me REMINDER',
         'description' => 'Next time you log in I will remind you what you '
         . ' wrote in the REMINDER',
-        'callback' => 'addReminder',
+        'callback' => ['slack' => 'addReminder'],
       ],
     ];
   }

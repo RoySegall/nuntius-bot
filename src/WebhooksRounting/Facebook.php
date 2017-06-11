@@ -40,54 +40,22 @@ class Facebook implements WebhooksRoutingControllerInterface {
     list($plugin, $callback, $arguments) = $task_info;
 
     if ($plugin instanceof TaskConversationInterface) {
-//      $this->client->send($plugin->startTalking(), $channel);
-      // todo: handle.
+      // todo: Handle task conversation.
+      // $this->client->send($plugin->startTalking(), $channel);
     }
 
     if (!$text = call_user_func_array([$plugin, $callback], $arguments)) {
-      $text = '<b>asdasd</b>';
+      $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
     }
 
-    $text = '
-    {
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-           {
-            "title":"Welcome to Peters Hats",
-            "image_url":"https://petersfancybrownhats.com/company_image.png",
-            "subtitle":"Weve got the right hat for everyone.",
-            "default_action": {
-      "type": "web_url",
-              "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
-              "messenger_extensions": true,
-              "webview_height_ratio": "tall",
-              "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-            },
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://petersfancybrownhats.com",
-                "title":"View Website"
-              },{
-      "type":"postback",
-                "title":"Start Chatting",
-                "payload":"DEVELOPER_DEFINED_PAYLOAD"
-              }              
-            ]      
-          }]
-}
-}
-}';
+    $message = !is_array($text) ? $message = ['text' => $text] : $text;
 
     $options = [
       'form_params' => [
         'recipient' => [
           'id' => $fb_request['sender']
         ],
-        'message' => (array)json_decode($text),
+        'message' => $message,
       ],
     ];
 
