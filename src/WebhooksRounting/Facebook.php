@@ -31,23 +31,57 @@ class Facebook implements WebhooksRoutingControllerInterface {
     $fb_request = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
 
     if (empty($fb_request['text'])) {
+      if (!empty($fb_request['postback'])) {
+        switch ($fb_request['postback']) {
+          case 'something_nice':
+            $texts = [
+              'You look lovely!',
+              'Usually you wakes up looking good. Today, you took it to the next level!',
+              'Hey there POTUS... sorry! thought you are some one else...',
+            ];
+
+            shuffle($texts);
+            $text = reset($texts);
+            break;
+
+          case 'what_is_my_name':
+            $info = $this->getSenderInfo($fb_request['sender']);
+            $text = 'You are ' . $info->first_name . ' ' . $info->last_name . ', in case you forgot';
+            break;
+
+          case 'toss_a_coin':
+            $options = ['heads', 'tail'];
+            shuffle($options);
+            $result = reset($options);
+
+            $text = "Tossing.... it's " . $result;
+            break;
+
+          default:
+            // That should not happen but - shoin - set it any way.
+            $text = 'Hey... Something is wrong dude. Try some thing else, no?';
+        }
+
+        $this->sendMessage($text, $fb_request);
+      }
+
       return new Response();
     }
 
     $task_info = Nuntius::getTasksManager()->getMatchingTask($fb_request['text']);
 
-    $sender_info = $this->getSenderInfo($fb_request['sender']);
     list($plugin, $callback, $arguments) = $task_info;
-
-    if ($plugin instanceof TaskConversationInterface) {
-      // todo: Handle task conversation.
-      // $this->client->send($plugin->startTalking(), $channel);
-    }
 
     if (!$text = call_user_func_array([$plugin, $callback], $arguments)) {
       $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
     }
 
+    $this->sendMessage($text, $fb_request);
+
+    return new Response();
+  }
+
+  protected function sendMessage($text, $fb_request) {
     $message = !is_array($text) ? $message = ['text' => $text] : $text;
 
     $options = [
@@ -60,14 +94,13 @@ class Facebook implements WebhooksRoutingControllerInterface {
     ];
 
     Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
-
   }
 
   protected function extractFacebookRequest(\stdClass $request) {
     $payload = $request->entry[0];
     $message = $payload->messaging[0];
 
-    return [
+    $payload = [
       'id' => $payload->id,
       'time' => $payload->time,
       'sender' => $message->sender->id,
@@ -76,6 +109,13 @@ class Facebook implements WebhooksRoutingControllerInterface {
       'mid' => $message->message->mid,
       'seq' => $message->message->seq,
     ];
+
+    if (!empty($message->postback)) {
+      // This is a post back button. Add it to the payload variable.
+      $payload['postback'] = $message->postback->payload;
+    }
+
+    return $payload;
   }
 
   protected function getSenderInfo($id) {

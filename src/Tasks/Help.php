@@ -53,33 +53,35 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
 
   /**
    * A Facebook only text.
+   *
+   * Facebook allows to send only 3 buttons - this what we will do.
    */
   public function facebookListOfScopes() {
-    $task_manager = Nuntius::getTasksManager();
-
-    $buttons = [];
-
-    foreach ($task_manager->getTasks() as $task_id => $task) {
-      if ($task_id == 'help') {
-        continue;
-      }
-
-      foreach ($task->scope() as $scope) {
-        $buttons[] = [
-          'type' => 'postback',
-          'title' => $scope['human_command'],
-          'payload' => $scope['human_command'],
-        ];
-      }
-    }
-
     return [
       'attachment' => [
         'type' => 'template',
         'payload' => [
           'template_type' => 'button',
-          'text' => 'What do you want to do next?',
-          'buttons' => array_slice($buttons, 0, 3),
+          'text' => 'hey there! This is the default help response ' .
+          'You can try this one and override it later on. ' .
+          'Hope you will get some ideas :)',
+          'buttons' => [
+            [
+              'type' => 'postback',
+              'title' => 'Say something nice',
+              'payload' => 'something_nice',
+            ],
+            [
+              'type' => 'postback',
+              'title' => "What's my name?",
+              'payload' => 'what_is_my_name',
+            ],
+            [
+              'type' => 'postback',
+              'title' => "Toss a coin?",
+              'payload' => 'toss_a_coin',
+            ],
+          ],
         ],
       ],
     ];
