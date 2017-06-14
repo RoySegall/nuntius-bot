@@ -93,4 +93,15 @@ class Element extends SendAPITransform {
     return $this;
   }
 
+  /**
+   * When using the same object for a list we need to reset the buttons.
+   *
+   * @return $this
+   */
+  public function resetButtons() {
+    $this->data['buttons'] = [];
+
+    return $this;
+  }
+
 }

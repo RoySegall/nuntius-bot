@@ -28,7 +28,7 @@ class FacebookTemplates {
     $this->button = new Button();
     $this->generic = new Generic();
     $this->element = new Element();
-//    $this->list = new ListTemplate();
+    $this->list = new ListTemplate();
 //    $this->openGraph = new OpenGraph();
 //    $this->receipt = new Receipt();
 //    $this->airlineBoarding = new AirlineBoarding();
