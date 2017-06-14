@@ -22,9 +22,12 @@ class FacebookTemplates {
 
   public $airlineFlightUpdate;
 
+  public $element;
+
   public function __construct() {
     $this->button = new Button();
-//    $this->generic = new Generic();
+    $this->generic = new Generic();
+    $this->element = new Element();
 //    $this->list = new ListTemplate();
 //    $this->openGraph = new OpenGraph();
 //    $this->receipt = new Receipt();
