@@ -31,8 +31,6 @@ class FacebookContentType {
 
   /**
    * FacebookContentType constructor.
-   *
-   * Setting up the 
    */
   public function __construct() {
     $this->text = new Text();
