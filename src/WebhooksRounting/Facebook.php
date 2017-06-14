@@ -2,6 +2,7 @@
 
 namespace Nuntius\WebhooksRounting;
 
+use Nuntius\FacebookSendApi\SendAPITransform;
 use Nuntius\Nuntius;
 use Nuntius\WebhooksRoutingControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +58,10 @@ class Facebook implements WebhooksRoutingControllerInterface {
       $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
     }
 
-    $this->sendMessage($text);
+    $facebook = new \Nuntius\FacebookSendApi\SendAPI();
+    $audio = $facebook->contentType->video->url('http://techslides.com/demos/sample-videos/small.mp4');
+
+    $this->sendMessage($audio);
 
     return new Response();
   }
@@ -69,7 +73,12 @@ class Facebook implements WebhooksRoutingControllerInterface {
    *   The text is self or an array matching the send API.
    */
   protected function sendMessage($text) {
-    $message = !is_array($text) ? $message = ['text' => $text] : $text;
+    if ($text instanceof SendAPITransform) {
+      $message = $text->getData();
+    }
+    else {
+      $message = !is_array($text) ? $message = ['text' => $text] : $text;
+    }
 
     $options = [
       'form_params' => [

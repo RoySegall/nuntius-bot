@@ -2,4 +2,8 @@
 
 require_once 'vendor/autoload.php';
 
-Kint::dump(\Nuntius\Nuntius::getUpdateManager());
+$facebook = new \Nuntius\FacebookSendApi\SendAPI();
+
+$text = $facebook->contentType->audio->url('https://petersapparel.com/bin/clip.mp3');
+
+Kint::dump($text->getData());
