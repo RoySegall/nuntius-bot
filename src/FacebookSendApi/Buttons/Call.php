@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/call-button
  */
-class Call extends SendAPITransform {
+class Call extends SendAPITransform implements ButtonInterface {
 
   /**
    * Call constructor.

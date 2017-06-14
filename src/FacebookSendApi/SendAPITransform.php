@@ -2,7 +2,7 @@
 
 namespace Nuntius\FacebookSendApi;
 
-abstract class SendAPITransform {
+abstract class SendAPITransform implements SendAPITransformInterface {
 
   /**
    * @var array

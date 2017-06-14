@@ -4,6 +4,12 @@ require_once 'vendor/autoload.php';
 
 $facebook = new \Nuntius\FacebookSendApi\SendAPI();
 
-$text = $facebook->buttons->buy->title('a')->currency('ILS')->merchantName('ovad');
+$buttons_template = $facebook
+  ->templates
+  ->button->text('Send me a message');
 
-Kint::dump($text->getData());
+$buttons_template->addButton($facebook->buttons->url->title('foo')->url('http://google.com'));
+$buttons_template->addButton($facebook->buttons->postBack->title('foo')->payload('FOO'));
+$buttons_template->addButton($facebook->buttons->postBack->title('foo')->payload('FOO'));
+
+Kint::dump($buttons_template->getData());

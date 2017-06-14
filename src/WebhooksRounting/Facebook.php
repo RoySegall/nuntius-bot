@@ -59,9 +59,16 @@ class Facebook implements WebhooksRoutingControllerInterface {
     }
 
     $facebook = new \Nuntius\FacebookSendApi\SendAPI();
-    $audio = $facebook->contentType->video->url('http://techslides.com/demos/sample-videos/small.mp4');
 
-    $this->sendMessage($audio);
+    $buttons_template = $facebook
+      ->templates
+      ->button->text('Send me a message');
+
+    $buttons_template->addButton($facebook->buttons->postBack->title('Say something nice')->payload('something_nice'));
+    $buttons_template->addButton($facebook->buttons->postBack->title('What is my name')->payload('what_is_my_name'));
+    $buttons_template->addButton($facebook->buttons->postBack->title('Toss a coin')->payload('toss_a_coin'));
+
+    $this->sendMessage($buttons_template);
 
     return new Response();
   }

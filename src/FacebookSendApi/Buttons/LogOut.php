@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/account-linking/unlink-account
  */
-class LogOut extends SendAPITransform {
+class LogOut extends SendAPITransform implements ButtonInterface {
 
   /**
    * LogOut constructor.

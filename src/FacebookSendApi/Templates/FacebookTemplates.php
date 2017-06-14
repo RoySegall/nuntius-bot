@@ -1,6 +1,10 @@
 <?php
 
+namespace Nuntius\FacebookSendApi\Templates;
+
 class FacebookTemplates {
+
+  public $button;
 
   public $generic;
 
@@ -17,5 +21,17 @@ class FacebookTemplates {
   public $airlineItinerary;
 
   public $airlineFlightUpdate;
+
+  public function __construct() {
+    $this->button = new Button();
+//    $this->generic = new Generic();
+//    $this->list = new ListTemplate();
+//    $this->openGraph = new OpenGraph();
+//    $this->receipt = new Receipt();
+//    $this->airlineBoarding = new AirlineBoarding();
+//    $this->airlineCheckIn = new AirlineCheckIn();
+//    $this->airlineItinerary = new AirlineItinerary();
+//    $this->airlineFlightUpdate = new AirlineFlightUpdate();
+  }
 
 }

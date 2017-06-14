@@ -4,6 +4,7 @@ namespace Nuntius\FacebookSendApi;
 
 use Nuntius\FacebookSendApi\Buttons\FacebookButtons;
 use Nuntius\FacebookSendApi\ContentType\FacebookContentType;
+use Nuntius\FacebookSendApi\Templates\FacebookTemplates;
 
 class SendAPI {
 
@@ -20,6 +21,7 @@ class SendAPI {
   public function __construct() {
     $this->contentType = new FacebookContentType();
     $this->buttons = new FacebookButtons();
+    $this->templates = new FacebookTemplates();
   }
 
 }

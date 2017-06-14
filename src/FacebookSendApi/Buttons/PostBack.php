@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/postback-button
  */
-class PostBack extends SendAPITransform {
+class PostBack extends SendAPITransform implements ButtonInterface {
 
   /**
    * PostBack constructor.

@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/buy-button
  */
-class Buy extends SendAPITransform {
+class Buy extends SendAPITransform implements ButtonInterface {
 
   /**
    * Buy constructor.

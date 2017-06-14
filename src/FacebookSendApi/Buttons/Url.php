@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/url-button
  */
-class Url extends SendAPITransform {
+class Url extends SendAPITransform implements ButtonInterface {
 
   /**
    * Url constructor.

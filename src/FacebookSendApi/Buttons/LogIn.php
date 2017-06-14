@@ -9,7 +9,7 @@ use Nuntius\FacebookSendApi\SendAPITransform;
  *
  * @see https://developers.facebook.com/docs/messenger-platform/account-linking/link-account
  */
-class LogIn extends SendAPITransform {
+class LogIn extends SendAPITransform implements ButtonInterface {
 
   /**
    * LogIn constructor.
