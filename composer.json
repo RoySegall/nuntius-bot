@@ -21,8 +21,7 @@
     "Cron/Cron": "^1.2",
     "symfony/http-kernel": "^3.2",
     "justinwalsh/daux.io": "^0.3.2",
-    "symfony/filesystem": "^3.2",
-    "pimax/fb-messenger-php": "dev-master"
+    "symfony/filesystem": "^3.2"
   },
   "autoload": {
     "psr-4": {

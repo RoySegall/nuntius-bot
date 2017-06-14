@@ -8,13 +8,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Handeling facebook bot.
+ * Handling facebook bot.
  */
 class Facebook implements WebhooksRoutingControllerInterface {
 
+  /**
+   * The access token of Facebook.
+   * @var string
+   */
   protected $accessToken;
 
-  protected $fbRquest;
+  /**
+   * The Facebook request array information including the post back button.
+   *
+   * @var array
+   */
+  protected $fbRequest;
 
   /**
    * {@inheritdoc}
@@ -29,18 +38,18 @@ class Facebook implements WebhooksRoutingControllerInterface {
     Nuntius::getContextManager()->setContext('facebook');
 
     $this->accessToken = Nuntius::getSettings()->getSetting('fb_token');
-    $this->fbRquest = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
+    $this->fbRequest = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
 
-    if (empty($fb_request['text'])) {
+    if (empty($this->fbRequest['text'])) {
 
-      if (!empty($fb_request['postback'])) {
+      if (!empty($this->fbRequest['postback'])) {
         $this->sendMessage($this->helpRouter());
       }
 
       return new Response();
     }
 
-    $task_info = Nuntius::getTasksManager()->getMatchingTask($fb_request['text']);
+    $task_info = Nuntius::getTasksManager()->getMatchingTask($this->fbRequest['text']);
 
     list($plugin, $callback, $arguments) = $task_info;
 
@@ -53,13 +62,19 @@ class Facebook implements WebhooksRoutingControllerInterface {
     return new Response();
   }
 
+  /**
+   * Sending a message.
+   *
+   * @param array|string $text
+   *   The text is self or an array matching the send API.
+   */
   protected function sendMessage($text) {
     $message = !is_array($text) ? $message = ['text' => $text] : $text;
 
     $options = [
       'form_params' => [
         'recipient' => [
-          'id' => $this->fbRquest['sender'],
+          'id' => $this->fbRequest['sender'],
         ],
         'message' => $message,
       ],
@@ -68,6 +83,15 @@ class Facebook implements WebhooksRoutingControllerInterface {
     Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
   }
 
+  /**
+   * Extracting information from the request.
+   *
+   * @param \stdClass $request
+   *   The request object.
+   *
+   * @return array
+   *   Array of the request.
+   */
   protected function extractFacebookRequest(\stdClass $request) {
     $payload = $request->entry[0];
     $message = $payload->messaging[0];
@@ -90,6 +114,17 @@ class Facebook implements WebhooksRoutingControllerInterface {
     return $payload;
   }
 
+  /**
+   * Get the sender information.
+   *
+   * @param $id
+   *   The ID of the user.
+   * @param string $fields
+   *   The fields we desire to retrieve. Default to first and last name. The
+   *   fields separated by comma.
+   *
+   * @return mixed
+   */
   protected function getSenderInfo($id, $fields = 'first_name,last_name') {
     return json_decode(Nuntius::getGuzzle()->get('https://graph.facebook.com/v2.6/' . $id, [
       'query' => [
@@ -99,8 +134,14 @@ class Facebook implements WebhooksRoutingControllerInterface {
     ])->getBody());
   }
 
+  /**
+   * Return an answer according to the postback button.
+   *
+   * @return string
+   *   The string to return to the user.
+   */
   protected function helpRouter() {
-    switch ($this->fbRquest['postback']) {
+    switch ($this->fbRequest['postback']) {
       case 'something_nice':
         $texts = [
           'You look lovely!',
@@ -112,7 +153,7 @@ class Facebook implements WebhooksRoutingControllerInterface {
         return reset($texts);
 
       case 'what_is_my_name':
-        $info = $this->getSenderInfo($this->fbRquest['sender']);
+        $info = $this->getSenderInfo($this->fbRequest['sender']);
         return 'You are ' . $info->first_name . ' ' . $info->last_name . ', in case you forgot';
 
       case 'toss_a_coin':
