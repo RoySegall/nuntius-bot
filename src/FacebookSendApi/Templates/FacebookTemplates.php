@@ -29,7 +29,7 @@ class FacebookTemplates {
     $this->generic = new Generic();
     $this->element = new Element();
     $this->list = new ListTemplate();
-//    $this->openGraph = new OpenGraph();
+    $this->openGraph = new OpenGraph();
 //    $this->receipt = new Receipt();
 //    $this->airlineBoarding = new AirlineBoarding();
 //    $this->airlineCheckIn = new AirlineCheckIn();
