@@ -63,7 +63,7 @@ class Facebook implements WebhooksRoutingControllerInterface {
       ->templates
       ->openGraph
       ->url('https://open.spotify.com/track/7GhIk7Il098yCjg4BQjzvb');
-    
+
     $this->sendMessage($buttons_template);
 
     return new Response();

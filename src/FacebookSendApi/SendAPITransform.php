@@ -10,10 +10,19 @@ abstract class SendAPITransform implements SendAPITransformInterface {
   protected $data;
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getData() {
     return $this->data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reset() {
+    $this->data = [];
+
+    return $this;
   }
 
 }
