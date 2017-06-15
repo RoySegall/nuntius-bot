@@ -28,6 +28,14 @@ class FacebookTemplates {
 
   public $boardingPass;
 
+  public $passengerInfo;
+
+  public $flightInfo;
+
+  public $passengerSegmentInfo;
+
+  public $priceInfo;
+
   public function __construct() {
     $this->button = new Button();
     $this->generic = new Generic();
@@ -40,7 +48,11 @@ class FacebookTemplates {
     $this->boardingPass = new BoardingPass();
     $this->airport = new Airport();
     $this->airlineCheckIn = new AirlineCheckIn();
-//    $this->airlineItinerary = new AirlineItinerary();
+    $this->airlineItinerary = new AirlineItinerary();
+    $this->passengerInfo = new PassengerInfo();
+    $this->flightInfo = new FlightInfo();
+    $this->passengerSegmentInfo = new PassengerSegmentInfo();
+    $this->priceInfo = new PriceInfo();
 //    $this->airlineFlightUpdate = new AirlineFlightUpdate();
   }
 

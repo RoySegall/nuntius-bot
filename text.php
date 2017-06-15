@@ -6,20 +6,59 @@ $facebook = new \Nuntius\FacebookSendApi\SendAPI();
 
 $buttons_template = $facebook
   ->templates
-  ->airlineCheckIn;
+  ->airlineItinerary;
 
-$buttons_template->introMessage('You ticket')
+$buttons_template
+  ->introMessage('You ticket')
   ->locale('he_IL')
   ->themeColor('#ff9900')
-  ->introMessage('Hey!')
-  ->pnrNumber('110090')
-  ->flightNumber('334455')
-  ->departureAirport($facebook->templates->airport->airportCode('Roy')->city('RamatGan')->gate('3')->terminal(3))
-  ->arrivalAirport($facebook->templates->airport->airportCode('Noy')->city('Ranana'))
-  ->boardingTime('2016-01-02T19:05')
-  ->departureTime('2016-01-03T19:05')
-  ->arrivalTime('2016-01-03T19:05')
-->checkinUrl('http://mako.co.il');
+  ->pnrNumber('119900')
+  ->passengerInfo(
+    $facebook->templates->passengerInfo
+      ->name('Roy Segall')
+      ->ticketNumber('1')
+      ->passengerId('22')
+  )
+  ->passengerInfo(
+    $facebook->templates->passengerInfo
+      ->reset()
+      ->name('Noy Geva')
+      ->ticketNumber('2')
+      ->passengerId('54')
+  )
+  ->flightInfo(
+    $facebook->templates->flightInfo
+      ->flightNumber('345543')
+      ->connectionId('2345')
+      ->segmentId('90')
+      ->aircraftType('Boing 747')
+      ->departureAirport($facebook->templates->airport->terminal('Natbag')->city('Tel Aviv')->gate('D3')->airportCode('NATBAG'))
+      ->arrivalAirport($facebook->templates->airport->terminal('Rome')->city('Rome')->gate('D34')->airportCode('ROME'))
+      ->departureTime('2016-01-02T19:45')
+      ->arrivalTime('2016-01-06T19:45')
+      ->travelClass('business')
+  )
+  ->passengerSegmentInfo(
+    $facebook->templates->passengerSegmentInfo
+      ->segmentId('90')
+      ->passengerId('22')
+      ->seat('12A')
+      ->seatType('Business')
+  )
+  ->passengerSegmentInfo(
+    $facebook->templates->passengerSegmentInfo
+      ->reset()
+      ->segmentId('90')
+      ->passengerId('54')
+      ->seat('12B')
+      ->seatType('Business')
+      ->addProductInfo('Pizza', 'Corn')
+  )
+  ->priceInfo($facebook->templates->priceInfo->amount('22000')->currency('ILS')->title('Good!'))
+  ->basePrice('22000')
+  ->tax('10')
+  ->totalPrice('22900')
+  ->currency('ILS');
 
 $options = [
   'form_params' => [
