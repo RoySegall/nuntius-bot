@@ -33,7 +33,7 @@ class FacebookTemplates {
     $this->list = new ListTemplate();
     $this->openGraph = new OpenGraph();
     $this->receiptElement = new ReceiptElement();
-//    $this->receipt = new Receipt();
+    $this->receipt = new Receipt();
 //    $this->airlineBoarding = new AirlineBoarding();
 //    $this->airlineCheckIn = new AirlineCheckIn();
 //    $this->airlineItinerary = new AirlineItinerary();

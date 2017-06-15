@@ -282,7 +282,7 @@ class Receipt extends SendAPITransform {
    * @return $this
    */
   public function totalCost($total_tax) {
-    $this->data['attachment']['payload']['summary']['total_tax'] = $total_tax;
+    $this->data['attachment']['payload']['summary']['total_cost'] = $total_tax;
 
     return $this;
   }
@@ -298,7 +298,7 @@ class Receipt extends SendAPITransform {
    * @return $this
    */
   public function addAdjustment($name, $amount) {
-    $this->data['attachment']['payload']['adjustment'][] = [
+    $this->data['attachment']['payload']['adjustments'][] = [
       'name' => $name,
       'amount' => $amount,
     ];
