@@ -38,6 +38,7 @@ class FacebookTemplates {
     $this->receipt = new Receipt();
     $this->airlineBoarding = new AirlineBoarding();
     $this->boardingPass = new BoardingPass();
+    $this->airport = new Airport();
 //    $this->airlineCheckIn = new AirlineCheckIn();
 //    $this->airlineItinerary = new AirlineItinerary();
 //    $this->airlineFlightUpdate = new AirlineFlightUpdate();
