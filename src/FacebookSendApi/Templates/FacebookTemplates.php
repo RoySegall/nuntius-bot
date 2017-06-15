@@ -39,7 +39,7 @@ class FacebookTemplates {
     $this->airlineBoarding = new AirlineBoarding();
     $this->boardingPass = new BoardingPass();
     $this->airport = new Airport();
-//    $this->airlineCheckIn = new AirlineCheckIn();
+    $this->airlineCheckIn = new AirlineCheckIn();
 //    $this->airlineItinerary = new AirlineItinerary();
 //    $this->airlineFlightUpdate = new AirlineFlightUpdate();
   }
