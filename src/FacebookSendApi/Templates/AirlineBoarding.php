@@ -72,7 +72,7 @@ class AirlineBoarding extends SendAPITransform {
    * @return $this
    */
   public function addBoardingPass(BoardingPass $boardingPass) {
-    $this->data['attachment']['payload']['boarding_pass'] = $boardingPass->getData();
+    $this->data['attachment']['payload']['boarding_pass'][] = $boardingPass->getData();
 
     return $this;
   }

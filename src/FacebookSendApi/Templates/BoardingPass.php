@@ -167,8 +167,8 @@ class BoardingPass extends SendAPITransform {
    *
    * @return $this
    */
-  public function barcode_image_url($barcode_image_url) {
-    $this->data['barcode_image_ur'] = $barcode_image_url;
+  public function barcodeImageUrl($barcode_image_url) {
+    $this->data['barcode_image_url'] = $barcode_image_url;
 
     return $this;
   }
@@ -223,7 +223,7 @@ class BoardingPass extends SendAPITransform {
    *
    * @return $this
    */
-  public function arrival_airport(Airport $arrival_airport) {
+  public function arrivalAirport(Airport $arrival_airport) {
     $this->data['flight_info']['arrival_airport'] = $arrival_airport->getData();
 
     return $this;
@@ -238,7 +238,7 @@ class BoardingPass extends SendAPITransform {
    * @return $this
    */
   public function boardingTime($boarding_time) {
-    $this->data['flight_schedule']['boarding_time'] = $boarding_time;
+    $this->data['flight_info']['flight_schedule']['boarding_time'] = $boarding_time;
 
     return $this;
   }
@@ -252,7 +252,7 @@ class BoardingPass extends SendAPITransform {
    * @return $this
    */
   public function departureTime($departure_time) {
-    $this->data['flight_schedule']['departure_time'] = $departure_time;
+    $this->data['flight_info']['flight_schedule']['departure_time'] = $departure_time;
 
     return $this;
   }
@@ -266,7 +266,7 @@ class BoardingPass extends SendAPITransform {
    * @return $this
    */
   public function arrivalTime($arrival_time) {
-    $this->data['flight_schedule']['arrival_time'] = $arrival_time;
+    $this->data['flight_info']['flight_schedule']['arrival_time'] = $arrival_time;
 
     return $this;
   }
