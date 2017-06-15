@@ -36,6 +36,8 @@ class FacebookTemplates {
 
   public $priceInfo;
 
+  public $updateFlightInfo;
+
   public function __construct() {
     $this->button = new Button();
     $this->generic = new Generic();
@@ -53,7 +55,8 @@ class FacebookTemplates {
     $this->flightInfo = new FlightInfo();
     $this->passengerSegmentInfo = new PassengerSegmentInfo();
     $this->priceInfo = new PriceInfo();
-//    $this->airlineFlightUpdate = new AirlineFlightUpdate();
+    $this->airlineFlightUpdate = new AirlineFlightUpdate();
+    $this->updateFlightInfo = new UpdateFlightInfo();
   }
 
 }
