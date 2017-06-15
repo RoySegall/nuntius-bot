@@ -26,6 +26,8 @@ class FacebookTemplates {
 
   public $receiptElement;
 
+  public $boardingPass;
+
   public function __construct() {
     $this->button = new Button();
     $this->generic = new Generic();
@@ -34,7 +36,8 @@ class FacebookTemplates {
     $this->openGraph = new OpenGraph();
     $this->receiptElement = new ReceiptElement();
     $this->receipt = new Receipt();
-//    $this->airlineBoarding = new AirlineBoarding();
+    $this->airlineBoarding = new AirlineBoarding();
+    $this->boardingPass = new BoardingPass();
 //    $this->airlineCheckIn = new AirlineCheckIn();
 //    $this->airlineItinerary = new AirlineItinerary();
 //    $this->airlineFlightUpdate = new AirlineFlightUpdate();

@@ -6,39 +6,16 @@ $facebook = new \Nuntius\FacebookSendApi\SendAPI();
 
 $buttons_template = $facebook
   ->templates
-  ->receipt;
+  ->airlineBoarding;
 
-$buttons_template
-  ->merchantName('Ovad')
-  ->recipientName('Roy Segall')
-  ->currency('ILS')
-  ->paymentMethod('cache')
-  ->orderNumber('mako.co.il')
-  ->totalCost('30')
-  ->addElement(
-    $facebook->templates->receiptElement
-      ->title('Sabich')
-      ->subtitle('Salad, Egg, Eggplant, Hummos')
-      ->price(25)
-      ->quantity(1)
-      ->currency('ILS')
-      ->imageUrl('https://images1.ynet.co.il/PicServer2/13062011/3366449/2wa.jpg')
-  )
-  ->addElement(
-    $facebook->templates->receiptElement
-      ->reset()
-      ->title('Grapes')
-      ->price(5)
-      ->quantity(1)
-      ->currency('ILS')
-      ->imageUrl('http://www.burgerking.co.il/Uploads/Product%20Images/GrapeJuiceBottle.jpg')
-  )
-  ->street1('Harav levin')
-  ->city('Ramat gan')
-  ->state('Israel')
-  ->country('IL')
-  ->postalCode('52260')
-  ->addAdjustment('Hate eggplant', 20)
-  ->addAdjustment('First timer', 10);
+$options = [
+  'form_params' => [
+    'recipient' => [
+      'id' => '1500215420053069',
+    ],
+    'message' => $buttons_template->getData(),
+  ],
+];
 
-Kint::dump($buttons_template->getData());
+$access_token = 'EAABkfZBB2iyQBAB9zNjZBe6TRC34vNQXCZBYXPJvpVWXht7dsR4dNFYo3MT1iU1FhqtPZCXn7Cz0pevEuG0pWIOYrDQ0foUqhoYWZCEODzmzpzerXyXzRbLz53l0pnQUs3rFXdJD3pqapfeL64vgjgP9AY3Gx0DOp16GBQI53uwZDZD';
+\Nuntius\Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $access_token, $options);
