@@ -4,40 +4,94 @@ namespace Nuntius\FacebookSendApi\Templates;
 
 class FacebookTemplates {
 
+  /**
+   * @var Button
+   */
   public $button;
 
+  /**
+   * @var Generic
+   */
   public $generic;
 
+  /**
+   * @var ListTemplate
+   */
   public $list;
 
+  /**
+   * @var OpenGraph
+   */
   public $openGraph;
 
+  /**
+   * @var Receipt
+   */
   public $receipt;
 
+  /**
+   * @var AirlineBoarding
+   */
   public $airlineBoarding;
 
+  /**
+   * @var AirlineCheckIn
+   */
   public $airlineCheckIn;
 
+  /**
+   * @var AirlineItinerary
+   */
   public $airlineItinerary;
 
+  /**
+   * @var AirlineFlightUpdate
+   */
   public $airlineFlightUpdate;
 
+  /**
+   * @var Element
+   */
   public $element;
 
+  /**
+   * @var ReceiptElement
+   */
   public $receiptElement;
 
+  /**
+   * @var BoardingPass
+   */
   public $boardingPass;
 
+  /**
+   * @var PassengerInfo
+   */
   public $passengerInfo;
 
+  /**
+   * @var FlightInfo
+   */
   public $flightInfo;
 
+  /**
+   * @var PassengerSegmentInfo
+   */
   public $passengerSegmentInfo;
 
+  /**
+   * @var PriceInfo
+   */
   public $priceInfo;
 
+  /**
+   * @var UpdateFlightInfo
+   */
   public $updateFlightInfo;
 
+  /**
+   * FacebookTemplates constructor.
+   */
   public function __construct() {
     $this->button = new Button();
     $this->generic = new Generic();
