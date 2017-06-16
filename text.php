@@ -4,17 +4,14 @@ require_once 'vendor/autoload.php';
 
 $facebook = new \Nuntius\FacebookSendApi\SendAPI();
 
-$buttons_template = $facebook
-  ->quickReplies
-  ->text('Select a color')
-  ->addQuickReply($facebook->quickReply->contentType('location'));
+$buttons_template = $facebook->senderAction->senderAction('TYPING_ON');
 
 $options = [
   'form_params' => [
     'recipient' => [
       'id' => '1500215420053069',
     ],
-    'message' => $buttons_template->getData(),
+    'sender_action' => 'mark_seen',
   ],
 ];
 

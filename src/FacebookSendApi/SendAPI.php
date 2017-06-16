@@ -23,8 +23,19 @@ class SendAPI {
    */
   public $templates;
 
+  /**
+   * @var QuickReplies
+   */
   public $quickReplies;
 
+  /**
+   * @var QuickReply
+   */
+  public $quickReply;
+
+  /**
+   * SendAPI constructor.
+   */
   public function __construct() {
     $this->contentType = new FacebookContentType();
     $this->buttons = new FacebookButtons();
