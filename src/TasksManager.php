@@ -117,10 +117,16 @@ class TasksManager {
         }
 
         if (!is_array($scope['callback'])) {
+          // Not an array. The returned output can be used in any platform.
+
           $callback = $scope['callback'];
         }
         else {
+          // Get the current context.
           $context = Nuntius::getContextManager()->getContext();
+
+          // Check if the current context, i.e. Facebook or Slack, can be
+          // supported by the matching task.
           if (empty($scope['callback'][$context])) {
             return FALSE;
           }

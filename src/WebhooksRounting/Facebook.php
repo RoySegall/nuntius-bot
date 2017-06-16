@@ -15,6 +15,7 @@ class Facebook implements WebhooksRoutingControllerInterface {
 
   /**
    * The access token of Facebook.
+   *
    * @var string
    */
   protected $accessToken;
@@ -58,46 +59,7 @@ class Facebook implements WebhooksRoutingControllerInterface {
       $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
     }
 
-    $facebook = new \Nuntius\FacebookSendApi\SendAPI();
-
-    $buttons_template = $facebook
-      ->templates
-      ->receipt;
-
-    $buttons_template
-      ->merchantName('Ovad')
-      ->recipientName('Roy Segall')
-      ->currency('ILS')
-      ->paymentMethod('cache')
-      ->orderNumber('mako.co.il')
-      ->totalCost('30')
-      ->addElement(
-        $facebook->templates->receiptElement
-          ->title('Sabich')
-          ->subtitle('Salad, Egg, Eggplant, Hummos')
-          ->price(25)
-          ->quantity(1)
-          ->currency('ILS')
-          ->imageUrl('https://images1.ynet.co.il/PicServer2/13062011/3366449/2wa.jpg')
-      )
-      ->addElement(
-        $facebook->templates->receiptElement
-          ->reset()
-          ->title('Grapes')
-          ->price(5)
-          ->quantity(1)
-          ->currency('ILS')
-          ->imageUrl('http://www.burgerking.co.il/Uploads/Product%20Images/GrapeJuiceBottle.jpg')
-      )
-      ->street1('Harav levin')
-      ->city('Ramat gan')
-      ->state('Israel')
-      ->country('IL')
-      ->postalCode('52260')
-    ->addAdjustment('Hate eggplant', 20)
-    ->addAdjustment('First timer', 10);
-
-    $this->sendMessage($buttons_template);
+    $this->sendMessage($text);
 
     return new Response();
   }
@@ -116,16 +78,49 @@ class Facebook implements WebhooksRoutingControllerInterface {
       $message = !is_array($text) ? $message = ['text' => $text] : $text;
     }
 
+    $this->send('message', $message);
+  }
+
+  /**
+   * Send an action to the user.
+   *
+   * @param $action
+   *   The action: mark_seen, typing_on or typing_off.
+   */
+  public function senderActions($action) {
+    $this->send('sender_action', $action);
+  }
+
+  /**
+   * Sending to the facebook messenger some payload.
+   *
+   * It could be a message with attachment or or a sender action.
+   *
+   * @param $key
+   *   If you want to send a message the key need to be 'message'. If not, use
+   *   'sender_action'
+   *
+   * @param $value
+   *   The value of the payload.
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   */
+  protected function send($key, $value) {
     $options = [
       'form_params' => [
         'recipient' => [
           'id' => $this->fbRequest['sender'],
         ],
-        'message' => $message,
+        $key => $value,
       ],
     ];
 
-    Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
+    if (!empty($this->tag)) {
+      // Adding the tag to the body.
+      $options['form_params']['tag'] = $this->tag;
+    }
+
+    return Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
   }
 
   /**

@@ -34,6 +34,11 @@ class SendAPI {
   public $quickReply;
 
   /**
+   * @var AttachmentUploadAPI
+   */
+  public $attachmentUploadAPI;
+
+  /**
    * SendAPI constructor.
    */
   public function __construct() {
@@ -42,6 +47,7 @@ class SendAPI {
     $this->templates = new FacebookTemplates();
     $this->quickReplies = new QuickReplies();
     $this->quickReply = new QuickReply();
+    $this->attachmentUploadAPI = new AttachmentUploadAPI();
   }
 
 }
