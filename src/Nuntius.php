@@ -175,4 +175,13 @@ class Nuntius {
     return self::container()->get('context');
   }
 
+  /**
+   * Get the context manager.
+   *
+   * @return \FacebookMessengerSendApi\SendAPI
+   */
+  public static function facebookSendApi() {
+    return self::container()->get('facebook_send_api');
+  }
+
 }
