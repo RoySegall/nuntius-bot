@@ -35,9 +35,17 @@ class TasksTest extends TestsAbstract {
    * @covers TasksManager::get()
    */
   public function testGetMatchingTask() {
+    Nuntius::getContextManager()->setContext('slack');
     $this->assertEquals($this->tasks->getMatchingTask('help'), [
       $this->tasks->get('help'),
-      'listOfScopes',
+      'slackListOfScopes',
+      []
+    ]);
+
+    Nuntius::getContextManager()->setContext('facebook');
+    $this->assertEquals($this->tasks->getMatchingTask('help'), [
+      $this->tasks->get('help'),
+      'facebookListOfScopes',
       []
     ]);
 
