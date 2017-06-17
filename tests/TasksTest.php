@@ -96,7 +96,7 @@ class TasksTest extends TestsAbstract {
       '`delete information`: Delete an information',
       '`notify team`: Notify the team about something',
     ];
-    $this->assertEquals($this->tasks->get('help')->listOfScopes(), implode("\n", $helps));
+    $this->assertEquals($this->tasks->get('help')->slackListOfScopes(), implode("\n", $helps));
   }
 
   /**
