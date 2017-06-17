@@ -57,34 +57,15 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
    * Facebook allows to send only 3 buttons - this what we will do.
    */
   public function facebookListOfScopes() {
-    return [
-      'attachment' => [
-        'type' => 'template',
-        'payload' => [
-          'template_type' => 'button',
-          'text' => 'hey there! This is the default help response ' .
-          'You can try this one and override it later on. ' .
-          'Hope you will get some ideas :)',
-          'buttons' => [
-            [
-              'type' => 'postback',
-              'title' => 'Say something nice',
-              'payload' => 'something_nice',
-            ],
-            [
-              'type' => 'postback',
-              'title' => "What's my name?",
-              'payload' => 'what_is_my_name',
-            ],
-            [
-              'type' => 'postback',
-              'title' => "Toss a coin?",
-              'payload' => 'toss_a_coin',
-            ],
-          ],
-        ],
-      ],
-    ];
+    $send_api = Nuntius::facebookSendApi();
+
+    return $send_api->templates->button
+      ->text('hey there! This is the default help response ' .
+      'You can try this one and override it later on. ' .
+      'Hope you will get some ideas :)')
+      ->addButton($send_api->buttons->postBack->title('Say something nice')->payload('something_nice'))
+      ->addButton($send_api->buttons->postBack->reset()->title("What's my name?")->payload('what_is_my_name'))
+      ->addButton($send_api->buttons->postBack->reset()->title('Toss a coin?')->payload('toss_a_coin'));
   }
 
 }

@@ -28,6 +28,18 @@ class Facebook implements WebhooksRoutingControllerInterface {
   protected $fbRequest;
 
   /**
+   * @var \FacebookMessengerSendApi\SendAPI
+   */
+  protected $sendAPI;
+
+  /**
+   * Facebook constructor.
+   */
+  function __construct() {
+    $this->sendAPI = Nuntius::facebookSendApi();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function response(Request $request) {
@@ -39,13 +51,17 @@ class Facebook implements WebhooksRoutingControllerInterface {
 
     Nuntius::getContextManager()->setContext('facebook');
 
-    $this->accessToken = Nuntius::getSettings()->getSetting('fb_token');
     $this->fbRequest = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
+    $this->accessToken = Nuntius::getSettings()->getSetting('fb_token');
+
+    $this->sendAPI
+      ->setRecipientId($this->fbRequest['sender'])
+      ->setAccessToken($this->accessToken);
 
     if (empty($this->fbRequest['text'])) {
 
       if (!empty($this->fbRequest['postback'])) {
-        $this->sendMessage($this->helpRouter());
+        $this->sendAPI->sendMessage($this->helpRouter());
       }
 
       return new Response();
@@ -59,68 +75,9 @@ class Facebook implements WebhooksRoutingControllerInterface {
       $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
     }
 
-    $this->sendMessage($text);
+    $this->sendAPI->sendMessage($text);
 
     return new Response();
-  }
-
-  /**
-   * Sending a message.
-   *
-   * @param array|string $text
-   *   The text is self or an array matching the send API.
-   */
-  protected function sendMessage($text) {
-    if ($text instanceof SendAPITransform) {
-      $message = $text->getData();
-    }
-    else {
-      $message = !is_array($text) ? $message = ['text' => $text] : $text;
-    }
-
-    $this->send('message', $message);
-  }
-
-  /**
-   * Send an action to the user.
-   *
-   * @param $action
-   *   The action: mark_seen, typing_on or typing_off.
-   */
-  public function senderActions($action) {
-    $this->send('sender_action', $action);
-  }
-
-  /**
-   * Sending to the facebook messenger some payload.
-   *
-   * It could be a message with attachment or or a sender action.
-   *
-   * @param $key
-   *   If you want to send a message the key need to be 'message'. If not, use
-   *   'sender_action'
-   *
-   * @param $value
-   *   The value of the payload.
-   *
-   * @return \Psr\Http\Message\ResponseInterface
-   */
-  protected function send($key, $value) {
-    $options = [
-      'form_params' => [
-        'recipient' => [
-          'id' => $this->fbRequest['sender'],
-        ],
-        $key => $value,
-      ],
-    ];
-
-    if (!empty($this->tag)) {
-      // Adding the tag to the body.
-      $options['form_params']['tag'] = $this->tag;
-    }
-
-    return Nuntius::getGuzzle()->post('https://graph.facebook.com/v2.6/me/messages?access_token=' . $this->accessToken, $options);
   }
 
   /**
