@@ -1,0 +1,3 @@
+dispatchers:
+  github_opened:
+    notify_user: '\tests\overrides\NuntiusGitHubOpenedExampleOverride::act'
