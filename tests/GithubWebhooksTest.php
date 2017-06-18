@@ -12,6 +12,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
    * Testing failed requests.
    */
   public function testFailRequest() {
+    \Kint::dump('a');
     try {
       $this->client->post('github', [
         'json' => []
