@@ -1,12 +1,13 @@
 <?php
 
 namespace tests;
+
 use GuzzleHttp\Exception\ServerException;
 
 /**
  * Testing Facebook intergration.
  */
-class FacebookWebhooksTest extends WebhooksTestsAbstract {
+class FacebookWebooksTest extends WebhooksTestsAbstract {
 
   /**
    * Testing facebook intergration. As much as we can.
