@@ -49,7 +49,7 @@ class Facebook implements WebhooksRoutingControllerInterface {
       return new Response($_GET['hub_challenge']);
     }
 
-    Nuntius::getContextManager()->setContext('facebook');
+//    Nuntius::getContextManager()->setContext('facebook');
 
     $this->fbRequest = $this->extractFacebookRequest(json_decode(file_get_contents("php://input")));
     $this->accessToken = Nuntius::getSettings()->getSetting('fb_token');
