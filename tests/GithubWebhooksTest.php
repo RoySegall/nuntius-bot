@@ -26,6 +26,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ->execute();
 
     // Making sure a request without payload failed.
+    \Kint::dump($failed_success);
     $this->assertNotEmpty($failed_success);
 
     // Try failed unknown event.
@@ -86,6 +87,8 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
 
     $process = reset($process);
     $payload = $process['payload'];
+
+    \Kint::dump($payload);
 
     $this->assertEquals($payload['body'], 'bar');
     $this->assertEquals($payload['created'], 'today');
