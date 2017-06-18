@@ -22,7 +22,7 @@
     "symfony/http-kernel": "^3.2",
     "justinwalsh/daux.io": "^0.3.2",
     "symfony/filesystem": "^3.2",
-    "roysegall/facebook-messenger-send-api": "^0.0.1"
+    "roysegall/facebook-messenger-send-api": "^0.0.2"
   },
   "autoload": {
     "psr-4": {
