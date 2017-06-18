@@ -48,3 +48,8 @@ an argument. The keys meaning are:
   * `description`: Describing what the command will do.
   * `callback`: The callback which will be invoked with the argument you expect
   to receive.
+
+
+## Multiple tasks
+
+TBD
