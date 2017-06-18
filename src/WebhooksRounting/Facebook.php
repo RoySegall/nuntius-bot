@@ -70,8 +70,11 @@ class Facebook implements WebhooksRoutingControllerInterface {
 
     list($plugin, $callback, $arguments) = $task_info;
 
-    if (!$text = call_user_func_array([$plugin, $callback], $arguments)) {
+    if (empty($plugin)) {
       $text = "Hmm.... Sorry, I can't find something to tell you. Try something else, mate.";
+    }
+    else {
+      $text = call_user_func_array([$plugin, $callback], $arguments);
     }
 
     $this->sendAPI->sendMessage($text);
