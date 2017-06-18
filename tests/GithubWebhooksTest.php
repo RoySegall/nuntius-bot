@@ -12,11 +12,14 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
    * Testing failed requests.
    */
   public function testFailRequest() {
-    $foo = $this->client->post('github', [
-      'json' => []
-    ]);
-
-    \Kint::dump($foo->getBody()->getContents());
+    try {
+      $this->client->post('github', [
+        'json' => []
+      ]);
+    }
+    catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
+    }
 
     $failed_success = $this->query->table('logger')
       ->condition('type', 'error')
@@ -27,11 +30,16 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
     $this->assertNotEmpty($failed_success);
 
     // Try failed unknown event.
-    $this->client->post('github', [
-      'json' => [
-        'action' => 'open',
-      ]
-    ]);
+    try {
+      $this->client->post('github', [
+        'json' => [
+          'action' => 'open',
+        ]
+      ]);
+    }
+    catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
+    }
 
     $failed_success = $this->query->table('logger')
       ->condition('type', 'error')
@@ -80,6 +88,8 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
 
     $process = reset($process);
     $payload = $process['payload'];
+
+    \Kint::dump($payload);
 
     $this->assertEquals($payload['body'], 'bar');
     $this->assertEquals($payload['created'], 'today');
