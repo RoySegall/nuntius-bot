@@ -16,6 +16,8 @@ class NuntiusFacebookOverride extends Facebook {
    * NuntiusFacebookOverride constructor.
    */
   public function __construct() {
+    parent::__construct();
+
     $this->sendAPI = new NuntiusSendAPI();
   }
 

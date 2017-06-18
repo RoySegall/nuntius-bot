@@ -83,13 +83,17 @@ class Facebook implements WebhooksRoutingControllerInterface {
   /**
    * Extracting information from the request.
    *
-   * @param \stdClass $request
+   * @param $request
    *   The request object.
    *
    * @return array
    *   Array of the request.
    */
-  protected function extractFacebookRequest(\stdClass $request) {
+  protected function extractFacebookRequest($request) {
+    if (empty($request)) {
+      return [];
+    }
+
     $payload = $request->entry[0];
     $message = $payload->messaging[0];
 
