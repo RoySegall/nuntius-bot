@@ -118,7 +118,6 @@ class TasksManager {
 
         if (!is_array($scope['callback'])) {
           // Not an array. The returned output can be used in any platform.
-
           $callback = $scope['callback'];
         }
         else {

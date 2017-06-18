@@ -49,6 +49,7 @@ class TasksTest extends TestsAbstract {
       []
     ]);
 
+    Nuntius::getContextManager()->setContext('');
     $this->assertEquals($this->tasks->getMatchingTask('remind me to help you'), [
       $this->tasks->get('reminders'),
       'addReminder',
