@@ -89,8 +89,6 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
     $process = reset($process);
     $payload = $process['payload'];
 
-    \Kint::dump($payload);
-
     $this->assertEquals($payload['body'], 'bar');
     $this->assertEquals($payload['created'], 'today');
     $this->assertEquals($payload['image'], 'http://google.com');
