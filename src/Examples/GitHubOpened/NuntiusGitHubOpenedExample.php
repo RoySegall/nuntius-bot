@@ -18,7 +18,6 @@ class NuntiusGitHubOpenedExample implements GitHubOpenedEventInterface {
    * {@inheritdoc}
    */
   public function act(GitHubEvent $event) {
-    \Kint::dump('bar');
     // Build the info variable to the post message method.
     $info = $this->getPayload($event);
 

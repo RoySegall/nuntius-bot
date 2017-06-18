@@ -12,9 +12,11 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
    * Testing failed requests.
    */
   public function testFailRequest() {
-    $this->client->post('github', [
+    $foo = $this->client->post('github', [
       'json' => []
     ]);
+
+    \Kint::dump($foo->getBody()->getContents());
 
     $failed_success = $this->query->table('logger')
       ->condition('type', 'error')
@@ -78,8 +80,6 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
 
     $process = reset($process);
     $payload = $process['payload'];
-
-    \Kint::dump($payload);
 
     $this->assertEquals($payload['body'], 'bar');
     $this->assertEquals($payload['created'], 'today');
