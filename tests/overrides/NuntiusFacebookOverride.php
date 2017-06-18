@@ -2,9 +2,6 @@
 
 namespace tests\overrides;
 
-use Nuntius\Dispatcher\GitHubEvent;
-use Nuntius\Examples\GitHubOpened\NuntiusGitHubOpenedExample;
-use Nuntius\Nuntius;
 use Nuntius\WebhooksRounting\Facebook;
 
 /**

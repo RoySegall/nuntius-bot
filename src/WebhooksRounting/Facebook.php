@@ -2,7 +2,6 @@
 
 namespace Nuntius\WebhooksRounting;
 
-use Nuntius\FacebookSendApi\SendAPITransform;
 use Nuntius\Nuntius;
 use Nuntius\WebhooksRoutingControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
