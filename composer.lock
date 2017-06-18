@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b65a3d0194aac0947d8ef0102a13943",
+    "content-hash": "ee204e5a1f17405919fd93f2565af126",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -1464,7 +1464,7 @@
         },
         {
             "name": "roysegall/facebook-messenger-send-api",
-            "version": "0.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RoySegall/facebook-messenger-send-api.git",
@@ -1499,7 +1499,7 @@
                 }
             ],
             "description": "Reflecting Facebook Messenger send API arrays payload to an OOP design pattern",
-            "time": "2017-06-18T11:30:48+00:00"
+            "time": "2017-06-18 11:30:48"
         },
         {
             "name": "symfony/config",
@@ -4068,7 +4068,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "roysegall/facebook-messenger-send-api": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
