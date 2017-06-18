@@ -18,6 +18,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ]);
     }
     catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
     }
 
     $failed_success = $this->query->table('logger')
@@ -26,7 +27,6 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ->execute();
 
     // Making sure a request without payload failed.
-    \Kint::dump($failed_success);
     $this->assertNotEmpty($failed_success);
 
     // Try failed unknown event.
@@ -38,6 +38,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ]);
     }
     catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
     }
 
     $failed_success = $this->query->table('logger')
