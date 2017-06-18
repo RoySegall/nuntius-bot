@@ -1468,12 +1468,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/RoySegall/facebook-messenger-send-api.git",
-                "reference": "c9489083f2c4ade216339cc4cfe2ae6520ff3b92"
+                "reference": "ccbec1919491fce49c5e8ec704dab7c33cd2d759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RoySegall/facebook-messenger-send-api/zipball/c9489083f2c4ade216339cc4cfe2ae6520ff3b92",
-                "reference": "c9489083f2c4ade216339cc4cfe2ae6520ff3b92",
+                "url": "https://api.github.com/repos/RoySegall/facebook-messenger-send-api/zipball/ccbec1919491fce49c5e8ec704dab7c33cd2d759",
+                "reference": "ccbec1919491fce49c5e8ec704dab7c33cd2d759",
                 "shasum": ""
             },
             "require": {
@@ -1499,7 +1499,7 @@
                 }
             ],
             "description": "Reflecting Facebook Messenger send API arrays payload to an OOP design pattern",
-            "time": "2017-06-18 11:30:48"
+            "time": "2017-06-18 16:02:09"
         },
         {
             "name": "symfony/config",
