@@ -9,7 +9,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "kint-php/kint": "^1.1",
+    "kint-php/kint": "^1.0",
     "symfony/yaml": "^3.2",
     "danielmewes/php-rql": "^2.3",
     "cboden/ratchet": "^0.3.6",
@@ -22,7 +22,7 @@
     "symfony/http-kernel": "^3.2",
     "justinwalsh/daux.io": "^0.3.2",
     "symfony/filesystem": "^3.2",
-    "roysegall/facebook-messenger-send-api": "^0.0.1"
+    "roysegall/facebook-messenger-send-api": "^0.0.2"
   },
   "autoload": {
     "psr-4": {
