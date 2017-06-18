@@ -19,6 +19,8 @@ class FacebookWebooksTest extends WebhooksTestsAbstract {
       ]);
     }
     catch (ServerException $e) {
+      $response = $e->getMessage();
+      $this->assertContains('Fatal error', $response);
     }
 
     try {
