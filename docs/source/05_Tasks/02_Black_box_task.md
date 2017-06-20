@@ -50,6 +50,73 @@ an argument. The keys meaning are:
   to receive.
 
 
-## Multiple tasks
+## Tasks and multiple bots
 
-TBD
+In [Multiple bots and context manager](Multiple_bots_and_context_manager.html)
+we talked on context manager and how we can handle multiple bots. Now, let's see
+how tasks are being handle in when we have multiple bots.
+
+In the section above you can see a command declaration. When the the callback is
+a string, and the task manager found that the given text from the user match
+a structure of a task the function will be invoke in any bot platform.
+
+The problem is - different platforms have different variables and need different
+format of the message the user will get. In order to solve that, the callback 
+can be converted into array and will keyed in a structure of 
+`platform => callback`. Let's see how the help task solve that:
+
+```php
+  /**
+   * {@inheritdoc}
+   */
+  public function scope() {
+    return [
+      '/help/' => [
+        'human_command' => 'help',
+        'description' => 'Giving you help',
+        'callback' => [
+          'slack' => 'slackListOfScopes',
+          'facebook' => 'facebookListOfScopes',
+        ],
+      ],
+    ];
+  }
+  
+  /**
+   * Get all the tasks and their scope(except for this one).
+   */
+  public function slackListOfScopes() {
+    $task_manager = Nuntius::getTasksManager();
+
+    $text = [];
+
+    foreach ($task_manager->getTasks() as $task_id => $task) {
+      if ($task_id == 'help') {
+        continue;
+      }
+
+      foreach ($task->scope() as $scope) {
+        $text[] = '`' . $scope['human_command'] . '`: ' . $scope['description'];
+      }
+    }
+
+    return implode("\n", $text);
+  }
+
+  /**
+   * A Facebook only text.
+   *
+   * Facebook allows to send only 3 buttons - this what we will do.
+   */
+  public function facebookListOfScopes() {
+    $send_api = Nuntius::facebookSendApi();
+
+    return $send_api->templates->button
+      ->text('hey there! This is the default help response ' .
+      'You can try this one and override it later on. ' .
+      'Hope you will get some ideas :)')
+      ->addButton($send_api->buttons->postBack->title('Say something nice')->payload('something_nice'))
+      ->addButton($send_api->buttons->postBack->reset()->title("What's my name?")->payload('what_is_my_name'))
+      ->addButton($send_api->buttons->postBack->reset()->title('Toss a coin?')->payload('toss_a_coin'));
+  }
+```
