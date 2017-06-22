@@ -22,4 +22,5 @@ class Opened extends GitHubWebhooksAbstract implements GitHubWebhooksInterface {
   public function postAct() {
 
   }
+
 }

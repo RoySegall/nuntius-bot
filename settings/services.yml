@@ -6,6 +6,12 @@ services:
   http:
     class: \GuzzleHttp\Client
 
+  context:
+    class: \Nuntius\ContextManager
+
+  facebook_send_api:
+    class: \FacebookMessengerSendApi\SendAPI
+
   db:
     class: \Nuntius\Db\DbDispatcher
     arguments: ['@config']

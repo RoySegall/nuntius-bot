@@ -18,6 +18,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ]);
     }
     catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
     }
 
     $failed_success = $this->query->table('logger')
@@ -37,6 +38,7 @@ class GithubWebhooksTest extends WebhooksTestsAbstract {
       ]);
     }
     catch (ServerException $e) {
+      \Kint::dump($e->getMessage());
     }
 
     $failed_success = $this->query->table('logger')

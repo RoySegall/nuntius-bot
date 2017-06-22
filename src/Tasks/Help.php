@@ -5,6 +5,9 @@ namespace Nuntius\Tasks;
 use Nuntius\Nuntius;
 use Nuntius\TaskBaseAbstract;
 use Nuntius\TaskBaseInterface;
+use pimax\FbBotApp;
+use pimax\Menu\LocalizedMenu;
+use pimax\Menu\MenuItem;
 
 /**
  * Remind to the user something to do.
@@ -19,7 +22,10 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
       '/help/' => [
         'human_command' => 'help',
         'description' => 'Giving you help',
-        'callback' => 'listOfScopes',
+        'callback' => [
+          'slack' => 'slackListOfScopes',
+          'facebook' => 'facebookListOfScopes',
+        ],
       ],
     ];
   }
@@ -27,7 +33,7 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
   /**
    * Get all the tasks and their scope(except for this one).
    */
-  public function listOfScopes() {
+  public function slackListOfScopes() {
     $task_manager = Nuntius::getTasksManager();
 
     $text = [];
@@ -43,6 +49,23 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
     }
 
     return implode("\n", $text);
+  }
+
+  /**
+   * A Facebook only text.
+   *
+   * Facebook allows to send only 3 buttons - this what we will do.
+   */
+  public function facebookListOfScopes() {
+    $send_api = Nuntius::facebookSendApi();
+
+    return $send_api->templates->button
+      ->text('hey there! This is the default help response ' .
+      'You can try this one and override it later on. ' .
+      'Hope you will get some ideas :)')
+      ->addButton($send_api->buttons->postBack->title('Say something nice')->payload('something_nice'))
+      ->addButton($send_api->buttons->postBack->title("What's my name?")->payload('what_is_my_name'))
+      ->addButton($send_api->buttons->postBack->title('Toss a coin?')->payload('toss_a_coin'));
   }
 
 }

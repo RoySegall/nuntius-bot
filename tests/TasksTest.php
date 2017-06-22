@@ -35,12 +35,21 @@ class TasksTest extends TestsAbstract {
    * @covers TasksManager::get()
    */
   public function testGetMatchingTask() {
+    Nuntius::getContextManager()->setContext('slack');
     $this->assertEquals($this->tasks->getMatchingTask('help'), [
       $this->tasks->get('help'),
-      'listOfScopes',
+      'slackListOfScopes',
       []
     ]);
 
+    Nuntius::getContextManager()->setContext('facebook');
+    $this->assertEquals($this->tasks->getMatchingTask('help'), [
+      $this->tasks->get('help'),
+      'facebookListOfScopes',
+      []
+    ]);
+
+    Nuntius::getContextManager()->setContext('');
     $this->assertEquals($this->tasks->getMatchingTask('remind me to help you'), [
       $this->tasks->get('reminders'),
       'addReminder',
@@ -96,7 +105,7 @@ class TasksTest extends TestsAbstract {
       '`delete information`: Delete an information',
       '`notify team`: Notify the team about something',
     ];
-    $this->assertEquals($this->tasks->get('help')->listOfScopes(), implode("\n", $helps));
+    $this->assertEquals($this->tasks->get('help')->slackListOfScopes(), implode("\n", $helps));
   }
 
   /**
