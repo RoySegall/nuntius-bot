@@ -64,8 +64,8 @@ class Help extends TaskBaseAbstract implements TaskBaseInterface {
       'You can try this one and override it later on. ' .
       'Hope you will get some ideas :)')
       ->addButton($send_api->buttons->postBack->title('Say something nice')->payload('something_nice'))
-      ->addButton($send_api->buttons->postBack->reset()->title("What's my name?")->payload('what_is_my_name'))
-      ->addButton($send_api->buttons->postBack->reset()->title('Toss a coin?')->payload('toss_a_coin'));
+      ->addButton($send_api->buttons->postBack->title("What's my name?")->payload('what_is_my_name'))
+      ->addButton($send_api->buttons->postBack->title('Toss a coin?')->payload('toss_a_coin'));
   }
 
 }

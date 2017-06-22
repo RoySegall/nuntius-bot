@@ -1,37 +1,43 @@
-Setting up the configuration is pretty much easy. Go to the repository settings:
-![Setup](../../images/webhook-step-1.png)
+Before starting to set up the integration make sure you have a page on Facebook.
 
-And now go to the webhooks page:
-![Setup](../../images/webhook-step-2.png)
+We will begin by setting up a Facebook application. Go to 
+[Facebook developers](https://developers.facebook.com/) site:
 
-Add a new Webhook:
-![Setup](../../images/webhook-step-3.png)
+![Facebook ste 1](../../images/facebook/step-1.png)
 
-You can set up in the next way:
-![Setup](../../images/webhook-step-4.png)
+After setting up the app we will add a Messenger product set up:
 
-GitHub will send a request to do a sanity check. Just to make sure the address
-exists.
+![Facebook ste 2](../../images/facebook/step-2.png)
 
-## Testing
-If you want to test the integration you'll right you need that your local host
-will be acessable. The most easy way to do that is with [ngrok](https://ngrok.com/).
-`ngrok` open your localhost with a temporary address. In my case the address
-will look like `http://66a4cc4d.ngrok.io/nuntius-bot/github`.
+The next ste is to generate a token for the page:
 
-If you want to make sure that something happens you can log it to the logger 
-entity:
+![Facebook ste 3](../../images/facebook/step-3.png)
 
-```php
-Nuntius::getEntityManager()->get('logger')->insert(['foo' => 'bar']);
-```
+Save the token in your `credentials.local.yml` in `fb_token` key.
 
-And then, to make sure something is going in the DB you can use the built in 
-live entity view option:
+Now, let set up the address which Facebook will interact with Nuntius. Click on
+`Setup Webhooks`:
 
-```bash
-php console.php nuntius:entity logger live_view
-```
+![Facebook ste 4](../../images/facebook/step-4.png)
 
-This will output the next result in the terminal:
-![Setup](../../images/webhook-step-5.png)
+After that a modal will open for you:
+
+![Facebook ste 5](../../images/facebook/step-5.png)
+
+Couple of things:
+
+* The address is the address of the facebook webhook handler - 
+`https://b9204872.ngrok.io/nuntius-bot/facebook`
+* The token is not mandatory, it can be anything.
+* Under `Subscription Fields` check all the boxes.
+
+You'll get this if anything is OK:
+
+![Facebook ste 6](../../images/facebook/step-6.png)
+
+Now, we need to set up the page as a subscriber to the events we selected:
+
+![Facebook ste 7](../../images/facebook/step-7.png)
+
+Please note that for now, when this doc been written, you can't change the 
+address of the webhook.

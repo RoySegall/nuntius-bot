@@ -57,6 +57,19 @@ class Facebook implements WebhooksRoutingControllerInterface {
       ->setRecipientId($this->fbRequest['sender'])
       ->setAccessToken($this->accessToken);
 
+    return $this->engage();
+  }
+
+  /**
+   * Contains the logic for engaging with people using the Messenger platform.
+   *
+   * The logic for bootstrapping is done in the response method. Since most of
+   * the people will override the class they might want only the override the
+   * business logic and not the bootstrapping logic as well.
+   *
+   * @return Response
+   */
+  protected function engage() {
     if (empty($this->fbRequest['text'])) {
 
       if (!empty($this->fbRequest['postback'])) {
