@@ -29,4 +29,11 @@ user messages. In addition to that you'll get:
 * Cron tasks.
 
 ### Facebook Messenger
+Yes. The Messenger platform is based on [webhooks](Webhooks/What_is_webhook.html).
+Nuntius is not an opinionated framework - you need to [set up](Webhooks/Facebook/Configure_the_integration.html)
+the bot in the Facebook developer platform. Implementing feedback is also 
+[elaborated](Webhooks/Facebook/How_to_implement.html).
+
+### Twitter
+
 TBD
