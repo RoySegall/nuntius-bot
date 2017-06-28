@@ -1,8 +1,7 @@
 <?php
 
-namespace Nuntius\WebhooksRounting;
+namespace Nuntius\Examples\Drupal;
 
-use Nuntius\Examples\Drupal\DrupalBaseWebhook;
 use Nuntius\Nuntius;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,10 +20,12 @@ class FacebookDrupal extends DrupalBaseWebhook {
     $subtitle = !empty($this->payload->body->und[0]->value) ? $this->payload->body->und[0]->value : '';
 
     // Look for registered users from the given URL.
-    $users = [];
+    if (!$users = Nuntius::getDb()->getQuery()->table('fb_reminders')->execute()) {
+      return new Response();
+    }
 
     // Prepare the send API object.
-    $send_api = \Nuntius\Nuntius::facebookSendApi();
+    $send_api = Nuntius::facebookSendApi();
     $send_api->setAccessToken(Nuntius::getSettings()->getSetting('fb_token'));
 
     $element = $send_api->templates->element;
@@ -39,7 +40,7 @@ class FacebookDrupal extends DrupalBaseWebhook {
     // Loop over the users.
     foreach ($users as $user) {
       $send_api
-        ->setRecipientId($user->recpient_id)
+        ->setRecipientId($user['recipient_id'])
         ->sendMessage($payload);
     }
 

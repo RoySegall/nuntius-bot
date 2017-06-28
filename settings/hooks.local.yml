@@ -1,0 +1,11 @@
+entities:
+  fb_reminders: '\Nuntius\Examples\Drupal\FbReminders'
+
+# List of updates.
+updates:
+  2: '\Nuntius\Examples\Drupal\AddFbReminder'
+
+# List of webhooks and te matcher handler.
+webhooks_routing:
+  'drupal': '\Nuntius\Examples\Drupal\Drupal'
+  'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
