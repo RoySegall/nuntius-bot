@@ -11,14 +11,21 @@ updates:
 
 # List of webhooks and te matcher handler.
 webhooks_routing:
+  'facebook': '\Nuntius\Examples\Drupal\DrupalExampleFacebook'
   'drupal': '\Nuntius\Examples\Drupal\Drupal'
   'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
 
+# Manage tasks.
+tasks:
+  fb_manage_updates: '\Nuntius\Examples\Drupal\FacebookUpdatesManage'
 ```
 
-What's going on there? We added a new Entity to store the recipient IDs of the
-Facebook Messenger accounts we need to update and we created an update path
-to create the table of that entity.
+What's going on there?
+1. We added a new Entity to store the recipient IDs of the Facebook Messenger 
+accounts we need to update.
+2. We created an update path to create the table of that entity.
+3. We specify the webhooks routing.
+4. We added a new Facebook task to handle the incoming text.
 
 We also added the webhooks routing we defined in the 
 [Setting up Drupal](Use_cases/Drupal/Setting_up_Drupal.html) section.

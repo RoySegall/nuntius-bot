@@ -4,9 +4,6 @@ namespace Nuntius\Examples\Drupal;
 
 use Nuntius\Nuntius;
 use Nuntius\WebhooksRoutingControllerInterface;
-use SlackHttpService\Payloads\SlackHttpPayloadServiceAttachments;
-use SlackHttpService\Payloads\SlackHttpPayloadServicePostMessage;
-use SlackHttpService\SlackHttpService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

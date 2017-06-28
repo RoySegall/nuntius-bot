@@ -73,7 +73,9 @@ class Facebook implements WebhooksRoutingControllerInterface {
     if (empty($this->fbRequest['text'])) {
 
       if (!empty($this->fbRequest['postback'])) {
-        $this->sendAPI->sendMessage($this->helpRouter());
+        if ($help_router = $this->helpRouter()) {
+          $this->sendAPI->sendMessage($help_router);
+        }
       }
 
       return new Response();

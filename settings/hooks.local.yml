@@ -7,5 +7,9 @@ updates:
 
 # List of webhooks and te matcher handler.
 webhooks_routing:
+  'facebook': '\Nuntius\Examples\Drupal\DrupalExampleFacebook'
   'drupal': '\Nuntius\Examples\Drupal\Drupal'
   'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
+
+tasks:
+  fb_manage_updates: '\Nuntius\Examples\Drupal\FacebookUpdatesManage'
