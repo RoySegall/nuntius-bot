@@ -2,18 +2,13 @@
 
 require_once 'vendor/autoload.php';
 
-$send_api = \Nuntius\Nuntius::facebookSendApi();
+$rows = \Nuntius\Nuntius::getDb()->getQuery()->table('fb_reminders')->condition('recipient_id', 129)->execute();
 
-$send_api
-  ->setRecipientId(0)
-  ->setAccessToken('');
+if (!$rows) {
+  \Nuntius\Nuntius::getDb()->getStorage()->table('fb_reminders')->save(['recipient_id' => 129]);
+}
+else {
+  \Nuntius\Nuntius::getEntityManager()->get('fb_reminders')->delete($rows[0]['id']);
+}
 
-$payload = $send_api->templates->button
-  ->text('hey there! This is the default help response ' .
-    'You can try this one and override it later on. ' .
-    'Hope you will get some ideas :)')
-  ->addButton($send_api->buttons->postBack->title('Say something nice')->payload('something_nice'))
-  ->addButton($send_api->buttons->postBack->title("What's my name?")->payload('what_is_my_name'))
-  ->addButton($send_api->buttons->postBack->title('Toss a coin?')->payload('toss_a_coin'));
-
-$send_api->sendMessage($payload);
+Kint::dump($rows);

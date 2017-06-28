@@ -17,8 +17,6 @@ class FacebookDrupal extends DrupalBaseWebhook {
    * {@inheritdoc}
    */
   protected function trigger() {
-    $subtitle = !empty($this->payload->body->und[0]->value) ? $this->payload->body->und[0]->value : '';
-
     // Look for registered users from the given URL.
     if (!$users = Nuntius::getDb()->getQuery()->table('fb_reminders')->execute()) {
       return new Response();
@@ -32,8 +30,8 @@ class FacebookDrupal extends DrupalBaseWebhook {
     $payload = $send_api->templates->generic
       ->addElement(
         $element
-          ->title($this->payload->title)
-          ->subtitle($subtitle)
+          ->title($this->payload['title'])
+          ->subtitle($this->payload['body'])
           ->addButton($send_api->buttons->url->title('Take me there!')->url($this->url))
       );
 

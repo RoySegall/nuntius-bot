@@ -27,11 +27,11 @@ class Drupal extends DrupalBaseWebhook {
     $attachment = new SlackHttpPayloadServiceAttachments();
     $attachment
       ->setColor('#36a64f')
-      ->setTitle($this->payload->title)
+      ->setTitle($this->payload['title'])
       ->setTitleLink($this->url);
 
-    if (!empty($this->payload->body->und[0]->value)) {
-      $attachment->setText($this->payload->body->und[0]->value);
+    if (!empty($this->payload['body'])) {
+      $attachment->setText($this->payload['body']);
     }
 
     $attachments[] = $attachment;

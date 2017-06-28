@@ -40,10 +40,23 @@ abstract class DrupalBaseWebhook implements WebhooksRoutingControllerInterface {
    * {@inheritdoc}
    */
   public function response(Request $request) {
-    $this->payload = json_decode($request->request->get('object'));
+    $payload = json_decode($request->request->get('object'));
     $this->slackRoom = $request->request->get('slack_room');
     $token = $request->request->get('token');
     $this->url = $request->request->get('url');
+
+    if ($request->request->get('drupal8')) {
+      $this->payload = [
+        'title' => $payload->title[0]->value,
+        'body' => !empty($payload->body[0]->value) ? strip_tags($payload->body[0]->value) : '',
+      ];
+    }
+    else {
+      $this->payload = [
+        'title' => $payload->title,
+        'body' => !empty($payload->body->und[0]->value) ? $payload->body->und[0]->value : '',
+      ];
+    }
 
     if ($token != Nuntius::getSettings()->getSetting('drupal_token')) {
       Nuntius::getEntityManager()->get('logger')->save([
