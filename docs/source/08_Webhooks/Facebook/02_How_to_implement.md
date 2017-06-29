@@ -12,11 +12,11 @@ But if you'll write `help` you'll get something like that:
 ## Texts and postbacks
 
 The example above implemented in two parts. The first is the response to the 
-text. In slack, the help text bring all the tasks which available to the user
-but the facebook platforms works a bit different - you cannot provide all the
-tasks as button due to buttons limitation. 
+text. In slack, the help text brings all the tasks which available to the user
+but the Facebook platforms work a bit different - you cannot provide all the
+tasks as buttons due to buttons limitation. 
 
-That's why a different approach was taken - provide 3 button with nice actions.
+That's why a different approach was taken - provide 3 buttons with nice actions.
 Let's see how the text implemented:
 ```php
   /**
@@ -37,9 +37,9 @@ Let's see how the text implemented:
   }
 ```
 
-What did we got here? A text with post backs buttons. When clicking on a 
+What did we get here? A text with post backs buttons. When clicking on a 
 postback button, Facebook will send a webhook with that information. But how can
-you respond? As always, nuntius got you covered and provide a FB postback 
+you respond? As always, nuntius got you covered and provide an FB postback 
 manager. The implementation is easy. Let's see how the postbacks implemented in 
 `hooks.yml`:
 ```yml
