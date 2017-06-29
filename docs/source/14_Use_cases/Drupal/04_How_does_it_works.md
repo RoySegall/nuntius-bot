@@ -80,36 +80,54 @@ When he will send the message we will need to respond to the text:
   }
 ```
 
-
 ## Webhooks routing.
-We added two new webhooks routing and overridden an existing one:
+We added two new webhooks routing:
 
 ```yml
 # List of webhooks and te matcher handler.
 webhooks_routing:
-  'facebook': '\Nuntius\Examples\Drupal\DrupalExampleFacebook'
   'drupal': '\Nuntius\Examples\Drupal\Drupal'
   'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
 ```
-But, why override? We need to give feedback on the buttons the user clicked:
+
+The webhooks will validate the token and post to Facebook/Slack information
+about the new content.
+
+## Handle the user choices
+
+The task returned a text with two payload buttons. But how we going to act? By
+defining the FB postbacks handlers we can register or un-register the user 
+from updates through the messenger platform. Let's have a look on two examples.
+
+`\Nuntius\Examples\Drupal\RegisterMe`:
 
 ```php
   /**
-   * Return an answer according to the postback button.
-   *
-   * @return string
-   *   The string to return to the user.
+   * {@inheritdoc}
    */
-  protected function helpRouter() {
-    switch ($this->fbRequest['postback']) {
-      case 'register_me':
-        $this->saveRecipientId($this->fbRequest['sender']);
-        return 'Got it! You will be notified on new stuff';
-
-      case 'un_register_me':
-        $this->deleteRecipient($this->fbRequest['sender']);
-        return "You don't want to get updates. That's OK. See you in the future";
+  public function postBack() {
+    // Check that the recipient is already registered.
+    if ($this->queryForRecipient($this->fbRequest['sender'])) {
+      return;
     }
+
+    Nuntius::getEntityManager()->get('fb_reminders')->save(['recipient_id' => $this->fbRequest['sender']]);
+    return 'Got it! You will be notified on new stuff';
+  }
+```
+
+`\Nuntius\Examples\Drupal\UnRegisterMe`:
+
+```php
+  /**
+   * {@inheritdoc}
+   */
+  public function postBack() {
+    $row = $this->queryForRecipient($this->fbRequest['sender']);
+
+    Nuntius::getEntityManager()->get('fb_reminders')->delete($row[0]['id']);
+
+    return "You don't want to get updates. That's OK. See you in the future";
   }
 ```
 

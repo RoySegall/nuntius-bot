@@ -14,6 +14,11 @@ webhooks_routing:
   'facebook': '\Nuntius\Examples\Drupal\DrupalExampleFacebook'
   'drupal': '\Nuntius\Examples\Drupal\Drupal'
   'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
+  
+# List of FB postback handlers.
+fb_postbacks:
+  'register_me': '\Nuntius\Examples\Drupal\RegisterMe'
+  'un_register_me': '\Nuntius\Examples\Drupal\UnRegisterMe'
 
 # Manage tasks.
 tasks:
@@ -25,7 +30,8 @@ What's going on there?
 accounts we need to update.
 2. We created an update path to create the table of that entity.
 3. We specify the webhooks routing.
-4. We added a new Facebook task to handle the incoming text.
+4. We added FB postbacks items
+5. We added a new Facebook task to handle the incoming text.
 
 We also added the webhooks routing we defined in the 
 [Setting up Drupal](Use_cases/Drupal/Setting_up_Drupal.html) section.
