@@ -56,15 +56,22 @@ class FbPostBackManager {
   /**
    * Trigger the matching task to the given text.
    *
-   * @param $text
-   *   The text the user sent.
+   * @param $payload_postback
+   *   The postback the user clicked on.
    *
-   * @return bool|array
-   *   If found return an array with the task object, callback and arguments.
-   *   If not, return bool.
+   * @return FacebookPostBackInterface
+   *   If found, return the what the matching postback return in the postBack
+   *   method.
    */
-  public function getPostBack($text) {
+  public function getPostBack($payload_postback) {
 
+    foreach ($this->postBacks as $id => $postBack) {
+      if ($payload_postback == $id) {
+        return $postBack;
+      }
+    }
+
+    return;
   }
 
 }

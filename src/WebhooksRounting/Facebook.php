@@ -73,8 +73,11 @@ class Facebook implements WebhooksRoutingControllerInterface {
     if (empty($this->fbRequest['text'])) {
 
       if (!empty($this->fbRequest['postback'])) {
-        if ($help_router = $this->helpRouter()) {
-          $this->sendAPI->sendMessage($help_router);
+        $postbacks = Nuntius::getFbPostBackManager();
+
+        if ($help_router = $postbacks->getPostBack($this->fbRequest['postback'])) {
+          $help_router->setFbRequest($this->fbRequest);
+          $this->sendAPI->sendMessage($help_router->postBack());
         }
       }
 
