@@ -29,7 +29,7 @@ class AddFbReminder extends UpdateBaseAbstract implements UpdateBaseInterface {
    */
   public function update() {
     Nuntius::getDb()->getOperations()->tableCreate('fb_reminders');
-    return 'Adding the table.';
+    return 'The FB reminders table was added.';
   }
 
 }
