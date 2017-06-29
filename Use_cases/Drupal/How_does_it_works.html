@@ -144,30 +144,42 @@ tasks:
   }
 </code></pre>
 <h2 id="page_Webhooks+routing.">Webhooks routing.</h2>
-<p>We added two new webhooks routing and overridden an existing one:</p>
+<p>We added two new webhooks routing:</p>
 <pre><code class="language-yml"># List of webhooks and te matcher handler.
 webhooks_routing:
-  'facebook': '\Nuntius\Examples\Drupal\DrupalExampleFacebook'
   'drupal': '\Nuntius\Examples\Drupal\Drupal'
   'facebook-drupal': '\Nuntius\Examples\Drupal\FacebookDrupal'
 </code></pre>
-<p>But, why override? We need to give feedback on the buttons the user clicked:</p>
+<p>The webhooks will validate the token and post to Facebook/Slack information
+about the new content.</p>
+<h2 id="page_Handle+the+user+choices">Handle the user choices</h2>
+<p>The task returned a text with two payload buttons. But how we going to act? By
+defining the FB postbacks handlers we can register or un-register the user
+from updates through the messenger platform. Let's have a look on two examples.</p>
+<p><code>\Nuntius\Examples\Drupal\RegisterMe</code>:</p>
 <pre><code class="language-php">  /**
-   * Return an answer according to the postback button.
-   *
-   * @return string
-   *   The string to return to the user.
+   * {@inheritdoc}
    */
-  protected function helpRouter() {
-    switch ($this-&gt;fbRequest['postback']) {
-      case 'register_me':
-        $this-&gt;saveRecipientId($this-&gt;fbRequest['sender']);
-        return 'Got it! You will be notified on new stuff';
-
-      case 'un_register_me':
-        $this-&gt;deleteRecipient($this-&gt;fbRequest['sender']);
-        return &quot;You don't want to get updates. That's OK. See you in the future&quot;;
+  public function postBack() {
+    // Check that the recipient is already registered.
+    if ($this-&gt;queryForRecipient($this-&gt;fbRequest['sender'])) {
+      return;
     }
+
+    Nuntius::getEntityManager()-&gt;get('fb_reminders')-&gt;save(['recipient_id' =&gt; $this-&gt;fbRequest['sender']]);
+    return 'Got it! You will be notified on new stuff';
+  }
+</code></pre>
+<p><code>\Nuntius\Examples\Drupal\UnRegisterMe</code>:</p>
+<pre><code class="language-php">  /**
+   * {@inheritdoc}
+   */
+  public function postBack() {
+    $row = $this-&gt;queryForRecipient($this-&gt;fbRequest['sender']);
+
+    Nuntius::getEntityManager()-&gt;get('fb_reminders')-&gt;delete($row[0]['id']);
+
+    return &quot;You don't want to get updates. That's OK. See you in the future&quot;;
   }
 </code></pre>
 <h2 id="page_How+the+posting+to+FB+and+slack+works">How the posting to FB and slack works</h2>

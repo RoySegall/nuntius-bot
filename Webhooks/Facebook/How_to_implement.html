@@ -78,11 +78,65 @@
 <p><img src="../../images/facebook/engage-1.png" alt="Facebook ste 3" /></p>
 <p>But if you'll write <code>help</code> you'll get something like that:</p>
 <p><img src="../../images/facebook/engage-2.png" alt="Facebook ste 3" /></p>
-<p>You wou'ld probably want to override that. It's very easy, just override the
-class by update your <code>hooks.local.yml</code>:</p>
-<pre><code class="language-yaml">webhooks_routing:
-  'facebook': '\tests\overrides\NuntiusFacebookOverride'
+<h2 id="page_Texts+and+postbacks">Texts and postbacks</h2>
+<p>The example above implemented in two parts. The first is the response to the
+text. In slack, the help text bring all the tasks which available to the user
+but the facebook platforms works a bit different - you cannot provide all the
+tasks as button due to buttons limitation.</p>
+<p>That's why a different approach was taken - provide 3 button with nice actions.
+Let's see how the text implemented:</p>
+<pre><code class="language-php">  /**
+   * A Facebook only text.
+   *
+   * Facebook allows to send only 3 buttons - this what we will do.
+   */
+  public function facebookListOfScopes() {
+    $send_api = Nuntius::facebookSendApi();
+
+    return $send_api-&gt;templates-&gt;button
+      -&gt;text('hey there! This is the default help response ' .
+      'You can try this one and override it later on. ' .
+      'Hope you will get some ideas :)')
+      -&gt;addButton($send_api-&gt;buttons-&gt;postBack-&gt;title('Say something nice')-&gt;payload('something_nice'))
+      -&gt;addButton($send_api-&gt;buttons-&gt;postBack-&gt;title(&quot;What's my name?&quot;)-&gt;payload('what_is_my_name'))
+      -&gt;addButton($send_api-&gt;buttons-&gt;postBack-&gt;title('Toss a coin?')-&gt;payload('toss_a_coin'));
+  }
 </code></pre>
+<p>What did we got here? A text with post backs buttons. When clicking on a
+postback button, Facebook will send a webhook with that information. But how can
+you respond? As always, nuntius got you covered and provide a FB postback
+manager. The implementation is easy. Let's see how the postbacks implemented in
+<code>hooks.yml</code>:</p>
+<pre><code class="language-yml"># List of FB postback handlers.
+fb_postbacks:
+  'something_nice': '\Nuntius\FacebookPostBacks\SomethingNice'
+  'toss_a_coin': '\Nuntius\FacebookPostBacks\TossACoin'
+  'what_is_my_name': '\Nuntius\FacebookPostBacks\WhatIsMyName'
+</code></pre>
+<p>The key is the payload and the value is the namespace of the class. Let's see an
+example for a class:</p>
+<pre><code class="language-php">&lt;?php
+
+class SomethingNice extends FacebookPostBackAbstract implements FacebookPostBackInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postBack() {
+    $texts = [
+      'You look lovely!',
+      'Usually you wakes up looking good. Today, you took it to the next level!',
+      'Hey there POTUS... sorry! thought you are some one else...',
+    ];
+
+    shuffle($texts);
+    return reset($texts);
+  }
+
+}
+</code></pre>
+<p>For more examples, please go to the <a href="http://localhost:3000/Use_cases/Drupal/Intro.html" class="external">Drupal</a>
+use case.</p>
 <h2 id="page_What%27s+the+API%3F">What's the API?</h2>
 <p>Sending messages over the Messenger platform is described in the
 <a href="https://developers.facebook.com/docs/messenger-platform/send-api-reference" class="external">Send API</a>
