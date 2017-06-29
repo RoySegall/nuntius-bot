@@ -1,5 +1,5 @@
 After setting up Drupal, let's set up Nuntius for that. We will start by editing
-out `hooks.local.yml` file:
+`hooks.local.yml` file:
 
 ```yml
 entities:
@@ -31,7 +31,7 @@ We also added the webhooks routing we defined in the
 [Setting up Drupal](Use_cases/Drupal/Setting_up_Drupal.html) section.
 
 In the next part we need to the token which will help us validate the incoming
-request. Update the `credentials.local.yml`:
+request. Update the `credentials.local.yml` by adding the Drupal token:
 ```yml
 drupal_token: 'me'
 ```
