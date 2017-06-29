@@ -36,6 +36,10 @@ services:
     class: \Nuntius\UpdateManager
     arguments: ['@db', '@manager.entity', '@config']
 
+  manager.fb_postback:
+    class: \Nuntius\FbPostBackManager
+    arguments: ['@facebook_send_api', '@config']
+
   manager.cron:
     class: \Nuntius\CronManager
     arguments: ['@config']

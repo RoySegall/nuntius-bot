@@ -184,4 +184,13 @@ class Nuntius {
     return self::container()->get('facebook_send_api');
   }
 
+  /**
+   * Get FB postback manager.
+   *
+   * @return \Nuntius\FbPostBackManager
+   */
+  public static function getFbPostBackManager() {
+    return self::container()->get('manager.fb_postback');
+  }
+
 }
