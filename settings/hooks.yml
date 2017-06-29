@@ -62,6 +62,12 @@ dispatchers:
     # Comment out or override when you don't want to see the webhook example.
     notify_user: '\Nuntius\Examples\GitHubOpened\NuntiusGitHubOpenedExample::act'
 
+# List of FB postback handlers.
+fb_postbacks:
+  'something_nice': '\Nuntius\FacebookPostBacks\SomethingNice'
+  'toss_a_coin': '\Nuntius\FacebookPostBacks\TossACoin'
+  'what_is_my_name': '\Nuntius\FacebookPostBacks\WhatIsMyName'
+
 # Local services.
 services:
   - 'services.local.yml'

@@ -73,8 +73,11 @@ class Facebook implements WebhooksRoutingControllerInterface {
     if (empty($this->fbRequest['text'])) {
 
       if (!empty($this->fbRequest['postback'])) {
-        if ($help_router = $this->helpRouter()) {
-          $this->sendAPI->sendMessage($help_router);
+        $postbacks = Nuntius::getFbPostBackManager();
+
+        if ($help_router = $postbacks->getPostBack($this->fbRequest['postback'])) {
+          $help_router->setFbRequest($this->fbRequest);
+          $this->sendAPI->sendMessage($help_router->postBack());
         }
       }
 
@@ -130,57 +133,6 @@ class Facebook implements WebhooksRoutingControllerInterface {
     }
 
     return $payload;
-  }
-
-  /**
-   * Get the sender information.
-   *
-   * @param $id
-   *   The ID of the user.
-   * @param string $fields
-   *   The fields we desire to retrieve. Default to first and last name. The
-   *   fields separated by comma.
-   *
-   * @return mixed
-   */
-  protected function getSenderInfo($id, $fields = 'first_name,last_name') {
-    return json_decode(Nuntius::getGuzzle()->get('https://graph.facebook.com/v2.6/' . $id, [
-      'query' => [
-        'access_token' => $this->accessToken,
-        'fields' => $fields,
-      ],
-    ])->getBody());
-  }
-
-  /**
-   * Return an answer according to the postback button.
-   *
-   * @return string
-   *   The string to return to the user.
-   */
-  protected function helpRouter() {
-    switch ($this->fbRequest['postback']) {
-      case 'something_nice':
-        $texts = [
-          'You look lovely!',
-          'Usually you wakes up looking good. Today, you took it to the next level!',
-          'Hey there POTUS... sorry! thought you are some one else...',
-        ];
-
-        shuffle($texts);
-        return reset($texts);
-
-      case 'what_is_my_name':
-        $info = $this->getSenderInfo($this->fbRequest['sender']);
-        return 'You are ' . $info->first_name . ' ' . $info->last_name . ', in case you forgot';
-
-      case 'toss_a_coin':
-        $options = ['heads', 'tail'];
-        shuffle($options);
-        $result = reset($options);
-
-        return "Tossing.... it's " . $result;
-    }
   }
 
 }
