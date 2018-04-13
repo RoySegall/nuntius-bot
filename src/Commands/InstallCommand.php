@@ -40,8 +40,10 @@ class InstallCommand extends Command  {
         return;
       }
 
-      $this->generateCredentials($io);
+      $settings = $this->generateCredentials($io);
+      Nuntius::getDb()->setDriver($settings['db_driver']);
     }
+
 
     $value = Nuntius::getSettings()->getSettings();
     $operations = Nuntius::getDb()->getOperations();
@@ -82,6 +84,9 @@ class InstallCommand extends Command  {
    *
    * @param SymfonyStyle $io
    *   The io object.
+   *
+   * @return mixed
+   *   The settings.
    */
   protected function generateCredentials(SymfonyStyle $io) {
     $settings = [];
@@ -108,6 +113,8 @@ class InstallCommand extends Command  {
       }
     }
 
+    $settings['db_driver'] = 'rethinkdb';
+
     $yml_content = YAML::dump($settings);
     $io->block("This are the settings:\n" . $yml_content);
 
@@ -118,6 +125,8 @@ class InstallCommand extends Command  {
 
     $fs = new Filesystem();
     $fs->dumpFile(__DIR__ . '/../../settings/credentials.local.yml', $yml_content);
+
+    return $settings;
   }
 
 }
