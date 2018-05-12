@@ -4,6 +4,11 @@ db_drivers:
     storage: '\Nuntius\Db\RethinkDB\RethinkDbStorageHandler'
     operations: '\Nuntius\Db\RethinkDB\RethinkDbOperationHandler'
     metadata: '\Nuntius\Db\RethinkDB\RethinkDbMetadataHandler'
+  mongodb:
+    query: '\Nuntius\Db\MongoDB\MongoDBQueryHandler'
+    storage: '\Nuntius\Db\MongoDB\MongoDBbStorageHandler'
+    operations: '\Nuntius\Db\MongoDB\MongoDBOperationHandler'
+    metadata: '\Nuntius\Db\MongoDB\MongoDBbMetadataHandler'
 
 # Slack RTM event conterollers.
 events:

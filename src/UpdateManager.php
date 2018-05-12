@@ -1,6 +1,7 @@
 <?php
 
 namespace Nuntius;
+use MongoDB\Model\BSONArray;
 use Nuntius\Db\DbDispatcher;
 
 /**
@@ -98,6 +99,10 @@ class UpdateManager {
     // Go over all the updates.
     $updates = [];
 
+    if ($db_updates instanceof BSONArray) {
+      $db_updates = $db_updates->getArrayCopy();
+    }
+
     foreach ($this->getUpdates() as $update => $namespace) {
       if (in_array($update, $db_updates)) {
         // Already ran before.
@@ -125,6 +130,10 @@ class UpdateManager {
     if (empty($updates->processed)) {
       return [];
     }
+
+    if ($updates->processed instanceof BSONArray) {
+      return $updates->processed->getArrayCopy();
+    }
     return $updates->processed;
   }
 
@@ -136,10 +145,13 @@ class UpdateManager {
    */
   public function addProcessedUpdate($name) {
     /** @var \Nuntius\Entity\System $updates */
-    $updates = $this->entityManager->get('system')->load('updates');
+    if (!$updates = $this->entityManager->get('system')->load('updates')) {
+      // It seems that there no update records. Create a one.
+      $updates = $this->entityManager->get('system')->save(['id' => 'updates', 'processed' => []]);
+    }
 
     if (empty($updates->processed)) {
-      $updates->processed = [];
+      @$updates->processed = [];
     }
 
     $processed = $updates->processed;

@@ -2,27 +2,40 @@ language: php
 sudo: false
 
 php:
-  - 5.6
   - 7.0
   - 7.1
 
 addons:
   rethinkdb: "2.3"
 
+services:
+  - mongodb
+
+env:
+  matrix:
+    - DRIVER=rethinkdb
+    - DRIVER=mongodb
+
 cache:
   directories:
     - /home/travis/build/RoySegall/nuntius-bot/vendor
 
 before_script:
+
+  - echo $DRIVER
+  - bash set_mongodb.sh
+
   # Installing composer
   - curl -sS https://getcomposer.org/installer | php
   - php composer.phar install --dev
 
   # Set up stuff for the webhooks tests.
   - nohup php -S localhost:8888 > /dev/null 2>&1 &
+
   - export NUNTIUS_BASE_URL=http://localhost:8888
 
 script:
+  - bash set_travis_driver.sh $DRIVER
   - cp settings/credentials.local.travis.yml settings/credentials.local.yml
   - cp settings/hooks.local.travis.yml settings/hooks.local.yml
   - php console.php nuntius:install

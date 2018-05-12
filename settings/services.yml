@@ -24,6 +24,10 @@ services:
     class: \Nuntius\NuntiusRethinkdb
     arguments: ['@config']
 
+  mongodb:
+    class: \Nuntius\NuntiusMongoDB
+    arguments: ['@config']
+
   manager.entity:
     class: \Nuntius\EntityManager
     arguments: ['@db', '@config']

@@ -36,6 +36,27 @@ abstract class EntityBase implements EntityBaseInterface {
   }
 
   /**
+   * Getter handler.
+   *
+   * Since this might be a NoSQL object we cannot predict the properties of the
+   * class. In order to handle this one and prevent "Undefined property" errors
+   * we need a getter that will check if the property exists or not.
+   *
+   * @param $name
+   *  The name of the property.
+   *
+   * @return mixed
+   *  Return the value of the property if exists, if not return NULL.
+   */
+  function __get($name) {
+    if (!property_exists($this, $name)) {
+      return NULL;
+    }
+
+    return $this->{$name};
+  }
+
+  /**
    * Return the current instance object with the values from the DB.
    *
    * @param array $data

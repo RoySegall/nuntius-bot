@@ -99,6 +99,18 @@ class Nuntius {
   }
 
   /**
+   * Get the MongoDB dispatcher.
+   *
+   * @return NuntiusMongoDB
+   *
+   * @throws \Exception
+   * @internal
+   */
+  public static function getMongoDB() {
+    return self::container()->get('mongodb');
+  }
+
+  /**
    * Get the entity manager.
    *
    * @return EntityManager

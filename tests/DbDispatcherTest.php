@@ -1,7 +1,11 @@
 <?php
 
 namespace tests;
+
 use Nuntius\Db\DbQueryHandlerInterface;
+use Nuntius\Db\DbStorageHandlerInterface;
+use Nuntius\Db\MongoDB\MongoDBOperationHandler;
+use Nuntius\Db\RethinkDB\RethinkDbOperationHandler;
 use Nuntius\Nuntius;
 
 /**
@@ -54,16 +58,18 @@ class DbDispatcherTest extends TestsAbstract {
         'installerDescription' => 'No SQL light weight DB with real time support.',
         'supportRealTime' => TRUE,
       ],
+      'mongodb' => [
+        'dbType' => 'NoSQL',
+        'installerDescription' => 'No SQL light weight DB',
+        'supportRealTime' => FALSE,
+      ],
     ];
 
     $db = Nuntius::getDb();
+    $db_data = $dbs[$db->getDriver()];
 
-    foreach ($dbs as $driver => $info) {
-      $db->setDriver($driver);
-
-      foreach ($info as $method => $value) {
-        $this->assertEquals($db->getMetadata()->{$method}(), $value);
-      }
+    foreach ($db_data as $method => $value) {
+      $this->assertEquals($db->getMetadata()->{$method}(), $value);
     }
   }
 
@@ -71,27 +77,15 @@ class DbDispatcherTest extends TestsAbstract {
    * Testing the query controller.
    */
   public function testQuery() {
-    // Create a list of entries.
-    $objects = [
-      ['name' => 'Tony', 'age' => 27, 'alterego' => 'Iron Man'],
-      ['name' => 'Peter', 'age' => 20, 'alterego' => 'SpiderMan'],
-      ['name' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
-    ];
 
-    $db = Nuntius::getDb();
+    list($db) = $this->generateObjects();
 
     // Create a random table.
-    $db->getOperations()->tableCreate('superheroes');
-
-    // Create the objects.
-    foreach ($objects as $object) {
-      $db->getStorage()->table('superheroes')->save($object);
+    if (!$db->getOperations()->tableExists('superheroes')) {
+      $db->getOperations()->tableCreate('superheroes');
     }
 
     // Start querying the DB.
-
-    $db->setDriver('rethinkdb');
-
     $this->queryingTesting($db->getQuery());
 
     // Delete the table.
@@ -132,8 +126,6 @@ class DbDispatcherTest extends TestsAbstract {
   public function testOperation() {
     $db = Nuntius::getDb();
 
-    $db->setDriver('rethinkdb');
-
     // Testing DB related operations.
     $operations = $db->getOperations();
     $operations->dbCreate('testing_db');
@@ -147,13 +139,105 @@ class DbDispatcherTest extends TestsAbstract {
     $operations->tableDrop('testing_table');
     $this->assertFalse($operations->tableExists('testing_table'));
 
-    // Testing index related operations.
     $operations->tableCreate('testing_table');
+    $func_name = 'indexTestingDb' . $db->getDriver();
+    $this->{$func_name}($operations);
+  }
+
+  /**
+   * Helping method for testing operation for MongoDB.
+   *
+   * @param MongoDBOperationHandler $operations
+   *   The MongoDB operation handler.
+   */
+  protected function indexTestingDbmongodb(MongoDBOperationHandler $operations) {
+    $operations->indexCreate('testing_table', ['index' => 1]);
+    $this->assertTrue($operations->indexExists('testing_table', 'index_1'));
+    $operations->indexDrop('testing_table', 'index_1');
+    $this->assertFalse($operations->indexExists('testing_table', 'index_1'));
+    $operations->tableDrop('testing_table');
+  }
+
+  /**
+   * Helping method for testing operation for RethinkDB.
+   *
+   * @param RethinkDbOperationHandler $operations
+   *   The RethinkDB operation handler.
+   */
+  protected function indexTestingDbrethinkdb(RethinkDbOperationHandler $operations) {
     $operations->indexCreate('testing_table', 'index');
     $this->assertTrue($operations->indexExists('testing_table', 'index'));
     $operations->indexDrop('testing_table', 'index');
     $this->assertFalse($operations->indexExists('testing_table', 'index'));
     $operations->tableDrop('testing_table');
+  }
+
+  /**
+   * @return array
+   */
+  protected function generateObjects() {
+    $objects = [
+      ['name' => 'Tony', 'age' => 27, 'alterego' => 'Iron Man'],
+      ['name' => 'Peter', 'age' => 20, 'alterego' => 'SpiderMan'],
+      ['name' => 'Steve', 'age' => 18, 'alterego' => 'Captain America'],
+    ];
+
+    $db = Nuntius::getDb();
+
+    // Create a random table.
+    if (!$db->getOperations()->tableExists('superheroes')) {
+      $db->getOperations()->tableCreate('superheroes');
+    }
+
+    $new_objects = [];
+
+    foreach ($objects as $object) {
+      $new_objects[] = $db->getStorage()->table('superheroes')->save($object);
+    }
+
+    return [$db, $new_objects];
+  }
+
+  /**
+   * Testing storage handlers.
+   */
+  public function testStorage() {
+    list($db, $new_objects) = $this->generateObjects();
+
+    // Verify the objects have ids.
+    foreach ($new_objects as $new_object) {
+      $this->assertArrayHasKey('id', $new_object);
+      $this->assertArrayNotHasKey('id', $new_objects);
+    }
+
+    // Set up some stuff.
+    $id = $new_objects[0]['id'];
+
+    /**
+     * @return DbStorageHandlerInterface
+     */
+    $getTable = function() use($db) {
+      return $db->getStorage()->table('superheroes');
+    };
+
+
+    // Verify we can load.
+    $object = $getTable()->load($id);
+    $this->assertEquals($object['name'], 'Tony');
+
+
+    // Verify we can update.
+    $object['name'] = 'Clark';
+
+    $getTable()->update($object);
+    $object = $getTable()->load($id);
+    $this->assertEquals($object['name'], 'Clark');
+
+    // Verify we can delete.
+    $getTable()->delete($id);
+    $this->assertFalse($getTable()->load($id));
+
+    $db->getOperations()->tableDrop('superheroes');
   }
 
 }
