@@ -207,10 +207,8 @@ class Nuntius {
 
     /**
      * @return \Nuntius\Capsule\CapsuleServiceInterface
-     *
-     * @throws \Exception
      */
-  public static function capsuleManager() {
+  public static function getCapsuleManager() {
       return self::container()->get('capsule_manager');
   }
 
