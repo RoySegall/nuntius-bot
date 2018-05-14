@@ -1,5 +1,8 @@
 services:
 
+  capsule_manager:
+    class: \Nuntius\Capsule\CapsuleService
+
   config:
     class: \Nuntius\NuntiusConfig
 
