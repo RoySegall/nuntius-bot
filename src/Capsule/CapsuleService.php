@@ -4,6 +4,7 @@ namespace Nuntius\Capsule;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
 
 class CapsuleService implements CapsuleServiceInterface {
 
@@ -42,13 +43,57 @@ class CapsuleService implements CapsuleServiceInterface {
       ->in($this->getRoot() . '/capsules');
 
     foreach ($directories as $item) {
-      // todo: check if there is a yml file.
-      $folders[] = $item;
+      $folder_name = $item->getFileInfo()->getBasename();
+      $path = $item->getPath() . '/' . $folder_name;
+      $yml_path = $path . '/' . $folder_name . '.capsule.yml';
+
+      if (file_exists($yml_path)) {
+        $folders[$folder_name] = ['path' => $path] + Yaml::parse(file_get_contents($yml_path));
+      }
     }
 
-    // todo: order by dependencies.
-
     return $folders;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function enableCapsule($capsule_name, $skip_dependencies) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function disableCapsule($capsule_name) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function capsuleList($mode) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCapsuleImplementations($capsule_name) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function capsuleExists($capsule_name) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function capsuleEnabled($capsule_name) {
 
   }
 

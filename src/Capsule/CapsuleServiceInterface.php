@@ -3,6 +3,8 @@
 namespace Nuntius\Capsule;
 
 use \Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Interface CapsuleServiceInterface
@@ -31,7 +33,6 @@ interface CapsuleServiceInterface {
    */
   public function getCapsules();
 
-
   /**
    * Get the root folder.
    *
@@ -49,5 +50,48 @@ interface CapsuleServiceInterface {
    *  The current instance.
    */
   public function setRoot($root);
+
+  /**
+   * @param $capsule_name
+   * @param $skip_dependencies
+   *
+   * @return mixed
+   */
+  public function enableCapsule($capsule_name, $skip_dependencies);
+
+  /**
+   * @param $capsule_name
+   *
+   * @return mixed
+   */
+  public function disableCapsule($capsule_name);
+
+  /**
+   * @param $mode
+   *
+   * @return mixed
+   */
+  public function capsuleList($mode);
+
+  /**
+   * @param $capsule_name
+   *
+   * @return mixed
+   */
+  public function getCapsuleImplementations($capsule_name);
+
+  /**
+   * @param $capsule_name
+   *
+   * @return mixed
+   */
+  public function capsuleExists($capsule_name);
+
+  /**
+   * @param $capsule_name
+   *
+   * @return mixed
+   */
+  public function capsuleEnabled($capsule_name);
 
 }
