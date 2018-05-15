@@ -2,12 +2,22 @@
 
 namespace Nuntius\Capsule;
 
+use \Symfony\Component\Finder\Finder;
+
 /**
  * Interface CapsuleServiceInterface
  *
  * @package Nuntius\Capsule
  */
 interface CapsuleServiceInterface {
+
+  /**
+   * CapsuleServiceInterface constructor.
+   *
+   * @param Finder $finder
+   *   The finder object.
+   */
+  public function __construct(Finder $finder);
 
   /**
    * Search for all the capsules in the system.

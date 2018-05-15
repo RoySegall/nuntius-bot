@@ -2,6 +2,9 @@
 
 namespace Nuntius\Capsule;
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+
 class CapsuleService implements CapsuleServiceInterface {
 
   /**
@@ -12,16 +15,41 @@ class CapsuleService implements CapsuleServiceInterface {
   protected $root;
 
   /**
-   * Constructor.
+   * @var Finder
+   *
+   * Symfony finder service.
    */
-  public function __construct() {
+  protected $finder;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(Finder $finder) {
     $this->root = getcwd();
+    $this->finder = $finder;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCapsules() {
+
+    $folders = [];
+
+    /** @var SplFileInfo[] $directories */
+    $directories = $this->finder
+      ->directories()
+      ->in($this->getRoot() . '/capsules');
+
+    foreach ($directories as $item) {
+      // todo: check if there is a yml file.
+      $folders[] = $item;
+    }
+
+    // todo: order by dependencies.
+
+    return $folders;
+
   }
 
   /**
