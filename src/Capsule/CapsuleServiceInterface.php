@@ -52,14 +52,19 @@ interface CapsuleServiceInterface {
   public function setRoot($root);
 
   /**
-   * @param $capsule_name
-   * @param $skip_dependencies
+   * Enabling a capsule.
    *
-   * @return mixed
+   * @param string $capsule_name
+   *  The capsule name.
+   *
+   * @return bool
+   *
    */
-  public function enableCapsule($capsule_name, $skip_dependencies);
+  public function enableCapsule($capsule_name);
 
   /**
+   * Disable capsule.
+   * 
    * @param $capsule_name
    *
    * @return mixed
@@ -75,10 +80,11 @@ interface CapsuleServiceInterface {
 
   /**
    * @param $capsule_name
+   * @param $implementation_type
    *
    * @return mixed
    */
-  public function getCapsuleImplementations($capsule_name);
+  public function getCapsuleImplementations($capsule_name, $implementation_type);
 
   /**
    * @param $capsule_name

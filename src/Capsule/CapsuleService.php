@@ -58,7 +58,7 @@ class CapsuleService implements CapsuleServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function enableCapsule($capsule_name, $skip_dependencies) {
+  public function enableCapsule($capsule_name) {
 
   }
 
@@ -79,7 +79,7 @@ class CapsuleService implements CapsuleServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCapsuleImplementations($capsule_name) {
+  public function getCapsuleImplementations($capsule_name, $implementation_type) {
 
   }
 
