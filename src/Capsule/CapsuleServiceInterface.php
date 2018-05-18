@@ -112,7 +112,7 @@ interface CapsuleServiceInterface {
    * @param string $capsule_name
    *  The name of capsule.
    *
-   * @return mixed
+   * @return bool
    */
   public function capsuleExists($capsule_name);
 
@@ -125,8 +125,24 @@ interface CapsuleServiceInterface {
    * @param string $capsule_name
    *  The capsule name.
    *
-   * @return mixed
+   * @return bool
+   * @throws CapsuleErrorException
    */
   public function capsuleEnabled($capsule_name);
+
+  /**
+   * Get the highest capsule weight.
+   *
+   * @return int
+   */
+  public function getHighestWeight();
+
+  /**
+   * Get all the capsules order by the weight and dependencies.
+   *
+   * @return mixed
+   *  List of capsules order by dependencies.
+   */
+  public function getCapsulesForBootstrapping();
 
 }

@@ -97,11 +97,26 @@ class CapsuleService implements CapsuleServiceInterface {
 
       $capsule = $capsules[$capsule_name];
 
-      // todo: add weight to the modules and load them by order of the weight.
-      // todo: enable dependencies.
+      // Enable dependencies.
+      if (!empty($capsule['dependencies'])) {
+
+        foreach ($capsule['dependencies'] as $dependency) {
+
+          if ($this->capsuleEnabled($dependency)) {
+            continue;
+          }
+
+          $this->enableCapsule($dependency);
+        }
+
+        // Don't store the dependencies in the DB.
+        unset($capsule['dependencies']);
+      }
+
+      // Add weight to the modules so we could load them by order the weight.
+      $capsule['weight'] = $this->getHighestWeight() + 1;
 
       // Remove the dependencies from the capsule.
-      unset($capsule['dependencies']);
       $capsule['status'] = TRUE;
 
       $this->dbDispatcher->getStorage()->table('system')->save($capsule);
@@ -181,12 +196,12 @@ class CapsuleService implements CapsuleServiceInterface {
    */
   public function getCapsuleImplementations($capsule_name, $implementation_type = NULL) {
     // Check if there's a capsule in that name.
-    if (!in_array($capsule_name, array_keys($this->getCapsules()))) {
+    if (!$this->capsuleExists($capsule_name)) {
       throw new CapsuleErrorException("The capsule {$capsule_name} does not exists.");
     }
 
     // Check if the capsule enabled.
-    if (!in_array($capsule_name, $this->capsuleList('enabled'))) {
+    if (!$this->capsuleEnabled($capsule_name)) {
       throw new CapsuleErrorException("The capsule {$capsule_name} is not enabled.");
     }
 
@@ -218,13 +233,42 @@ class CapsuleService implements CapsuleServiceInterface {
    */
   public function capsuleExists($capsule_name) {
     // Check we have the capsule in the file system.
+    return in_array($capsule_name, array_keys($this->getCapsules()));
   }
 
   /**
    * {@inheritdoc}
    */
   public function capsuleEnabled($capsule_name) {
-    // Check the capsule is enabled.
+    return in_array($capsule_name, $this->capsuleList('enabled'));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getHighestWeight() {
+    $capsules = $this->getCapsulesForBootstrapping();
+    $max_number = 0;
+
+    foreach ($capsules as $capsule) {
+
+      if ($capsule['weight'] > $max_number) {
+        return $capsule['weight'];
+      }
+    }
+
+    return $max_number;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCapsulesForBootstrapping() {
+    return $this->dbDispatcher
+      ->getQuery()
+      ->table('system')
+      ->orderBy('weight', 'ASC')
+      ->execute();
   }
 
 }
