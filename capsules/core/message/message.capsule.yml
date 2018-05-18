@@ -1,4 +1,4 @@
-name: System test
+name: Message
 description: Testing integration with the system capsule.
 dependencies:
   - system

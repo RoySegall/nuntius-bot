@@ -72,7 +72,8 @@ class CapsuleService implements CapsuleServiceInterface {
       $yml_path = $path . '/' . $folder_name . '.capsule.yml';
 
       if (file_exists($yml_path)) {
-        $capsules[$folder_name] = ['path' => $path] + Yaml::parse(file_get_contents($yml_path));
+        $path = str_replace($this->getRoot() . '/', '', $path);
+        $capsules[$folder_name] = ['path' => $path, 'machine_name' => $folder_name] + Yaml::parse(file_get_contents($yml_path));
       }
     }
 
@@ -83,7 +84,44 @@ class CapsuleService implements CapsuleServiceInterface {
    * {@inheritdoc}
    */
   public function enableCapsule($capsule_name) {
+    // Check if the console exists in the system table.
+    $results = $this
+      ->dbDispatcher
+      ->getQuery()
+      ->table('system')
+      ->condition('machine_name', $capsule_name)
+      ->execute();
 
+    // Check if the console already enabled.
+    if (!$results) {
+      $capsules = $this->getCapsules();
+
+      if (empty($capsules[$capsule_name])) {
+        throw new CapsuleErrorException("The capsule {$capsule_name} does not exists.");
+      }
+
+      $capsule = $capsules[$capsule_name];
+
+      // Remove the dependencies from the capsule.
+      unset($capsule['dependencies']);
+      $capsule['status'] = TRUE;
+
+      $this->dbDispatcher->getStorage()->table('system')->save($capsule);
+      return TRUE;
+    }
+
+    $results = reset($results);
+
+    if ($results['status']) {
+      // Already enabled.
+      // todo: create an errors service and create an error.
+      return;
+    }
+
+    // Enabled the capsule.
+    $results['status'] = TRUE;
+    $this->dbDispatcher->getStorage()->table('system')->update($results);
+    return TRUE;
   }
 
   /**

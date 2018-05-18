@@ -59,7 +59,7 @@ interface CapsuleServiceInterface {
    *  The capsule name.
    *
    * @return bool
-   *
+   * @throws CapsuleErrorException
    */
   public function enableCapsule($capsule_name);
 
