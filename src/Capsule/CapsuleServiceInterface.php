@@ -70,6 +70,7 @@ interface CapsuleServiceInterface {
    *  The capsule name.
    *
    * @return mixed
+   * @throws CapsuleErrorException
    */
   public function disableCapsule($capsule_name);
 

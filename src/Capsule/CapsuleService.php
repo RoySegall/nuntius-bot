@@ -85,12 +85,7 @@ class CapsuleService implements CapsuleServiceInterface {
    */
   public function enableCapsule($capsule_name) {
     // Check if the console exists in the system table.
-    $results = $this
-      ->dbDispatcher
-      ->getQuery()
-      ->table('system')
-      ->condition('machine_name', $capsule_name)
-      ->execute();
+    $results = $this->getCapsuleRecord($capsule_name);
 
     // Check if the console already enabled.
     if (!$results) {
@@ -114,8 +109,7 @@ class CapsuleService implements CapsuleServiceInterface {
 
     if ($results['status']) {
       // Already enabled.
-      // todo: create an errors service and create an error.
-      return;
+      throw new CapsuleErrorException("The capsule {$capsule_name} is already enabled.");
     }
 
     // Enabled the capsule.
@@ -125,10 +119,39 @@ class CapsuleService implements CapsuleServiceInterface {
   }
 
   /**
+   * Get the capsule record.
+   *
+   * @param string $capsule_name
+   *  The capsule record in the DB.
+   *
+   * @return array
+   */
+  protected function getCapsuleRecord($capsule_name) {
+    return $this
+      ->dbDispatcher
+      ->getQuery()
+      ->table('system')
+      ->condition('machine_name', $capsule_name)
+      ->execute();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function disableCapsule($capsule_name) {
+    if (!$records = $this->getCapsuleRecord($capsule_name)) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} does not exists.");
+    }
 
+    $record = reset($records);
+
+    if (!$record['status']) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} is already disabled");
+    }
+
+    $record['status'] = FALSE;
+    $this->dbDispatcher->getStorage()->table('system')->update($record);
+    return TRUE;
   }
 
   /**
