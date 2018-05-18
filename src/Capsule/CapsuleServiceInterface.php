@@ -2,9 +2,8 @@
 
 namespace Nuntius\Capsule;
 
+use Nuntius\Db\DbDispatcher;
 use \Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Interface CapsuleServiceInterface
@@ -17,9 +16,11 @@ interface CapsuleServiceInterface {
    * CapsuleServiceInterface constructor.
    *
    * @param Finder $finder
-   *   The finder object.
+   *   The finder service.
+   * @param DbDispatcher $dbDispatcher
+   *   The DB dispatcher service.
    */
-  public function __construct(Finder $finder);
+  public function __construct(Finder $finder, DbDispatcher $dbDispatcher);
 
   /**
    * Search for all the capsules in the system.

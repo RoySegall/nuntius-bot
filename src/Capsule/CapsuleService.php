@@ -2,6 +2,7 @@
 
 namespace Nuntius\Capsule;
 
+use Nuntius\Db\DbDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -23,19 +24,42 @@ class CapsuleService implements CapsuleServiceInterface {
   protected $finder;
 
   /**
+   * @var DbDispatcher
+   *
+   * The DB dispatcher service.
+   */
+  protected $dbDispatcher;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(Finder $finder) {
+  public function __construct(Finder $finder, DbDispatcher $dbDispatcher) {
     $this->root = getcwd();
     $this->finder = $finder;
+    $this->dbDispatcher = $dbDispatcher;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRoot() {
+    return $this->root;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRoot($root) {
+    $this->root = $root;
+
+    return $this;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCapsules() {
-
-    $folders = [];
+    $capsules = [];
 
     /** @var SplFileInfo[] $directories */
     $directories = $this->finder
@@ -48,11 +72,11 @@ class CapsuleService implements CapsuleServiceInterface {
       $yml_path = $path . '/' . $folder_name . '.capsule.yml';
 
       if (file_exists($yml_path)) {
-        $folders[$folder_name] = ['path' => $path] + Yaml::parse(file_get_contents($yml_path));
+        $capsules[$folder_name] = ['path' => $path] + Yaml::parse(file_get_contents($yml_path));
       }
     }
 
-    return $folders;
+    return $capsules;
   }
 
   /**
@@ -95,22 +119,6 @@ class CapsuleService implements CapsuleServiceInterface {
    */
   public function capsuleEnabled($capsule_name) {
 
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRoot() {
-    return $this->root;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setRoot($root) {
-    $this->root = $root;
-
-    return $this;
   }
 
 }
