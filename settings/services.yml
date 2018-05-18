@@ -2,7 +2,7 @@ services:
 
   capsule_manager:
     class: \Nuntius\Capsule\CapsuleService
-    arguments: ['@finder']
+    arguments: ['@finder', '@db']
 
   finder:
     class: \Symfony\Component\Finder\Finder
