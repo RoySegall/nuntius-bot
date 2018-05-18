@@ -158,6 +158,18 @@ class CapsuleService implements CapsuleServiceInterface {
    * {@inheritdoc}
    */
   public function capsuleList($mode) {
+    if (!in_array($mode, self::CAPSULE_MODE)) {
+      throw new CapsuleErrorException('enabled or disabled are the only allowed values');
+    }
+
+    $capsules = $this->dbDispatcher->getQuery()
+      ->table('system')
+      ->condition('status', $mode == 'enabled')
+      ->execute();
+
+    return array_map(function($item) {
+      return $item['machine_name'];
+    }, $capsules);
 
   }
 

@@ -5,4 +5,5 @@ require_once 'vendor/autoload.php';
 
 $capsules = \Nuntius\Nuntius::getCapsuleManager();
 
-$capsules->disableCapsule('system');
+//$capsules->enableCapsule('system');
+\Kint::dump($capsules->capsuleList('enabled'));

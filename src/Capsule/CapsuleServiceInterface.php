@@ -13,6 +13,11 @@ use \Symfony\Component\Finder\Finder;
 interface CapsuleServiceInterface {
 
   /**
+   * Define which capsule values are allowed.
+   */
+  const CAPSULE_MODE = ['enabled', 'disabled'];
+
+  /**
    * CapsuleServiceInterface constructor.
    *
    * @param Finder $finder
@@ -84,6 +89,7 @@ interface CapsuleServiceInterface {
    *
    * @return array
    *  List of capsules.
+   * @throws CapsuleErrorException
    */
   public function capsuleList($mode);
 
