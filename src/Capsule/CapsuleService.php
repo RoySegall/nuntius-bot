@@ -97,6 +97,9 @@ class CapsuleService implements CapsuleServiceInterface {
 
       $capsule = $capsules[$capsule_name];
 
+      // todo: add weight to the modules and load them by order of the weight.
+      // todo: enable dependencies.
+
       // Remove the dependencies from the capsule.
       unset($capsule['dependencies']);
       $capsule['status'] = TRUE;
@@ -176,13 +179,38 @@ class CapsuleService implements CapsuleServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCapsuleImplementations($capsule_name, $implementation_type) {
+  public function getCapsuleImplementations($capsule_name, $implementation_type = NULL) {
     // Check if there's a capsule in that name.
+    if (!in_array($capsule_name, array_keys($this->getCapsules()))) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} does not exists.");
+    }
 
     // Check if the capsule enabled.
+    if (!in_array($capsule_name, $this->capsuleList('enabled'))) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} is not enabled.");
+    }
+
+    // Check first that the capsule declared services.
+    $capsule_records = $this->getCapsuleRecord($capsule_name);
+    $capsule_record = reset($capsule_records);
+    $services_file_path = $this->getRoot() . "/{$capsule_record['path']}/{$capsule_name}.services.yml";
+
+    if (!file_exists($services_file_path)) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} does not declare any services.");
+    }
 
     // Return the implementation list.
+    $content = Yaml::parse(file_get_contents($services_file_path));
 
+    if (!$implementation_type) {
+      return $content;
+    }
+
+    if (empty($content[$implementation_type])) {
+      throw new CapsuleErrorException("The capsule {$capsule_name} does not implement services under {$implementation_type}");
+    }
+
+    return $content[$implementation_type];
   }
 
   /**

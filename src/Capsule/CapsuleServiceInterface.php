@@ -102,8 +102,9 @@ interface CapsuleServiceInterface {
    *  The implementation type in the services.yml file of the capsule.s
    *
    * @return mixed
+   * @throws CapsuleErrorException
    */
-  public function getCapsuleImplementations($capsule_name, $implementation_type);
+  public function getCapsuleImplementations($capsule_name, $implementation_type = NULL);
 
   /**
    * Checking if the capsule exists in the file system.
