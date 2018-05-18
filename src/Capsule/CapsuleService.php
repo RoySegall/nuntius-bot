@@ -177,6 +177,11 @@ class CapsuleService implements CapsuleServiceInterface {
    * {@inheritdoc}
    */
   public function getCapsuleImplementations($capsule_name, $implementation_type) {
+    // Check if there's a capsule in that name.
+
+    // Check if the capsule enabled.
+
+    // Return the implementation list.
 
   }
 
@@ -184,14 +189,14 @@ class CapsuleService implements CapsuleServiceInterface {
    * {@inheritdoc}
    */
   public function capsuleExists($capsule_name) {
-
+    // Check we have the capsule in the file system.
   }
 
   /**
    * {@inheritdoc}
    */
   public function capsuleEnabled($capsule_name) {
-
+    // Check the capsule is enabled.
   }
 
 }
