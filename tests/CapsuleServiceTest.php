@@ -3,8 +3,6 @@
 namespace tests;
 
 use Nuntius\Capsule\CapsuleService;
-use Nuntius\Examples\Names\NameEvent;
-use Nuntius\Nuntius;
 
 /**
  * Testing event dispatcher.
@@ -20,16 +18,6 @@ class CapsuleServiceTest extends TestsAbstract
    * @var CapsuleService
    */
   protected $CapsuleService;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp()
-  {
-    parent::setUp();
-
-    $this->CapsuleService->setRoot(getcwd() . '/../');
-  }
 
   /**
    * Testing the capsule detector.
