@@ -52,7 +52,7 @@ class CapsuleServiceTest extends TestsAbstract
 
     $this->assertEquals([
       'path' => "capsules/core/system",
-      'machine_name' =>"system",
+      'machine_name' => "sjystem",
       'name' => "System",
       'description' => "A base capsule with a lot of core functionality",
     ], $capsules['system']);
