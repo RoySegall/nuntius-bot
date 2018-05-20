@@ -2,6 +2,7 @@
 
 namespace Nuntius\Capsule;
 
+use Composer\Autoload\ClassLoader;
 use Nuntius\Db\DbDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -29,6 +30,11 @@ class CapsuleService implements CapsuleServiceInterface {
    * The DB dispatcher service.
    */
   protected $dbDispatcher;
+
+  /**
+   * @var ClassLoader
+   */
+  protected $composer;
 
   /**
    * {@inheritdoc}
@@ -273,6 +279,29 @@ class CapsuleService implements CapsuleServiceInterface {
       ->table('system')
       ->orderBy('weight', 'ASC')
       ->execute();
+  }
+
+  public function setAutoloader(ClassLoader &$composer) {
+    $this->composer = &$composer;
+  }
+
+  public function rebuildNamespaces() {
+    // Get the enabled capsules.
+    $enabled = $this->capsuleList('enabled');
+
+    // Get all the capsules.
+    $capsules = $this->getCapsules();
+
+    foreach ($enabled as $enable) {
+      $capsule = $capsules[$enable];
+      $path = $capsules[$enable];
+      $names = explode('_', $capsule['machine_name']);
+      $namespace = 'Nuntius\\' . implode('', array_map(function($item) {
+          return ucfirst($item);
+        }, $names));
+
+      $this->composer->addPsr4($namespace . '\\', $this->getRoot() . '/' . $path . '/src/');
+    }
   }
 
 }

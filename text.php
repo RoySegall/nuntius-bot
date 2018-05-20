@@ -2,8 +2,8 @@
 
 require_once 'autoloader.php';
 
+//\Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
 $foo = new \Nuntius\System\PluginDispatcher();
 
-//\Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
 \Kint::dump($foo);
 

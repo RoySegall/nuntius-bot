@@ -2,6 +2,7 @@
 
 namespace Nuntius\Capsule;
 
+use Composer\Autoload\ClassLoader;
 use Nuntius\Db\DbDispatcher;
 use \Symfony\Component\Finder\Finder;
 
@@ -144,5 +145,9 @@ interface CapsuleServiceInterface {
    *  List of capsules order by dependencies.
    */
   public function getCapsulesForBootstrapping();
+
+  public function setAutoloader(ClassLoader &$composer);
+
+  public function rebuildNamespaces();
 
 }

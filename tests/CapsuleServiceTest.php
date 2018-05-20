@@ -5,6 +5,7 @@ namespace tests;
 use Nuntius\Capsule\CapsuleErrorException;
 use Nuntius\Capsule\CapsuleService;
 use Nuntius\Db\DbDispatcher;
+use Nuntius\System\PluginDispatcher;
 
 /**
  * Testing event dispatcher.
@@ -161,6 +162,13 @@ class CapsuleServiceTest extends TestsAbstract {
     $this->capsuleService->enableCapsule('message');
     $this->assertTrue($this->capsuleService->capsuleEnabled('message'));
     $this->assertTrue($this->capsuleService->capsuleEnabled('system'));
+  }
+
+  public function testAutoloaderRegister() {
+//    var_dump(class_exists('\Nuntius\System\PluginDispatcher'));
+    $this->capsuleService->enableCapsule('system');
+    $this->capsuleService->rebuildNamespaces();
+    $foo = new \Nuntius\System\PluginDispatcher();
   }
 
 }
