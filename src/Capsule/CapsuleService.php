@@ -252,6 +252,10 @@ class CapsuleService implements CapsuleServiceInterface {
 
     foreach ($capsules as $capsule) {
 
+      if (empty($capsule['weight'])) {
+        continue;
+      }
+
       if ($capsule['weight'] > $max_number) {
         return $capsule['weight'];
       }
