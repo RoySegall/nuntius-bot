@@ -3,27 +3,53 @@
 namespace tests;
 
 use Nuntius\Capsule\CapsuleService;
+use Nuntius\Db\DbDispatcher;
 
 /**
  * Testing event dispatcher.
  */
-class CapsuleServiceTest extends TestsAbstract
-{
+class CapsuleServiceTest extends TestsAbstract {
 
+  /**
+   * @var array
+   *
+   * List of services.
+   */
   protected $services = [
-    'CapsuleService' => 'capsule_manager',
+    'capsuleService' => 'capsule_manager',
+    'db' => 'db',
   ];
 
   /**
    * @var CapsuleService
    */
-  protected $CapsuleService;
+  protected $capsuleService;
+
+  /** @var DbDispatcher */
+  protected $db;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    parent::tearDown();
+
+    // Delete all the capsules from the system.
+    $results = $this->db->getQuery()
+      ->table('system')
+      ->condition('machine_name', ['system', 'message'], 'IN')
+      ->execute();
+
+    foreach ($results as $result) {
+      $this->db->getStorage()->table('system')->delete($result['id']);
+    }
+  }
 
   /**
    * Testing the capsule detector.
    */
   public function testGetCapsules() {
-    $capsules = $this->CapsuleService->getCapsules();
+    $capsules = $this->capsuleService->getCapsules();
 
     $this->assertArrayHasKey('system', $capsules);
     $this->assertArrayHasKey('message', $capsules);
@@ -50,6 +76,10 @@ class CapsuleServiceTest extends TestsAbstract
    * Testing capsule enabling.
    */
   public function testEnableCapsule() {
+    $this->assertFalse($this->capsuleService->capsuleEnabled('system'));
+    $this->capsuleService->enableCapsule('message');
+    $this->assertTrue($this->capsuleService->capsuleEnabled('message'));
+    $this->assertTrue($this->capsuleService->capsuleEnabled('system'));
 
   }
 
@@ -57,13 +87,40 @@ class CapsuleServiceTest extends TestsAbstract
    * Testing capsule disabling.
    */
   public function testDisableCapsule() {
+    // Enabling the system capsule.
+    $this->capsuleService->enableCapsule('system');
 
+    // Making sure the capsule enabled.
+    $this->assertTrue($this->capsuleService->capsuleEnabled('system'));
+
+    // Making sure the capsule can be disabled.
+    $this->capsuleService->disableCapsule('system');
+
+    $this->assertFalse($this->capsuleService->capsuleEnabled('system'));
   }
 
   /**
    * Testing capsule list.
    */
   public function testCapsuleList() {
+    $this->assertEquals($this->capsuleService->capsuleList('enabled'), []);
+
+    $this->capsuleService->enableCapsule('message');
+
+    $list = $this->capsuleService->capsuleList('enabled');
+
+    $this->assertTrue(in_array('system', $list));
+    $this->assertTrue(in_array('message', $list));
+
+    $this->assertEquals($this->capsuleService->capsuleList('disabled'), []);
+
+    $this->capsuleService->disableCapsule('message');
+
+    $enabled = $this->capsuleService->capsuleList('enabled');
+    $disabled = $this->capsuleService->capsuleList('disabled');
+
+    $this->assertTrue(in_array('message', $disabled));
+    $this->assertTrue(in_array('system', $enabled));
 
   }
 
