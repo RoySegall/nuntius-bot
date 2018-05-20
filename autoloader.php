@@ -25,3 +25,5 @@ foreach ($enabled as $enable) {
 
   $composer->addPsr4($namespace . '\\', $capsule_manager->getRoot() . '/capsules/core/system/src/');
 }
+
+return $composer;
