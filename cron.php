@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require 'autoloader.php';
 
 $resolver = new \Cron\Resolver\ArrayResolver();
 

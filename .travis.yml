@@ -39,4 +39,4 @@ script:
   - cp settings/credentials.local.travis.yml settings/credentials.local.yml
   - cp settings/hooks.local.travis.yml settings/hooks.local.yml
   - php console.php nuntius:install
-  - vendor/phpunit/phpunit/phpunit --bootstrap vendor/autoload.php tests/
+  - vendor/phpunit/phpunit/phpunit --bootstrap autoloader.php tests/
