@@ -205,9 +205,9 @@ class Nuntius {
     return self::container()->get('manager.fb_postback');
   }
 
-    /**
-     * @return \Nuntius\Capsule\CapsuleServiceInterface
-     */
+  /**
+   * @return \Nuntius\Capsule\CapsuleServiceInterface
+   */
   public static function getCapsuleManager() {
       return self::container()->get('capsule_manager');
   }
