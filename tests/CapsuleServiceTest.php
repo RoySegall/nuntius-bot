@@ -2,6 +2,7 @@
 
 namespace tests;
 
+use Nuntius\Capsule\CapsuleErrorException;
 use Nuntius\Capsule\CapsuleService;
 use Nuntius\Db\DbDispatcher;
 
@@ -128,21 +129,38 @@ class CapsuleServiceTest extends TestsAbstract {
    * Testing the capsule detection.
    */
   public function testGetCapsuleImplementations() {
+    $this->capsuleService->enableCapsule('message');
 
+    try {
+      $this->capsuleService->getCapsuleImplementations('message');
+      $this->fail('Exception was not thrown when trying to get capsule with out implementations.');
+    }
+    catch (CapsuleErrorException $e) {
+    }
+
+    $implementations = $this->capsuleService->getCapsuleImplementations('system');
+
+    $this->assertArrayHasKey('services', $implementations);
+    $this->assertNotEmpty($this->capsuleService->getCapsuleImplementations('system', 'services'));
   }
 
   /**
    * Testing capsule exist.
    */
   public function testCapsuleExists() {
-
+    $this->assertTrue($this->capsuleService->capsuleExists('message'));
+    $this->assertTrue($this->capsuleService->capsuleExists('system'));
+    $this->assertFalse($this->capsuleService->capsuleExists('pizza'));
   }
 
   /**
    * Testing capsule enabled.
    */
   public function testCapsuleEnabled() {
-
+    $this->assertFalse($this->capsuleService->capsuleEnabled('message'));
+    $this->capsuleService->enableCapsule('message');
+    $this->assertTrue($this->capsuleService->capsuleEnabled('message'));
+    $this->assertTrue($this->capsuleService->capsuleEnabled('system'));
   }
 
 }
