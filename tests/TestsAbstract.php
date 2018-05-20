@@ -9,6 +9,8 @@ use Nuntius\Nuntius;
  */
 abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
 
+  protected $services = [];
+
   /**
    * @var string[]
    */
@@ -24,6 +26,10 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
    */
   public function setUp() {
     $this->query = Nuntius::getDb()->getQuery();
+
+    foreach ($this->services as $property => $service) {
+      $this->{$property} = Nuntius::container()->get($service);
+    }
   }
 
   /**
