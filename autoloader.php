@@ -7,27 +7,47 @@
 /** @var \Composer\Autoload\ClassLoader $composer */
 $composer = include getcwd() . '/vendor/autoload.php';
 
-try {
+spl_autoload_register('nuntius_spl');
+
+function nuntius_spl($class) {
+
+  if (strpos($class, 'Nuntius') !== 0) {
+    // Not a nuntius namespace. skip.
+    return;
+  }
+
+  // Get the capsule manager.
   $capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
 
-  // Get the enabled capsules.
-  $enabled = $capsule_manager->capsuleList('enabled');
+  // Building the variables which will help us construct the path.
+  $namepsaces = explode('\\', $class);
+  $subfolders = array_splice($namepsaces,2);
 
-  // Get all the capsules.
-  $capsules = $capsule_manager->getCapsules();
+  // Taking a camel case to a lower case: Foo to foo and FooBar to foo_bar.
+  $change_namespace = function ($camel) {
+    $snake = preg_replace('/[A-Z]/', '_$0', $camel);
+    $snake = strtolower($snake);
+    $snake = ltrim($snake, '_');
+    return $snake;
+  };
+  $capsule = $change_namespace($namepsaces[1]);
 
-  foreach ($enabled as $enable) {
-    $capsule = $capsules[$enable];
-    $path = $capsules[$enable];
-    $names = explode('_', $capsule['machine_name']);
-    $namespace = 'Nuntius\\' . implode('', array_map(function($item) {
-        return ucfirst($item);
-      }, $names));
+  // Going over the capsules for bootstrapping by the weight in the DB. We need
+  // it in order to keep our dependencies tree.
+  foreach ($capsule_manager->getCapsulesForBootstrapping() as $info) {
 
-    $composer->addPsr4($namespace . '\\', $capsule_manager->getRoot() . '/' . $path['path'] . '/src/');
+    if ($capsule != $info['machine_name']) {
+      // This is the current capsule namespace we need to handle.
+      continue;
+    }
+
+    // Building the path.
+    $include = $capsule_manager->getRoot() . '/' . $info['path'] . '/src/' . implode('/', $subfolders) . '.php';
+
+    if (file_exists($include)) {
+      require_once $include;
+    }
   }
-}
-catch (Exception $e) {
 }
 
 return $composer;

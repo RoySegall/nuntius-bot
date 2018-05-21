@@ -146,8 +146,4 @@ interface CapsuleServiceInterface {
    */
   public function getCapsulesForBootstrapping();
 
-  public function setAutoloader(ClassLoader &$composer);
-
-  public function rebuildNamespaces();
-
 }

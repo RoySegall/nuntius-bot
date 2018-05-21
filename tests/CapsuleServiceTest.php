@@ -5,7 +5,6 @@ namespace tests;
 use Nuntius\Capsule\CapsuleErrorException;
 use Nuntius\Capsule\CapsuleService;
 use Nuntius\Db\DbDispatcher;
-use Nuntius\System\PluginDispatcher;
 
 /**
  * Testing event dispatcher.
@@ -166,13 +165,15 @@ class CapsuleServiceTest extends TestsAbstract {
 
   /**
    * For now, disable.
-   *
-   * todo: release blocker.
    */
   public function testAutoloaderRegister() {
     $this->assertFalse(class_exists('\Nuntius\System\PluginDispatcher'));
+    $this->assertFalse(class_exists('\Nuntius\System\Hooks\EntityCreate'));
+
     $this->capsuleService->enableCapsule('system');
-    $foo = new \Nuntius\System\PluginDispatcher();
+
+    new \Nuntius\System\PluginDispatcher();
+    new \Nuntius\System\Hooks\EntityCreate();
   }
 
 }

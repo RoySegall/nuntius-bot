@@ -281,12 +281,4 @@ class CapsuleService implements CapsuleServiceInterface {
       ->execute();
   }
 
-  public function setAutoloader(ClassLoader &$composer) {
-    $this->composer = $composer;
-  }
-
-  public function rebuildNamespaces() {
-
-  }
-
 }
