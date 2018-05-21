@@ -169,8 +169,9 @@ class CapsuleServiceTest extends TestsAbstract {
    *
    * todo: release blocker.
    */
-  public function __testAutoloaderRegister() {
+  public function testAutoloaderRegister() {
     $this->assertFalse(class_exists('\Nuntius\System\PluginDispatcher'));
+    $this->capsuleService->enableCapsule('system');
     $foo = new \Nuntius\System\PluginDispatcher();
   }
 
