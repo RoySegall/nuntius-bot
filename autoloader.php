@@ -36,6 +36,10 @@ function nuntius_spl($class) {
   // it in order to keep our dependencies tree.
   foreach ($capsule_manager->getCapsulesForBootstrapping() as $info) {
 
+    if (!isset($info['machine_name'])) {
+      continue;
+    }
+
     if ($capsule != $info['machine_name']) {
       // This is the current capsule namespace we need to handle.
       continue;
