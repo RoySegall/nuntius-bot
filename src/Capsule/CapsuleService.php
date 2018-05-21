@@ -282,26 +282,11 @@ class CapsuleService implements CapsuleServiceInterface {
   }
 
   public function setAutoloader(ClassLoader &$composer) {
-    $this->composer = &$composer;
+    $this->composer = $composer;
   }
 
   public function rebuildNamespaces() {
-    // Get the enabled capsules.
-    $enabled = $this->capsuleList('enabled');
 
-    // Get all the capsules.
-    $capsules = $this->getCapsules();
-
-    foreach ($enabled as $enable) {
-      $capsule = $capsules[$enable];
-      $path = $capsules[$enable];
-      $names = explode('_', $capsule['machine_name']);
-      $namespace = 'Nuntius\\' . implode('', array_map(function($item) {
-          return ucfirst($item);
-        }, $names));
-
-      $this->composer->addPsr4($namespace . '\\', $this->getRoot() . '/' . $path . '/src/');
-    }
   }
 
 }
