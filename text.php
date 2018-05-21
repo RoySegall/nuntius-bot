@@ -1,10 +1,9 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once 'autoloader.php';
 
-
-$capsules = \Nuntius\Nuntius::getCapsuleManager();
-
-//$capsules->enableCapsule('system');
-//$capsules->enableCapsule('message');
-\Kint::dump($capsules->getCapsulesForBootstrapping());
+if (!\Nuntius\Nuntius::getCapsuleManager()->capsuleEnabled('system')) {
+  \Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
+}
+$foo = new \Nuntius\System\PluginDispatcher();
+$foo = new \Nuntius\System\Hooks\EntityCreate();

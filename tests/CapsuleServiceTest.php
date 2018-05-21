@@ -163,4 +163,17 @@ class CapsuleServiceTest extends TestsAbstract {
     $this->assertTrue($this->capsuleService->capsuleEnabled('system'));
   }
 
+  /**
+   * For now, disable.
+   */
+  public function testAutoloaderRegister() {
+    $this->assertFalse(class_exists('\Nuntius\System\PluginDispatcher'));
+    $this->assertFalse(class_exists('\Nuntius\System\Hooks\EntityCreate'));
+
+    $this->capsuleService->enableCapsule('system');
+
+    new \Nuntius\System\PluginDispatcher();
+    new \Nuntius\System\Hooks\EntityCreate();
+  }
+
 }
