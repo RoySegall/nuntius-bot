@@ -2,7 +2,6 @@
 
 namespace Nuntius\Capsule;
 
-use Composer\Autoload\ClassLoader;
 use Nuntius\Db\DbDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -30,11 +29,6 @@ class CapsuleService implements CapsuleServiceInterface {
    * The DB dispatcher service.
    */
   protected $dbDispatcher;
-
-  /**
-   * @var ClassLoader
-   */
-  protected $composer;
 
   /**
    * {@inheritdoc}

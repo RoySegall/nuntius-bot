@@ -2,7 +2,6 @@
 
 namespace Nuntius\Capsule;
 
-use Composer\Autoload\ClassLoader;
 use Nuntius\Db\DbDispatcher;
 use \Symfony\Component\Finder\Finder;
 
