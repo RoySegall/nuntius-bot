@@ -222,7 +222,7 @@ class CapsuleService implements CapsuleServiceInterface {
     }
 
     if (empty($content[$implementation_type])) {
-      throw new CapsuleErrorException("The capsule {$capsule_name} does not implement services under {$implementation_type}");
+      return [];
     }
 
     return $content[$implementation_type];
