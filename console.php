@@ -11,15 +11,20 @@ foreach ($commands as $namespace) {
   $application->add(new $namespace);
 }
 
-// Register other capsules commands.
-$capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
+// Register other capsules commands. Wrapping it with a try in case the system
+// is not installed.
+try {
+    $capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
 
-foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
-  $commands = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'commands');
+    foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+        $commands = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'commands');
 
-  foreach ($commands as $command) {
-    $application->add(new $command);
-  }
+        foreach ($commands as $command) {
+            $application->add(new $command);
+        }
+    }
+} catch (\Exception $e) {
+    
 }
 
 $application->run();
