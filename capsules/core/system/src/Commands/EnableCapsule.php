@@ -44,13 +44,19 @@ class EnableCapsule extends Command {
     $io = new SymfonyStyle($input, $output);
 
     // Check if capsule exist.
+    if (!$this->capsuleService->capsuleExists($capsule_name)) {
+      $io->error('The capsule ' . $capsule_name . ' is missing.');
+    }
 
     // Check the capsule is not enabled.
     if ($this->capsuleService->capsuleEnabled($capsule_name)) {
       $io->error('The capsule is already enabled');
     }
 
-    // Check if the capsule has any requiremnts.
+    // Check if the capsule has any requirements.
+    $capsules = $this->capsuleService->getCapsules();
+
+    $requirements = $capsules[$capsule_name]['dependencies'];
 
     // Check if the requirements not enabled/exists.
 

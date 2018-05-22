@@ -24,7 +24,7 @@ try {
         }
     }
 } catch (\Exception $e) {
-    
+
 }
 
 $application->run();
