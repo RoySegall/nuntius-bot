@@ -48,6 +48,7 @@ class DisableCapsule extends Command {
     // Check if capsule exist.
     if (!$this->capsuleService->capsuleExists($capsule_name)) {
       $io->error('The capsule ' . $capsule_name . ' is missing.');
+      return;
     }
 
     // Check the capsule is not disabled.
@@ -60,16 +61,21 @@ class DisableCapsule extends Command {
     $enabled_capsules = $this->capsuleService->capsuleList('enabled');
     $need_to_disable = [];
     foreach ($enabled_capsules as $enabled_capsule) {
-
-      if (empty($capsules[$enabled_capsule]['dependencies'])) {
-        // No dependencies.
+      if ($enabled_capsule == $capsule_name) {
         continue;
       }
 
-      if (in_array($capsule_name, $capsules[$enabled_capsule]['dependencies'])) {
-        $need_to_disable[] = $enabled_capsule['machine_name'];
+      $capsule_info = $capsules[$enabled_capsule];
+
+      if (empty($capsule_info['dependencies'])) {
+        continue;
+      }
+
+      if (in_array($capsule_name, $capsule_info['dependencies'])) {
+        $need_to_disable[] = $capsule_info['machine_name'];
       }
     }
+
 
     if ($need_to_disable) {
       // todo: check dependencies of dependencies.
@@ -77,6 +83,7 @@ class DisableCapsule extends Command {
 
       if ($io->confirm("The capsule depended by {$depends}. would you like to disable them?")) {
         foreach ($need_to_disable as $capsule) {
+          $this->capsuleService->disableCapsule($capsule);
           $io->success('Disabling ' . $capsules[$capsule]['name']);
         }
       }
