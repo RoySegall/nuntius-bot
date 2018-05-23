@@ -5,6 +5,7 @@ namespace Nuntius;
 use React\EventLoop\StreamSelectLoop;
 use Slack\RealTimeClient;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use React\EventLoop\Factory;
@@ -232,9 +233,46 @@ class Nuntius {
 
   /**
    * @return \Nuntius\Capsule\CapsuleServiceInterface
+   *
+   * @throws \Exception
    */
   public static function getCapsuleManager() {
       return self::container()->get('capsule_manager');
+  }
+
+  /**
+   * Registering commands.
+   *
+   * @param \Symfony\Component\Console\Application $application
+   */
+  public static function addCommands(Application $application) {
+
+    $commands = self::getSettings()->getSetting('commands');
+    foreach ($commands as $namespace) {
+      $application->add(new $namespace);
+    }
+
+    // Register other capsules commands. Wrapping it with a try in case the
+    // system is not installed.
+    try {
+      $capsule_manager = self::getCapsuleManager();
+
+      foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+        $services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
+
+        foreach ($services as $id => $service) {
+          if (empty($service['command'])) {
+            continue;
+          }
+
+          $application->add(self::container()->get($id));
+        }
+
+      }
+    } catch (\Exception $e) {
+
+    }
+
   }
 
 }
