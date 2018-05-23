@@ -40,6 +40,7 @@ class EnableCapsule extends Command {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
+    // Setting up the variables.
     $capsule_name = $input->getArgument('capsule_name');
     $io = new SymfonyStyle($input, $output);
 
@@ -57,7 +58,15 @@ class EnableCapsule extends Command {
     $capsules = $this->capsuleService->getCapsules();
     $requirements = $capsules[$capsule_name]['dependencies'];
 
-    // Check of one of the requirements even exists before moving on.
+    // Check if one of the requirements even exists before moving on.
+    $missing = array_filter($requirements, function ($item) use($capsules) {
+        return in_array($item, array_keys($capsules));
+    });
+
+    if ($missing) {
+      $list_of_missing = join(", ", $missing);
+      $io->error("{$capsule_name} depends on {$list_of_missing} before. Download them before you can continue.");
+    }
 
     // Checking what we need to enable before enabling this one.
     $disabled_capsules = $this->capsuleService->capsuleList('disabled');
@@ -68,6 +77,7 @@ class EnableCapsule extends Command {
     if ($need_to_enabled) {
       // todo: check dependencies of dependencies.
       $depends = implode(", ", $need_to_enabled);
+
       if ($io->confirm("The capsule depends on {$depends}. would you like to enable them?")) {
         foreach ($need_to_enabled as $capsule) {
           $io->success('Enabling ' . $capsules[$capsule]['name']);
