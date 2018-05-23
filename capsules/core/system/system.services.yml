@@ -1,7 +1,9 @@
 services:
-  plugin_dispathcer:
-    class: \Nuntius\System\PluginDispatcher
-
-commands:
-  - '\Nuntius\System\Commands\EnableCapsule'
-  - '\Nuntius\System\Commands\DisableCapsule'
+  enable_capsule:
+    class: \Nuntius\System\Commands\EnableCapsule
+    arguments: ['@capsule_manager']
+    command: true
+  disable_capsule:
+    class: Nuntius\System\Commands\DisableCapsule
+    command: true
+    arguments: ['@capsule_manager']

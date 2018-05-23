@@ -2,8 +2,16 @@
 
 require_once 'autoloader.php';
 
-if (!\Nuntius\Nuntius::getCapsuleManager()->capsuleEnabled('system')) {
-  \Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
+$capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
+
+foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+  $services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
+
+  foreach ($services as $id => $service) {
+    if (empty($service['command'])) {
+      continue;
+    }
+    \Kint::dump(\Nuntius\Nuntius::container()->get($id));
+  }
+
 }
-$foo = new \Nuntius\System\PluginDispatcher();
-$foo = new \Nuntius\System\Hooks\EntityCreate();

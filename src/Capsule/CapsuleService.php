@@ -271,6 +271,7 @@ class CapsuleService implements CapsuleServiceInterface {
     return $this->dbDispatcher
       ->getQuery()
       ->table('system')
+      ->condition('status', TRUE)
       ->orderBy('weight', 'ASC')
       ->execute();
   }

@@ -14,16 +14,20 @@ foreach ($commands as $namespace) {
 // Register other capsules commands. Wrapping it with a try in case the system
 // is not installed.
 try {
-    $capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
+  $capsule_manager = \Nuntius\Nuntius::getCapsuleManager();
 
-    foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
-        $commands = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'commands');
+  foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+    $services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
 
-        foreach ($commands as $command) {
-          // Todo: define as service.
-            $application->add(new $command);
-        }
+    foreach ($services as $id => $service) {
+      if (empty($service['command'])) {
+        continue;
+      }
+
+      $application->add(\Nuntius\Nuntius::container()->get($id));
     }
+
+  }
 } catch (\Exception $e) {
 
 }

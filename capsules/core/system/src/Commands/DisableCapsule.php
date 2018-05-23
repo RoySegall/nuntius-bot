@@ -2,7 +2,7 @@
 
 namespace Nuntius\System\Commands;
 
-use Nuntius\Nuntius;
+use Nuntius\Capsule\CapsuleServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,10 +19,10 @@ class DisableCapsule extends Command {
   /**
    * {@inheritdoc}
    */
-  public function __construct($name = null) {
-    parent::__construct($name);
+  public function __construct(CapsuleServiceInterface $capsule_service) {
+    $this->capsuleService = $capsule_service;
 
-    $this->capsuleService = Nuntius::getCapsuleManager();
+    parent::__construct(NULL);
   }
 
   /**

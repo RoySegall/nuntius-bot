@@ -8,6 +8,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use React\EventLoop\Factory;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class for everything. Responsible for bootstrapping, getting the container
@@ -83,6 +84,30 @@ class Nuntius {
     // Load all the services files.
     foreach (self::getSettings()->getSetting('services') as $service) {
       $loader->load($service);
+    }
+
+    try {
+      $capsule_manager = $container->get('capsule_manager');
+
+      foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+        $capsule_services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
+
+        foreach ($capsule_services as $id => $capsule_service) {
+          if (!empty($capsule_service['arguments'])) {
+            $capsule_service['arguments'] = array_map(function($item) {
+              return new Reference(str_replace('@', '', $item));
+            }, $capsule_service['arguments']);
+          }
+          else {
+            $capsule_service['arguments'] = [];
+          }
+          $container
+            ->register($id, $capsule_service['class'])
+            ->setArguments($capsule_service['arguments']);
+        }
+      }
+    } catch (\Exception $e) {
+
     }
 
     return $container;
