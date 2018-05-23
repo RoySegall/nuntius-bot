@@ -20,6 +20,7 @@ try {
         $commands = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'commands');
 
         foreach ($commands as $command) {
+          // Todo: define as service.
             $application->add(new $command);
         }
     }
