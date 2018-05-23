@@ -47,11 +47,13 @@ class EnableCapsule extends Command {
     // Check if capsule exist.
     if (!$this->capsuleService->capsuleExists($capsule_name)) {
       $io->error('The capsule ' . $capsule_name . ' is missing.');
+      return;
     }
 
     // Check the capsule is not enabled.
     if ($this->capsuleService->capsuleEnabled($capsule_name)) {
       $io->error('The capsule is already enabled');
+      return;
     }
 
     // Check if the capsule has any requirements.
@@ -59,20 +61,30 @@ class EnableCapsule extends Command {
     $requirements = $capsules[$capsule_name]['dependencies'];
 
     // Check if one of the requirements even exists before moving on.
-    $missing = array_filter($requirements, function ($item) use($capsules) {
-        return in_array($item, array_keys($capsules));
-    });
+    $missing = [];
+    foreach ($requirements as $requirement) {
+      if (!in_array($requirement, array_keys($capsules))) {
+        $missing[] = $requirement;
+      }
+    }
 
     if ($missing) {
       $list_of_missing = join(", ", $missing);
-      $io->error("{$capsule_name} depends on {$list_of_missing} before. Download them before you can continue.");
+      $io->error("{$capsule_name} depends on {$list_of_missing}. Download them try again.");
+      return;
     }
 
     // Checking what we need to enable before enabling this one.
-    $disabled_capsules = $this->capsuleService->capsuleList('disabled');
-    $need_to_enabled = array_filter($disabled_capsules, function ($item) use($requirements) {
-      return in_array($item, $requirements);
-    });
+    $enabled_capsules = $this->capsuleService->capsuleList('enabled');
+    $need_to_enabled = [];
+    foreach ($capsules as $capsule) {
+      if ($capsule['machine_name'] == $capsule_name) {
+        continue;
+      }
+      if (!in_array($capsule['machine_name'], $enabled_capsules) && in_array($capsule['machine_name'], $requirements)) {
+        $need_to_enabled[] = $capsule['machine_name'];
+      }
+    }
 
     if ($need_to_enabled) {
       // todo: check dependencies of dependencies.
@@ -80,6 +92,7 @@ class EnableCapsule extends Command {
 
       if ($io->confirm("The capsule depends on {$depends}. would you like to enable them?")) {
         foreach ($need_to_enabled as $capsule) {
+          $this->capsuleService->enableCapsule($capsule);
           $io->success('Enabling ' . $capsules[$capsule]['name']);
         }
       }

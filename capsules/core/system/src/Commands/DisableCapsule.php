@@ -51,8 +51,9 @@ class DisableCapsule extends Command {
     }
 
     // Check the capsule is not disabled.
-    if ($this->capsuleService->capsuleDisabled($capsule_name)) {
-      $io->error('The capsule is already enabled');
+    if (!$this->capsuleService->capsuleEnabled($capsule_name)) {
+      $io->error('The capsule is already disabled.');
+      return;
     }
 
     // Check if the capsule has any depends capsules which enabled.
@@ -60,12 +61,12 @@ class DisableCapsule extends Command {
     $need_to_disable = [];
     foreach ($enabled_capsules as $enabled_capsule) {
 
-      if (!empty($enabled_capsule['dependencies'])) {
+      if (empty($capsules[$enabled_capsule]['dependencies'])) {
         // No dependencies.
         continue;
       }
 
-      if (in_array($capsule_name, $enabled_capsule['dependencies'])) {
+      if (in_array($capsule_name, $capsules[$enabled_capsule]['dependencies'])) {
         $need_to_disable[] = $enabled_capsule['machine_name'];
       }
     }
