@@ -55,12 +55,33 @@ class EnableCapsule extends Command {
 
     // Check if the capsule has any requirements.
     $capsules = $this->capsuleService->getCapsules();
-
     $requirements = $capsules[$capsule_name]['dependencies'];
 
-    // Check if the requirements not enabled/exists.
+    // Check of one of the requirements even exists before moving on.
+
+    // Checking what we need to enable before enabling this one.
+    $disabled_capsules = $this->capsuleService->capsuleList('disabled');
+    $need_to_enabled = array_filter($disabled_capsules, function ($item) use($requirements) {
+      return in_array($item, $requirements);
+    });
+
+    if ($need_to_enabled) {
+      // todo: check dependencies of dependencies.
+      $depends = implode(", ", $need_to_enabled);
+      if ($io->confirm("The capsule depends on {$depends}. would you like to enable them?")) {
+        foreach ($need_to_enabled as $capsule) {
+          $io->success('Enabling ' . $capsules[$capsule]['name']);
+        }
+      }
+      else {
+        $io->success("OK, the dependencies won't be enabled as well as this capsule.");
+        return;
+      }
+    }
 
     // Enable the capsule.
+    $this->capsuleService->enableCapsule($capsule_name);
+    $io->success('The ' . $capsule_name . ' is now enabled');
   }
 
 }
