@@ -30,18 +30,31 @@ class CommandsIntegrationTest extends TestsAbstract {
   /** @var DbDispatcher */
   protected $db;
 
+  public function setUp() {
+    parent::setUp();
+  }
+
   /**
    * Testing the commands integration with other modules.
+   *
+   * @throws \Exception
    */
   public function testCommandsIntegrations() {
-    $application = new \Symfony\Component\Console\Application();
-
     // First we need to enable the system capsule.
     $this->capsuleService->enableCapsule('system');
 
+    // Reset the container for refresh the services.
+    Nuntius::container(TRUE);
+
+    $application = new \Symfony\Component\Console\Application();
     \Nuntius\Nuntius::addCommands($application);
 
-    \Kint::dump(($application->find('system:capsule_disable')));
+    try {
+      $application->find('system:capsule_disable');
+      $application->find('system:capsule_enable');
+    } catch (\Exception $e) {
+      $this->fail('The system service was not found.');
+    }
   }
 
 }

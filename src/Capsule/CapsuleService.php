@@ -3,6 +3,7 @@
 namespace Nuntius\Capsule;
 
 use Nuntius\Db\DbDispatcher;
+use Nuntius\Nuntius;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -133,6 +134,7 @@ class CapsuleService implements CapsuleServiceInterface {
     // Enabled the capsule.
     $results['status'] = TRUE;
     $this->dbDispatcher->getStorage()->table('system')->update($results);
+    Nuntius::container(TRUE);
     return TRUE;
   }
 
@@ -169,6 +171,7 @@ class CapsuleService implements CapsuleServiceInterface {
 
     $record['status'] = FALSE;
     $this->dbDispatcher->getStorage()->table('system')->update($record);
+    Nuntius::container(TRUE);
     return TRUE;
   }
 
