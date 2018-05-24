@@ -49,13 +49,13 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
     }
 
     // Delete all the capsules from the system.
-    $results = $this->db->getQuery()
+    $results = Nuntius::getDb()->getQuery()
       ->table('system')
-      ->condition('machine_name', ['system', 'message'], 'IN')
+      ->condition('machine_name', "", "!=")
       ->execute();
 
     foreach ($results as $result) {
-      $this->db->getStorage()->table('system')->delete($result['id']);
+        Nuntius::getDb()->getStorage()->table('system')->delete($result['id']);
     }
 
   }
