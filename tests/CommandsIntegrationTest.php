@@ -2,7 +2,6 @@
 
 namespace tests;
 
-use Nuntius\Capsule\CapsuleErrorException;
 use Nuntius\Capsule\CapsuleService;
 use Nuntius\Db\DbDispatcher;
 use Nuntius\Nuntius;
@@ -27,12 +26,10 @@ class CommandsIntegrationTest extends TestsAbstract {
    */
   protected $capsuleService;
 
-  /** @var DbDispatcher */
+  /**
+   * @var DbDispatcher
+   */
   protected $db;
-
-  public function setUp() {
-    parent::setUp();
-  }
 
   /**
    * Testing the commands integration with other modules.
@@ -51,7 +48,7 @@ class CommandsIntegrationTest extends TestsAbstract {
 
     try {
       $application->find('system:capsule_disable');
-      $application->find('system:capsule_enable');
+      $application->find('system:capsusle_enable');
     } catch (\Exception $e) {
       $this->fail('The system service was not found.');
     }
