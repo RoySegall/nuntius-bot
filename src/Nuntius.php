@@ -5,9 +5,11 @@ namespace Nuntius;
 use React\EventLoop\StreamSelectLoop;
 use Slack\RealTimeClient;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use React\EventLoop\Factory;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class for everything. Responsible for bootstrapping, getting the container
@@ -55,7 +57,9 @@ class Nuntius {
    * Getting the settings.
    *
    * @return NuntiusConfig
-   *   The nuntius config service.
+   *   The Nuntius config service.
+   *
+   * @throws \Exception
    */
   public static function getSettings() {
     return self::container()->get('config');
@@ -64,11 +68,20 @@ class Nuntius {
   /**
    * Get the container.
    *
+   * @param null $reset
+   *  A flag which control if we want to reload the services.
+   *
    * @return ContainerBuilder
    *   The container object.
+   *
+   * @throws \Exception
    */
-  public static function container() {
+  public static function container($reset = NULL) {
     static $container;
+
+    if ($reset) {
+      $container = NULL;
+    }
 
     if ($container) {
       // We already got the container, return that.
@@ -85,6 +98,30 @@ class Nuntius {
       $loader->load($service);
     }
 
+    try {
+      $capsule_manager = $container->get('capsule_manager');
+
+      foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+        $capsule_services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
+
+        foreach ($capsule_services as $id => $capsule_service) {
+          if (!empty($capsule_service['arguments'])) {
+            $capsule_service['arguments'] = array_map(function($item) {
+              return new Reference(str_replace('@', '', $item));
+            }, $capsule_service['arguments']);
+          }
+          else {
+            $capsule_service['arguments'] = [];
+          }
+          $container
+            ->register($id, $capsule_service['class'])
+            ->setArguments($capsule_service['arguments']);
+        }
+      }
+    } catch (\Exception $e) {
+
+    }
+
     return $container;
   }
 
@@ -92,6 +129,9 @@ class Nuntius {
    * Get the DB instance.
    *
    * @return NuntiusRethinkdb
+   *
+   * @throws \Exception
+   *
    * @internal
    */
   public static function getRethinkDB() {
@@ -115,6 +155,8 @@ class Nuntius {
    *
    * @return EntityManager
    *   The entity manager.
+   *
+   * @throws \Exception
    */
   public static function getEntityManager() {
     return self::container()->get('manager.entity');
@@ -125,6 +167,8 @@ class Nuntius {
    *
    * @return \Nuntius\TasksManager
    *   The task manager object.
+   *
+   * @throws \Exception
    */
   public static function getTasksManager() {
     return self::container()->get('manager.task');
@@ -135,6 +179,8 @@ class Nuntius {
    *
    * @return CronManager
    *   The cron manager.
+   *
+   * @throws \Exception
    */
   public static function getCronTasksManager() {
     return self::container()->get('manager.cron');
@@ -145,6 +191,8 @@ class Nuntius {
    *
    * @return \Nuntius\UpdateManager
    *   The update manager.
+   *
+   * @throws \Exception
    */
   public static function getUpdateManager() {
     return self::container()->get('manager.update');
@@ -155,6 +203,8 @@ class Nuntius {
    *
    * @return \Nuntius\NuntiusDispatcher
    *   Nuntius dispatcher manager.
+   *
+   * @throws \Exception
    */
   public static function getDispatcher() {
     return self::container()->get('dispatcher')->buildDispatcher();
@@ -164,6 +214,8 @@ class Nuntius {
    * Return the guzzle component.
    *
    * @return \GuzzleHttp\Client
+   *
+   * @throws \Exception
    */
   public static function getGuzzle() {
     return self::container()->get('http');
@@ -173,6 +225,8 @@ class Nuntius {
    * Get the DB layer manager.
    *
    * @return \Nuntius\Db\DbDispatcher
+   *
+   * @throws \Exception
    */
   public static function getDb() {
     return self::container()->get('db');
@@ -182,6 +236,8 @@ class Nuntius {
    * Get the context manager.
    *
    * @return ContextManager
+   *
+   * @throws \Exception
    */
   public static function getContextManager() {
     return self::container()->get('context');
@@ -191,6 +247,8 @@ class Nuntius {
    * Get the context manager.
    *
    * @return \FacebookMessengerSendApi\SendAPI
+   *
+   * @throws \Exception
    */
   public static function facebookSendApi() {
     return self::container()->get('facebook_send_api');
@@ -200,6 +258,8 @@ class Nuntius {
    * Get FB postback manager.
    *
    * @return \Nuntius\FbPostBackManager
+   *
+   * @throws \Exception
    */
   public static function getFbPostBackManager() {
     return self::container()->get('manager.fb_postback');
@@ -207,9 +267,46 @@ class Nuntius {
 
   /**
    * @return \Nuntius\Capsule\CapsuleServiceInterface
+   *
+   * @throws \Exception
    */
   public static function getCapsuleManager() {
       return self::container()->get('capsule_manager');
+  }
+
+  /**
+   * Registering commands.
+   *
+   * @param \Symfony\Component\Console\Application $application
+   *
+   * @throws \Exception
+   */
+  public static function addCommands(Application $application) {
+
+    $commands = self::getSettings()->getSetting('commands');
+    foreach ($commands as $namespace) {
+      $application->add(new $namespace);
+    }
+
+    // Register other capsules commands. Wrapping it with a try in case the
+    // system is not installed.
+    try {
+      $capsule_manager = self::getCapsuleManager();
+
+      foreach ($capsule_manager->getCapsulesForBootstrapping() as $capsule) {
+        $services = $capsule_manager->getCapsuleImplementations($capsule['machine_name'], 'services');
+        foreach ($services as $id => $service) {
+          if (empty($service['command'])) {
+            continue;
+          }
+
+          $application->add(self::container()->get($id));
+        }
+
+      }
+    } catch (\Exception $e) {
+
+    }
   }
 
 }

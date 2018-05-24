@@ -30,23 +30,6 @@ class CapsuleServiceTest extends TestsAbstract {
   protected $db;
 
   /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    parent::tearDown();
-
-    // Delete all the capsules from the system.
-    $results = $this->db->getQuery()
-      ->table('system')
-      ->condition('machine_name', ['system', 'message'], 'IN')
-      ->execute();
-
-    foreach ($results as $result) {
-      $this->db->getStorage()->table('system')->delete($result['id']);
-    }
-  }
-
-  /**
    * Testing the capsule detector.
    */
   public function testGetCapsules() {
