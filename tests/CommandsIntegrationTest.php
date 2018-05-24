@@ -48,7 +48,7 @@ class CommandsIntegrationTest extends TestsAbstract {
 
     try {
       $application->find('system:capsule_disable');
-      $application->find('system:capsusle_enable');
+      $application->find('system:capsule_enable');
     } catch (\Exception $e) {
       $this->fail('The system service was not found.');
     }
