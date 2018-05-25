@@ -1,4 +1,6 @@
+# Define all the services.
 services:
+  # todo: commands to commands section.
   enable_capsule:
     class: \Nuntius\System\Commands\EnableCapsule
     arguments: ['@capsule_manager']
@@ -7,3 +9,11 @@ services:
     class: Nuntius\System\Commands\DisableCapsule
     command: true
     arguments: ['@capsule_manager']
+  hooks_dispatcher:
+    class: \Nuntius\System\HooksDispatcher
+    arguments: ['@capsule_manager']
+
+# Define hooks.
+hooks:
+  entity_create:
+    class: \Nuntius\System\Hooks\EntityCreate

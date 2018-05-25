@@ -2,5 +2,5 @@
 
 require_once 'autoloader.php';
 
-$capsule_manager = \Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
-
+$hooks = \Nuntius\System\System::hooksDispatcher();
+$hooks->invoke('entity_create');
