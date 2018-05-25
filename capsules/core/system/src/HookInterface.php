@@ -4,8 +4,8 @@ namespace Nuntius\System;
 
 interface HookInterface {
 
-  public function invoke();
+  public function invoke($arguments);
 
-  public function alter();
+  public function alter($arguments);
 
 };

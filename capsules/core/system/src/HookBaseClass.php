@@ -4,10 +4,10 @@ namespace Nuntius\System;
 
 abstract class HookBaseClass implements HookInterface {
 
-  public function invoke() {
+  public function invoke($arguments) {
 
   }
-  public function alter() {
+  public function alter($arguments) {
 
   }
 

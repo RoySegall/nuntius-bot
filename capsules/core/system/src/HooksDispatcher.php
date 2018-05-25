@@ -8,8 +8,9 @@ use Nuntius\Nuntius;
 /**
  * {@inheritdoc}
  */
-class HooksDispatcher implements HooksDispatcherInterface
-{
+class HooksDispatcher implements HooksDispatcherInterface {
+
+  public $arguments = [];
 
   /**
    * @var CapsuleServiceInterface
@@ -31,7 +32,7 @@ class HooksDispatcher implements HooksDispatcherInterface
     $invokes = $this->initClass($hook_name);
 
     foreach ($invokes as $invoke) {
-      $invoke->invoke();
+      $invoke->invoke($this->arguments);
     }
   }
 
@@ -39,6 +40,19 @@ class HooksDispatcher implements HooksDispatcherInterface
    * {@inheritdoc}
    */
   public function alter($hook_name) {
+    $invokes = $this->initClass($hook_name);
+
+    foreach ($invokes as $invoke) {
+      $invoke->alter($this->arguments);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setArguments(&$arguments = []) {
+    $this->arguments = &$arguments;
+    return $this;
   }
 
   /**

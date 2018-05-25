@@ -64,4 +64,14 @@ interface HooksDispatcherInterface {
    */
   public function alter($hook_name);
 
+  /**
+   * Setting arguments to for the hooks.
+   *
+   * @param array $arguments
+   *  List of arrays.
+   *
+   * @return mixed
+   */
+  public function setArguments(&$arguments = []);
+
 }
