@@ -1,0 +1,4 @@
+# Define hooks.
+hooks:
+  register_names:
+    class: \Nuntius\CapsuleTestMain\Hooks\RegisterName

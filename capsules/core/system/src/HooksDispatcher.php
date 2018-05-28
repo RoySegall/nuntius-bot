@@ -2,6 +2,7 @@
 
 namespace Nuntius\System;
 
+use Nuntius\Capsule\CapsuleErrorException;
 use Nuntius\Capsule\CapsuleServiceInterface;
 use Nuntius\Nuntius;
 
@@ -60,14 +61,19 @@ class HooksDispatcher implements HooksDispatcherInterface {
    * @return HookInterface[]
    *
    * @throws \Nuntius\Capsule\CapsuleErrorException
+   * @throws \Exception
    */
   protected function initClass($hook_name) {
     $capsules = $this->capsuleService->getCapsulesForBootstrapping();
     $hooks_instance = [];
     foreach ($capsules as $capsule) {
-      $hooks = $this
-        ->capsuleService
-        ->getCapsuleImplementations($capsule['machine_name'], 'hooks');
+      try {
+        $hooks = $this
+          ->capsuleService
+          ->getCapsuleImplementations($capsule['machine_name'], 'hooks');
+      } catch (CapsuleErrorException $e) {
+        continue;
+      }
 
       if (!$hooks) {
         continue;

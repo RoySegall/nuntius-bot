@@ -121,6 +121,7 @@ class CapsuleService implements CapsuleServiceInterface {
       $capsule['status'] = TRUE;
 
       $this->dbDispatcher->getStorage()->table('system')->save($capsule);
+      Nuntius::container(TRUE);
       return TRUE;
     }
 

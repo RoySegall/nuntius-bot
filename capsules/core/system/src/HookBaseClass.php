@@ -7,7 +7,7 @@ abstract class HookBaseClass implements HookInterface {
   public function invoke($arguments) {
 
   }
-  public function alter($arguments) {
+  public function alter(&$arguments) {
 
   }
 

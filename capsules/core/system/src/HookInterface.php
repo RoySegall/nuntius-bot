@@ -6,6 +6,6 @@ interface HookInterface {
 
   public function invoke($arguments);
 
-  public function alter($arguments);
+  public function alter(&$arguments);
 
 };

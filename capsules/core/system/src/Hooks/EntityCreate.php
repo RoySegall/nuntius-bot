@@ -9,7 +9,7 @@ class EntityCreate extends HookBaseClass {
   /**
    * {@inheritdoc}
    */
-  public function alter($arguments) {
+  public function alter(&$arguments) {
     $arguments['entity']->setNum(11);
   }
 }
