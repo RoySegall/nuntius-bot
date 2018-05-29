@@ -1,0 +1,4 @@
+name: Capsule test main
+description: Testing intergratoin for tests.
+dependencies:
+  - capsule_test_main

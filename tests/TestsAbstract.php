@@ -9,6 +9,8 @@ use Nuntius\Nuntius;
  */
 abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
 
+  protected $capsules = [];
+
   protected $services = [];
 
   /**
@@ -26,6 +28,10 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
    */
   public function setUp() {
     $this->query = Nuntius::getDb()->getQuery();
+
+    foreach ($this->capsules as $capsule) {
+      Nuntius::getCapsuleManager()->enableCapsule($capsule);
+    }
 
     foreach ($this->services as $property => $service) {
       $this->{$property} = Nuntius::container()->get($service);
@@ -55,7 +61,7 @@ abstract class TestsAbstract extends \PHPUnit_Framework_TestCase {
       ->execute();
 
     foreach ($results as $result) {
-        Nuntius::getDb()->getStorage()->table('system')->delete($result['id']);
+      Nuntius::getDb()->getStorage()->table('system')->delete($result['id']);
     }
 
   }
