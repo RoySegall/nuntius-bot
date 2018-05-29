@@ -49,6 +49,7 @@ class HooksTests extends TestsAbstract {
    * Testing hooks integration.
    */
   public function testHooks() {
+    \Kint::dump('a');
     $this->hooksDispatcher->invoke('register_names');
 
     $results = $this->db->getStorage()->table('names')->loadMultiple();
