@@ -97,4 +97,3 @@ class HooksDispatcher implements HooksDispatcherInterface {
     return $hooks_instance;
   }
 }
-
