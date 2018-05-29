@@ -9,7 +9,7 @@ use Nuntius\System\HooksDispatcher;
 /**
  * Testing entity.
  */
-class HooksTests extends TestsAbstract {
+class HooksTest extends TestsAbstract {
 
   protected $capsules = ['capsule_test_secondary'];
 
