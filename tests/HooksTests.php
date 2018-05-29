@@ -67,7 +67,7 @@ class HooksTests extends TestsAbstract {
       ->setArguments($names)
       ->alter('register_names');
 
-    $this->assertTrue(in_array('Maj.Tom', $names));
+    $this->assertTrue(in_array('Maj. Tom', $names));
     $this->assertTrue(in_array('Hal2000', $names));
   }
 
