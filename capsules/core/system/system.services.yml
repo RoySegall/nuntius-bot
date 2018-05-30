@@ -12,6 +12,12 @@ services:
   hooks_dispatcher:
     class: \Nuntius\System\HooksDispatcher
     arguments: ['@capsule_manager']
+  plugin_manager:
+    class: \Nuntius\System\PluginManager
+    arguments: ['@finder', '@capsule_manager']
+  entity.plugin_manager:
+    class: \Nuntius\System\EntityPluginManager
+    arguments: ['@plugin_manager']
 
 # Define hooks.
 hooks:

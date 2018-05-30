@@ -2,36 +2,7 @@
 
 require_once 'autoloader.php';
 
-use Doctrine\Common\Annotations\AnnotationReader;
+$plugin_manager = \Nuntius\Nuntius::container()->get('plugin_manager');
+$entity_manager = \Nuntius\Nuntius::container()->get('entity.plugin_manager');
 
-/**
- * @Annotation
- * @Target("CLASS")
- */
-class Entity {
-
-  public $id;
-  public $properties;
-
-}
-
-/**
- * @Entity(
- *  id = "user",
- *  properties = {
- *   "id",
- *   "name",
- *   "password",
- *   "email"
- *  },
- * )
- */
-class Testing {
-}
-
-$reflectionClass = new ReflectionClass(Testing::class);
-
-$reader = new AnnotationReader();
-$foo = $reader->getClassAnnotation($reflectionClass, 'entity');
-
-\Kint::dump($foo);
+\Kint::dump($plugin_manager->getPlugins('Plugin\Entity'));
