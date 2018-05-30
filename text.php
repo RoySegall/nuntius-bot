@@ -2,35 +2,36 @@
 
 require_once 'autoloader.php';
 
-$entity = new class {
-  private $num;
+use Doctrine\Common\Annotations\AnnotationReader;
 
-  /**
-   * @return mixed
-   */
-  public function getNum()
-  {
-    return $this->num;
-  }
+/**
+ * @Annotation
+ * @Target("CLASS")
+ */
+class Entity {
 
-  /**
-   * @param mixed $num
-   */
-  public function setNum($num)
-  {
-    $this->num = $num;
-  }
+  public $id;
+  public $properties;
 
-};
+}
 
-$entity->setNum(1);
+/**
+ * @Entity(
+ *  id = "user",
+ *  properties = {
+ *   "id",
+ *   "name",
+ *   "password",
+ *   "email"
+ *  },
+ * )
+ */
+class Testing {
+}
 
-\kint::dump('before ' . $entity->getNum());
-$arguments = ['entity' => $entity];
+$reflectionClass = new ReflectionClass(Testing::class);
 
-$hooks = \Nuntius\System\System::hooksDispatcher();
-$hooks
-  ->setArguments($arguments)
-  ->alter('entity_create');
+$reader = new AnnotationReader();
+$foo = $reader->getClassAnnotation($reflectionClass, 'entity');
 
-\kint::dump('after ' . $entity->getNum());
+\Kint::dump($foo);
