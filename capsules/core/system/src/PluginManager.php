@@ -42,12 +42,11 @@ class PluginManager {
     $list = [];
 
     foreach ($capsules as $capsule) {
-      $path = $capsule['path'] . '/src/' . str_replace('\\', '/', $name_space);
-
-      $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($path) {
+      $name_space_dir = str_replace('\\', '/', $name_space);
+      $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
         // For some reason we get files from the capsule root so we need to
         // filter those who are not in the path of the capsule.
-        return strpos($file->getRealPath(), $path) !== FALSE;
+        return strpos($file->getRealPath(), $name_space_dir) !== FALSE;
       });
 
       foreach ($files as $file) {
@@ -55,7 +54,7 @@ class PluginManager {
       }
     }
 
-    return $list;
+    return array_unique($list);
   }
 
 }
