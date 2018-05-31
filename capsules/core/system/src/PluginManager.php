@@ -38,11 +38,13 @@ class PluginManager {
    */
   public function getPlugins($name_space) {
     $capsules = $this->capsuleService->getCapsulesForBootstrapping();
-
     $list = [];
+    $processed_files = [];
 
     foreach ($capsules as $capsule) {
+      $base_namespace = '\Nuntius\\' . $this->machineNameToNameSpace($capsule['machine_name']) . '\\' . $name_space;
       $name_space_dir = str_replace('\\', '/', $name_space);
+
       $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
         // For some reason we get files from the capsule root so we need to
         // filter those who are not in the path of the capsule.
@@ -50,11 +52,42 @@ class PluginManager {
       });
 
       foreach ($files as $file) {
-        $list[] = $file->getFileInfo()->getRealPath();
+        $path = $file->getFileInfo()->getRealPath();
+
+        if (in_array($path, $processed_files)) {
+          continue;
+        }
+
+        $data = [
+          'namespace' => $base_namespace . '\\' . str_replace('.php', '', $file->getFileInfo()->getFileName()),
+          'path' => $path,
+        ];
+
+        $plugin = $this->processPlugin($data);
+
+        $list[$plugin['id']] = $data + $plugin;
+
+        $processed_files[] = $path;
+
+        break;
       }
     }
 
-    return array_unique($list);
+    return $list;
+  }
+
+  protected function machineNameToNameSpace($machine_name) {
+    return implode('', array_map(function($item) {
+      return ucfirst($item);
+    }, explode('_', $machine_name)));
+  }
+
+  protected function processPlugin($data) {
+//    require_once $data['path'];
+//
+//    new \ReflectionClass($data['namespace']);
+
+    return ['id' => time() . microtime()];
   }
 
 }
