@@ -2,7 +2,8 @@
 
 namespace Nuntius\System\Plugin\Entity;
 
-use Nuntius\System\Annotations\Entity;
+use Nuntius\System\EntityBase;
+use Nuntius\System\Annotations\Entity as Entity;
 
 /**
  * @Entity(
@@ -13,8 +14,11 @@ use Nuntius\System\Annotations\Entity;
  *   "password",
  *   "email"
  *  },
+ *  constraints = {
+ *   "id" = {"Constraints", "isId"}
+ *  },
  * )
  */
-class User extends Entity {
+class User extends EntityBase {
 
 }

@@ -34,8 +34,8 @@ class PluginManager {
    *
    * @param string $name_space
    *  The namespace.
-   *
    * @param NuntiusAnnotation $annotation
+   *  The annotation handler which the plugins declaring.
    *
    * @return array[]
    *  List of the plugins namespaces.

@@ -2,7 +2,8 @@
 
 namespace Nuntius\CapsuleTestMain\Plugin\Entity;
 
-use Nuntius\System\Annotations\Entity;
+use Nuntius\System\EntityBase;
+use Nuntius\System\Annotations\Entity as Entity;
 
 /**
  * @Entity(
@@ -15,6 +16,6 @@ use Nuntius\System\Annotations\Entity;
  *  },
  * )
  */
-class Vocabularies extends Entity {
+class Vocabularies extends EntityBase {
 
 }
