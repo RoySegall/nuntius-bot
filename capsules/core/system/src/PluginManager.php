@@ -2,6 +2,7 @@
 
 namespace Nuntius\System;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Nuntius\Capsule\CapsuleServiceInterface;
 use Symfony\Component\Finder\Finder;
 
@@ -37,40 +38,41 @@ class PluginManager {
    *  List of the plugins namespaces.
    */
   public function getPlugins($name_space) {
-    $capsules = $this->capsuleService->getCapsulesForBootstrapping();
     $list = [];
-    $processed_files = [];
+    $active_capsules = $this->capsuleService->capsuleList('enabled');
 
-    foreach ($capsules as $capsule) {
-      $base_namespace = '\Nuntius\\' . $this->machineNameToNameSpace($capsule['machine_name']) . '\\' . $name_space;
-      $name_space_dir = str_replace('\\', '/', $name_space);
+    $name_space_dir = str_replace('\\', '/', $name_space);
+    $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
+      return strpos($file->getRealPath(), $name_space_dir) !== FALSE;
+    });
 
-      $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
-        // For some reason we get files from the capsule root so we need to
-        // filter those who are not in the path of the capsule.
-        return strpos($file->getRealPath(), $name_space_dir) !== FALSE;
-      });
+    foreach ($files as $file) {
+      $list[] = $file->getFileInfo()->getRealPath();
+    }
 
-      foreach ($files as $file) {
-        $path = $file->getFileInfo()->getRealPath();
+    // Unique the list.
+    $files = array_unique($list);
+    $remove = [
+      $this->capsuleService->getRoot() . '/',
+      'src/',
+      'capsules/tests/',
+      'capsules/contrib/',
+      'capsules/core/',
+      'capsules/custom/',
+    ];
 
-        if (in_array($path, $processed_files)) {
-          continue;
-        }
+    // Run over the files and get parse the plugins.
+    foreach ($files as $file) {
+      $clean_path = str_replace($remove, '', $file);
+      $parts = explode('/', $clean_path);
 
-        $data = [
-          'namespace' => $base_namespace . '\\' . str_replace('.php', '', $file->getFileInfo()->getFileName()),
-          'path' => $path,
-        ];
-
-        $plugin = $this->processPlugin($data);
-
-        $list[$plugin['id']] = $data + $plugin;
-
-        $processed_files[] = $path;
-
-        break;
+      if (!in_array($parts[0], $active_capsules)) {
+        continue;
       }
+
+      $parts[0] = $this->machineNameToNameSpace($parts[0]);
+      $plugin_namespace = str_replace('.php', '', '\Nuntius\\' . implode('\\', $parts));
+      $this->processPlugin($plugin_namespace);
     }
 
     return $list;
@@ -85,7 +87,10 @@ class PluginManager {
   protected function processPlugin($data) {
 //    require_once $data['path'];
 //
-//    new \ReflectionClass($data['namespace']);
+    $annotationReader = new AnnotationReader();
+    $reflectionClass = new \ReflectionClass($data);
+    $classAnnotations = $annotationReader->getClassAnnotations($reflectionClass);
+
 
     return ['id' => time() . microtime()];
   }
