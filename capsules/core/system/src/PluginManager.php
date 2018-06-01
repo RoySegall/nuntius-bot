@@ -4,6 +4,7 @@ namespace Nuntius\System;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nuntius\Capsule\CapsuleServiceInterface;
+use Nuntius\System\Annotations\NuntiusAnnotation;
 use Symfony\Component\Finder\Finder;
 
 class PluginManager {
@@ -34,10 +35,14 @@ class PluginManager {
    * @param string $name_space
    *  The namespace.
    *
+   * @param NuntiusAnnotation $annotation
+   *
    * @return array[]
    *  List of the plugins namespaces.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function getPlugins($name_space) {
+  public function getPlugins($name_space, NuntiusAnnotation $annotation) {
     $list = [];
     $active_capsules = $this->capsuleService->capsuleList('enabled');
 
@@ -62,6 +67,8 @@ class PluginManager {
     ];
 
     // Run over the files and get parse the plugins.
+    $plugins = [];
+
     foreach ($files as $file) {
       $clean_path = str_replace($remove, '', $file);
       $parts = explode('/', $clean_path);
@@ -71,28 +78,47 @@ class PluginManager {
       }
 
       $parts[0] = $this->machineNameToNameSpace($parts[0]);
+
       $plugin_namespace = str_replace('.php', '', '\Nuntius\\' . implode('\\', $parts));
-      $this->processPlugin($plugin_namespace);
+      $process = $this->processPlugin($plugin_namespace, get_class($annotation));
+
+      $plugins[$process['id']] = $process + [
+        'namespace' => $plugin_namespace,
+      ];
     }
 
-    return $list;
+    return $plugins;
   }
 
+  /**
+   * Take the machine name of a capsule and convert it into a camel case one.
+   *
+   * @param string $machine_name
+   *  The machine name of the plugin.
+   *
+   * @return string
+   *  The namepsaced machine name.
+   */
   protected function machineNameToNameSpace($machine_name) {
     return implode('', array_map(function($item) {
       return ucfirst($item);
     }, explode('_', $machine_name)));
   }
 
-  protected function processPlugin($data) {
-//    require_once $data['path'];
-//
+  /**
+   * Read the plugin annotation and convert it into array.
+   *
+   * @param string $plugin_namespace
+   *  The plugin namespace.
+   * @param $annotation_id
+   *  The annotation ID.
+   *
+   * @return array
+   */
+  protected function processPlugin($plugin_namespace, $annotation_id) {
     $annotationReader = new AnnotationReader();
-    $reflectionClass = new \ReflectionClass($data);
-    $classAnnotations = $annotationReader->getClassAnnotations($reflectionClass);
-
-
-    return ['id' => time() . microtime()];
+    $reflectionClass = new \ReflectionClass($plugin_namespace);
+    return (array) $annotationReader->getClassAnnotation($reflectionClass, $annotation_id);
   }
 
 }

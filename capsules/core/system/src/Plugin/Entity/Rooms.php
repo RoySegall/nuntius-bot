@@ -2,7 +2,7 @@
 
 namespace Nuntius\System\Plugin\Entity;
 
-use Nuntius\System\Entity;
+use Nuntius\System\Annotations\Entity;
 
 /**
  * @Entity(

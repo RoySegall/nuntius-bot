@@ -2,7 +2,7 @@
 
 namespace Nuntius\CapsuleTestMain\Plugin\Entity;
 
-use Nuntius\System\Entity;
+use Nuntius\System\Annotations\Entity;
 
 /**
  * @Entity(
