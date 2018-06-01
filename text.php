@@ -2,12 +2,7 @@
 
 require_once 'autoloader.php';
 
-$plugin_manager = \Nuntius\Nuntius::container()->get('plugin_manager');
-$entity_manager = \Nuntius\Nuntius::container()->get('entity.plugin_manager');
+/** @var \Nuntius\System\Plugin\Entity\System $system */
+$system = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
-$annotations = new \Nuntius\System\Annotations\Entity();
-$plugins = $plugin_manager->getPlugins('Plugin\Entity', $annotations);
-
-\Kint::dump($plugins);
-
-//\Nuntius\Nuntius::getCapsuleManager()->enableCapsule('capsule_test_secondary');
+\Kint::dump($system->load('810cd520-52fc-4a94-b4a8-9d5f9a4c8816'));
