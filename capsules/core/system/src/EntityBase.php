@@ -120,10 +120,10 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function save(array $item) {
-    $this->beforeSave($item, $this);
-    $results = $this->storage->table($this->id)->save($item);
-    $this->afterSave($results, $this);
+  public function save() {
+    $this->beforeSave($this);
+    $results = $this->storage->table($this->id)->save($this->createItem());
+    $this->afterSave($this->createInstance($results));
     return $results;
   }
 
@@ -144,8 +144,20 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function update($data) {
-    $this->storage->table($this->id)->update($data);
+  public function update() {
+    $this->beforeUpdate($this);
+    $results = $this->storage->table($this->id)->update($this->createItem());
+    $this->afterUpdate($this->createInstance($results));
+  }
+
+  /**
+   * Creating an item which will be inserted to the DB.
+   */
+  protected function createItem() {
+    $this->beforeCreate($this);
+    $item = [];
+    $this->afterCreate($item);
+    return $item;
   }
 
   /**
@@ -177,13 +189,11 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * This function is invoked before the items will be saved into the DB.
    *
-   * @param $item
-   *  The array which will be injected to the DB.
    * @param EntityBase $entity
    *  The object of the current item. Used for getting meta tag about the
    *  current entity.
    */
-  public function beforeSave(&$item, EntityBase $entity) {
+  public function beforeSave(EntityBase $entity) {
   }
 
   /**
@@ -191,13 +201,27 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * This function will be invoked after the items returned saved into the DB.
    *
-   * @param $item
-   *  The array which injected to the DB.
    * @param EntityBase $entity
    *  The object of the current item. Used for getting meta tag about the
    *  current entity.
    */
-  public function afterSave(&$item, EntityBase $entity) {
+  public function afterSave(EntityBase $entity) {
+  }
+
+  public function beforeCreate() {
+
+  }
+
+  public function afterCreate() {
+    
+  }
+
+  public function beforeUpdate() {
+
+  }
+
+  public function afterUpdate() {
+
   }
 
   /**
