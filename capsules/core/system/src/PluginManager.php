@@ -20,6 +20,11 @@ class PluginManager {
   protected $capsuleService;
 
   /**
+   * @var bool
+   */
+  protected $requireEnabled = TRUE;
+
+  /**
    * PluginManager constructor.
    * @param Finder $finder
    * @param CapsuleServiceInterface $capsule_service
@@ -27,6 +32,24 @@ class PluginManager {
   public function __construct(Finder $finder, CapsuleServiceInterface $capsule_service) {
     $this->finder = $finder;
     $this->capsuleService = $capsule_service;
+  }
+
+  /**
+   * @param bool $requireEnabled
+   *
+   * @return PluginManager
+   */
+  public function setRequireEnabled(bool $requireEnabled) {
+    $this->requireEnabled = $requireEnabled;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function getRequireEnabled() {
+    return $this->requireEnabled;
   }
 
   /**
@@ -40,7 +63,9 @@ class PluginManager {
    * @return array[]
    *  List of the plugins namespaces.
    *
+   * @throws \Doctrine\Common\Annotations\AnnotationException
    * @throws \Nuntius\Capsule\CapsuleErrorException
+   * @throws \ReflectionException
    */
   public function getPlugins($name_space, NuntiusAnnotation $annotation) {
     $list = [];
@@ -73,10 +98,11 @@ class PluginManager {
       $clean_path = str_replace($remove, '', $file);
       $parts = explode('/', $clean_path);
 
-      if (!in_array($parts[0], $active_capsules)) {
+      if ($this->requireEnabled && !in_array($parts[0], $active_capsules)) {
         continue;
       }
 
+      $capsule = $parts[0];
       $parts[0] = $this->machineNameToNameSpace($parts[0]);
 
       $plugin_namespace = str_replace('.php', '', '\Nuntius\\' . implode('\\', $parts));
@@ -84,6 +110,7 @@ class PluginManager {
 
       $plugins[$process['id']] = $process + [
         'namespace' => $plugin_namespace,
+        'provided_by' => $capsule,
       ];
     }
 
@@ -114,6 +141,9 @@ class PluginManager {
    *  The annotation ID.
    *
    * @return array
+   *
+   * @throws \Doctrine\Common\Annotations\AnnotationException
+   * @throws \ReflectionException
    */
   protected function processPlugin($plugin_namespace, $annotation_id) {
     $annotationReader = new AnnotationReader();

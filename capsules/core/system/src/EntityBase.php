@@ -251,4 +251,8 @@ abstract class EntityBase implements HookContainerInterface {
     return true;
   }
 
+  public function installEntity() {
+
+  }
+
 }

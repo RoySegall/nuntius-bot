@@ -61,4 +61,8 @@ class EntityPluginManager {
     return $object;
   }
 
+  public function installCapsuleEntities() {
+
+  }
+
 }
