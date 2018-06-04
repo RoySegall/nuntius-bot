@@ -208,11 +208,27 @@ abstract class EntityBase implements HookContainerInterface {
   public function afterSave(EntityBase $entity) {
   }
 
-  public function beforeCreate() {
+  /**
+   * Pre create hook.
+   *
+   * The hook is invoked before the data, which will be inserted to the DB, is
+   * prepared. You can use this hook to alter the object which will effect the
+   * future to be record in the DB.
+   *
+   * @param EntityBase $entity
+   *  The current entity instance.
+   */
+  public function beforeCreate(EntityBase $entity) {
 
   }
 
-  public function afterCreate() {
+  /**
+   * Post create hook.
+   *
+   * The hook is hovked
+   * @param array $data
+   */
+  public function afterCreate(array $data) {
     
   }
 
