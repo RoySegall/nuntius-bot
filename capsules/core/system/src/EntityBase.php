@@ -126,6 +126,8 @@ abstract class EntityBase implements HookContainerInterface {
       return $this->update();
     }
 
+    $this->validate();
+
     $this->beforeSave($this);
     $results = $this->storage->table($this->plugin_id)->save($this->createItem());
     $this->afterSave($this->createInstance($results));
@@ -152,6 +154,8 @@ abstract class EntityBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function update() {
+    $this->validate();
+
     $this->beforeUpdate($this);
     $results = $this->storage->table($this->plugin_id)->update($this->createItem());
     $instance = $this->createInstance($results);
@@ -322,7 +326,7 @@ abstract class EntityBase implements HookContainerInterface {
    *  set to FALSE.
    */
   public function validate($return_errors = FALSE) {
-    // todo: trigger other validations.
+    \Kint::dump($this->properties);
   }
 
   /**
