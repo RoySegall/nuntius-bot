@@ -45,4 +45,20 @@ use Nuntius\System\Annotations\Entity as Entity;
 
 class System extends EntityBase {
 
+  public $id;
+
+  public $name;
+
+  public $description;
+
+  public $machine_name;
+
+  public $path;
+
+  public $status;
+
+  public $time;
+
+  public $weight;
+
 }

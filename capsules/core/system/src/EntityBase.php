@@ -95,7 +95,7 @@ abstract class EntityBase implements HookContainerInterface {
 
     $this->beforeLoad($ids);
 
-    foreach ($this->storage->table($this->id)->loadMultiple($ids) as $result) {
+    foreach ($this->storage->table($this->plugin_id)->loadMultiple($ids) as $result) {
 
       if (!$this->access('view', $result)) {
         continue;
@@ -121,8 +121,13 @@ abstract class EntityBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function save() {
+
+    if (!empty($this->id)) {
+      return $this->update();
+    }
+
     $this->beforeSave($this);
-    $results = $this->storage->table($this->id)->save($this->createItem());
+    $results = $this->storage->table($this->plugin_id)->save($this->createItem());
     $this->afterSave($this->createInstance($results));
     return $results;
   }
@@ -131,14 +136,16 @@ abstract class EntityBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function delete($id) {
-    $this->storage->table($this->id)->delete($id);
+    $this->beforeDelete($this);
+    $this->storage->table($this->plugin_id)->delete($id);
+    $this->afterDelete($this);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteMultiple(array $ids = []) {
-    $this->storage->table($this->id)->delete($ids);
+    $this->storage->table($this->plugin_id)->delete($ids);
   }
 
   /**
@@ -146,8 +153,11 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function update() {
     $this->beforeUpdate($this);
-    $results = $this->storage->table($this->id)->update($this->createItem());
-    $this->afterUpdate($this->createInstance($results));
+    $results = $this->storage->table($this->plugin_id)->update($this->createItem());
+    $instance = $this->createInstance($results);
+    $this->afterUpdate($instance);
+
+    return $instance;
   }
 
   /**
@@ -156,7 +166,16 @@ abstract class EntityBase implements HookContainerInterface {
   protected function createItem() {
     $this->beforeCreate($this);
     $item = [];
+
+    foreach ($this->properties as $property) {
+      if ($property == 'id' && empty($this->id)) {
+        continue;
+      }
+      $item[$property] = $this->{$property};
+    }
+
     $this->afterCreate($item);
+
     return $item;
   }
 
@@ -271,6 +290,29 @@ abstract class EntityBase implements HookContainerInterface {
   }
 
   /**
+   * Pre delete hook.
+   *
+   * This method invoked before the entity will be deleted.
+   *
+   * @param EntityBase $entityBase
+   *  The entity object.
+   */
+  public function beforeDelete(EntityBase $entityBase) {
+  }
+
+  /**
+   * Post delete hook.
+   *
+   * The method is invoked after the entity has been deleted.
+   *
+   * @param EntityBase $entityBase
+   *  The entity object.
+   */
+  public function afterDelete(EntityBase $entityBase) {
+
+  }
+
+  /**
    * Validating the object before saving it to the DB.
    *
    * The validations are defined in the constraints in the annotation.
@@ -297,8 +339,11 @@ abstract class EntityBase implements HookContainerInterface {
     return true;
   }
 
+  /**
+   * Installing the table.
+   */
   public function installEntity() {
-
+    $this->dbDispatcher->getOperations()->tableCreate($this->plugin_id);
   }
 
 }

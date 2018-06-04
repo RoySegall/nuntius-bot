@@ -21,7 +21,10 @@ class EntityPluginManager {
 
   /**
    * @return array[]
+   *
+   * @throws \Doctrine\Common\Annotations\AnnotationException
    * @throws \Nuntius\Capsule\CapsuleErrorException
+   * @throws \ReflectionException
    */
   public function getEntitiesList() {
     return $this->pluginManager->getPlugins('Plugin\Entity', new \Nuntius\System\Annotations\Entity());
@@ -51,8 +54,10 @@ class EntityPluginManager {
     }
 
     foreach ($plugin_info as $key => $value) {
-      if ($key == 'namespace') {
-        continue;
+
+      if ($key == 'id') {
+        // We don't want to override the record ID.
+        $key = 'plugin_id';
       }
 
       $object->{$key} = $value;
@@ -61,8 +66,10 @@ class EntityPluginManager {
     return $object;
   }
 
+  /**
+   * Create the table in the DB.
+   */
   public function installCapsuleEntities() {
-
   }
 
 }
