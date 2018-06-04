@@ -211,9 +211,19 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * Pre create hook.
    *
-   * The hook is invoked before the data, which will be inserted to the DB, is
-   * prepared. You can use this hook to alter the object which will effect the
-   * future to be record in the DB.
+   * This function invoked before the create item function. The create method
+   * takes the properties on the object and creates an array which match to the
+   * entity properties. For example:
+   * $this->foo = 'bar';
+   * $this->bar = 'foo';
+   * $this->time = 123456789;
+   *
+   * will be convert to:
+   * [
+   *  'foo' => 'bar',
+   *  'bar' => 'foo',
+   *  'time' => 12345789,
+   * ]
    *
    * @param EntityBase $entity
    *  The current entity instance.
@@ -225,19 +235,39 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * Post create hook.
    *
-   * The hook is hovked
+   * After the create method created the array which will be the record this
+   * method will be invoked. This method allow you to alter records just before
+   * the entry will go to the DB.
+   *
    * @param array $data
+   *  The record.
    */
-  public function afterCreate(array $data) {
+  public function afterCreate(array &$data) {
     
   }
 
-  public function beforeUpdate() {
-
+  /**
+   * Pre-update hook.
+   *
+   * This method will be invoked just before the update of the entity.
+   *
+   * @param EntityBase $entity
+   *
+   * @see EntityBase::beforeSave()
+   */
+  public function beforeUpdate(EntityBase $entity) {
   }
 
-  public function afterUpdate() {
-
+  /**
+   * Post update hook.
+   *
+   * This method will be invoked after the record saved to the DB.
+   *
+   * @param EntityBase $entity
+   *
+   * @see EntityBase::afterSave()
+   */
+  public function afterUpdate(EntityBase $entity) {
   }
 
   /**
