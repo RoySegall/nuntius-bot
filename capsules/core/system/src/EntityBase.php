@@ -3,6 +3,7 @@
 namespace Nuntius\System;
 
 use Nuntius\Db\DbDispatcher;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Class EntityBase
@@ -26,6 +27,11 @@ abstract class EntityBase implements HookContainerInterface {
   protected $hooksDispatcher;
 
   /**
+   * @var \Symfony\Component\Validator\Validator\ValidatorInterface
+   */
+  protected $validator;
+
+  /**
    * EntityBase constructor.
    * @param DbDispatcher $db
    * @param HooksDispatcherInterface $hooks_dispatcher
@@ -34,6 +40,7 @@ abstract class EntityBase implements HookContainerInterface {
     $this->dbDispatcher = $db;
     $this->storage = $db->getStorage();
     $this->hooksDispatcher = $hooks_dispatcher;
+    $this->validator = Validation::createValidator();
   }
 
   /**
@@ -326,7 +333,8 @@ abstract class EntityBase implements HookContainerInterface {
    *  set to FALSE.
    */
   public function validate($return_errors = FALSE) {
-    \Kint::dump($this->properties);
+    $constrains = $this->constraints();
+    return $this->validator->validate('name', $constrains['name']);
   }
 
   /**
@@ -348,6 +356,10 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function installEntity() {
     $this->dbDispatcher->getOperations()->tableCreate($this->plugin_id);
+  }
+
+  protected function constraints() {
+
   }
 
 }

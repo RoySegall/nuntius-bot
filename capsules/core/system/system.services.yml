@@ -18,6 +18,8 @@ services:
   entity.plugin_manager:
     class: \Nuntius\System\EntityPluginManager
     arguments: ['@plugin_manager']
+  constraint:
+    class: \Nuntius\System\Constraints\NuntiusConstraint
 
 # Define hooks.
 hooks:

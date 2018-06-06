@@ -14,34 +14,12 @@ namespace Nuntius\System\Plugin\Entity;
  *   "status",
  *   "time",
  *   "weight",
- *  },
- *  constraints = {
- *   "id" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "isUnique"},
- *   },
- *   "name" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "required"},
- *   },
- *   "machine_name" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "required"},
- *   },
- *   "path" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "pathExists"},
- *   },
- *   "status" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "isStatusValid"},
- *   },
- *   "time" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "isInt"},
- *   },
- *   "weight" = {
- *    {"\Nuntius\System\Constraints\EntityConstraints", "isInt"},
- *   },
- *  },
+ *  }
  * )
  */
 use Nuntius\System\EntityBase;
 use Nuntius\System\Annotations\Entity as Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class System extends EntityBase {
 
@@ -61,4 +39,9 @@ class System extends EntityBase {
 
   public $weight;
 
+  protected function constraints() {
+    return ['name' => [
+      new Assert\NotBlank(),
+    ]];
+  }
 }

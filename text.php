@@ -2,8 +2,21 @@
 
 require_once 'autoloader.php';
 
-/** @var \Nuntius\System\Plugin\Entity\System $system */
-$system = \Nuntius\System\System::getEntityManager()->createInstance('system');
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-$record = $system->load('f4763bc5-9637-414b-abc2-ae9edc315850');
-$record->validate();
+
+///** @var \Nuntius\System\Plugin\Entity\System $system */
+$system = \Nuntius\System\System::getEntityManager()->createInstance('system');
+//
+d($system->validate());
+
+
+//$validator = Validation::createValidator();
+//if (0 !== count($violations)) {
+//  // there are errors, now you can show them
+//  foreach ($violations as $violation) {
+//    echo $violation->getMessage().'<br>';
+//  }
+//}
