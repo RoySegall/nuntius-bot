@@ -40,8 +40,22 @@ class System extends EntityBase {
   public $weight;
 
   protected function constraints() {
-    return ['name' => [
-      new Assert\NotBlank(),
-    ]];
+    return [
+      'name' => [
+        new Assert\NotBlank(),
+      ],
+      'description' => [
+        new Assert\NotBlank(),
+      ],
+      'machine_name' => [
+        new Assert\NotBlank(),
+      ],
+      'path' => [
+        new Assert\NotBlank(),
+      ],
+      'status' => [
+        new Assert\NotBlank(),
+      ],
+    ];
   }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 ///** @var \Nuntius\System\Plugin\Entity\System $system */
 $system = \Nuntius\System\System::getEntityManager()->createInstance('system');
 //
-d($system->validate());
+d($system->validate(TRUE));
 
 
 //$validator = Validation::createValidator();

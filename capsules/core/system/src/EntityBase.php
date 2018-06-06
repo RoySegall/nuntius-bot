@@ -331,10 +331,38 @@ abstract class EntityBase implements HookContainerInterface {
    * @param bool $return_errors
    *  Determine if the errors need to return or just throw in the wiled. Default
    *  set to FALSE.
+   *
+   * @return array
+   * @throws \Exception
    */
   public function validate($return_errors = FALSE) {
     $constrains = $this->constraints();
-    return $this->validator->validate('name', $constrains['name']);
+
+    $all = [];
+
+    foreach ($constrains as $property => $constrain) {
+      $errors = $this->validator->validate($this->{$property}, $constrains['name']);
+
+      foreach ($errors as $error) {
+        $all[$property][] = $error->getMessage();
+      }
+    }
+
+    if ($return_errors) {
+      return $all;
+    }
+
+    if (!$all) {
+      return [];
+    }
+
+    $message = [];
+
+    foreach ($all as $key => $errors) {
+      $message[] = "{$key}: " . implode(", ", $errors);
+    }
+
+    throw new \Exception(implode("\n", $message));
   }
 
   /**
