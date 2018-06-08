@@ -200,6 +200,17 @@ abstract class EntityBase implements HookContainerInterface {
    *  List of ids.
    */
   public function beforeLoad(&$ids) {
+    $args = ['type' => $this->plugin_id, 'ids' => &$ids];
+
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter('entity_before_load');
+
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter($this->plugin_id . '_before_load');
   }
 
   /**
@@ -212,6 +223,17 @@ abstract class EntityBase implements HookContainerInterface {
    *  List of items.
    */
   public function afterLoad(&$results) {
+    $args = ['results' => &$results];
+
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter('entity_after_load');
+
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter($this->plugin_id . '_after_load');
   }
 
   /**
