@@ -13,10 +13,7 @@ use Nuntius\System\Annotations\Entity as Entity;
  *   "name",
  *   "password",
  *   "email"
- *  },
- *  constraints = {
- *   "id" = {"Constraints", "isId"}
- *  },
+ *  }
  * )
  */
 class User extends EntityBase {

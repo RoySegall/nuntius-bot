@@ -386,7 +386,6 @@ abstract class EntityBase implements HookContainerInterface {
     $this->dbDispatcher->getOperations()->tableCreate($this->plugin_id);
   }
 
-
   /**
    * Return a list of constraints.
    *

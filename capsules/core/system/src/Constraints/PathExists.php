@@ -7,5 +7,5 @@ use Symfony\Component\Validator\Constraint;
 /**
  */
 class PathExists extends Constraint {
-  public $message = 'The path does not exists.';
+  public $message = 'The {{ value }} does not exists.';
 }
