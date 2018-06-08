@@ -39,6 +39,9 @@ class System extends EntityBase {
 
   public $weight;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function constraints() {
     return [
       'name' => [
@@ -52,6 +55,7 @@ class System extends EntityBase {
       ],
       'path' => [
         new Assert\NotBlank(),
+        new \Nuntius\System\Constraints\PathExists(),
       ],
       'status' => [
         new Assert\NotBlank(),

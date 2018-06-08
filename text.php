@@ -7,9 +7,10 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 
-///** @var \Nuntius\System\Plugin\Entity\System $system */
+/** @var \Nuntius\System\Plugin\Entity\System $system */
 $system = \Nuntius\System\System::getEntityManager()->createInstance('system');
-//
+
+$system->path = 'a';
 d($system->validate(TRUE));
 
 

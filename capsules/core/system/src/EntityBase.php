@@ -341,7 +341,7 @@ abstract class EntityBase implements HookContainerInterface {
     $all = [];
 
     foreach ($constrains as $property => $constrain) {
-      $errors = $this->validator->validate($this->{$property}, $constrains['name']);
+      $errors = $this->validator->validate($this->{$property}, $constrains[$property]);
 
       foreach ($errors as $error) {
         $all[$property][] = $error->getMessage();
@@ -386,8 +386,20 @@ abstract class EntityBase implements HookContainerInterface {
     $this->dbDispatcher->getOperations()->tableCreate($this->plugin_id);
   }
 
-  protected function constraints() {
 
+  /**
+   * Return a list of constraints.
+   *
+   * @return array
+   *  The array is constructed by:
+   *  [
+   *    'property' => [
+   *      new \ConstraintObject()
+   *    ],
+   *  ]
+   */
+  protected function constraints() {
+    return [];
   }
 
 }
