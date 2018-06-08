@@ -7,7 +7,7 @@ use Nuntius\System\Annotations\Entity as Entity;
 
 /**
  * @Entity(
- *  id = "Vocabulary",
+ *  id = "vocabulary",
  *  properties = {
  *   "id",
  *   "name",
@@ -16,5 +16,11 @@ use Nuntius\System\Annotations\Entity as Entity;
  * )
  */
 class Vocabulary extends EntityBase {
+
+  public $id;
+
+  public $name;
+
+  public $description;
 
 }

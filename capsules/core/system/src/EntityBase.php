@@ -32,14 +32,22 @@ abstract class EntityBase implements HookContainerInterface {
   protected $validator;
 
   /**
+   * @var EntityPluginManager
+   */
+  protected $EntityPluginManager;
+
+  /**
    * EntityBase constructor.
    * @param DbDispatcher $db
    * @param HooksDispatcherInterface $hooks_dispatcher
+   * @param EntityPluginManager $entity_plugin_manager
    */
-  public function __construct(DbDispatcher $db, HooksDispatcherInterface $hooks_dispatcher) {
+  public function __construct(DbDispatcher $db, HooksDispatcherInterface $hooks_dispatcher, EntityPluginManager $entity_plugin_manager) {
     $this->dbDispatcher = $db;
     $this->storage = $db->getStorage();
     $this->hooksDispatcher = $hooks_dispatcher;
+    $this->EntityPluginManager = $entity_plugin_manager;
+
     $this->validator = Validation::createValidator();
   }
 
@@ -51,7 +59,7 @@ abstract class EntityBase implements HookContainerInterface {
    * @throws \Exception
    */
   static function getContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
-    return new static($container->get('db'), $container->get('hooks_dispatcher'));
+    return new static($container->get('db'), $container->get('hooks_dispatcher'), $container->get('entity.plugin_manager'));
   }
 
   /**
@@ -375,6 +383,25 @@ abstract class EntityBase implements HookContainerInterface {
 
       foreach ($errors as $error) {
         $all[$property][] = $error->getMessage();
+      }
+    }
+
+    // Checking relations.
+    if (!empty($this->relations)) {
+      foreach ($this->relations as $relation => $info) {
+
+        if ($info['type'] == 'single') {
+          // Check that this is a single item.
+        }
+
+        if ($info['type'] == 'many') {
+          // Check that this is a multiple items.
+        }
+
+        // Try to load the entity.
+        if (!$this->EntityPluginManager->createInstance($info['id'])->load($this->{$relation})) {
+          $all[$relation][] = 'There is no matching ' . $info['id'] . 'entity with the ID ' . $this->{$relation};
+        }
       }
     }
 

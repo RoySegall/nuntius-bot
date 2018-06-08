@@ -15,7 +15,7 @@ use Nuntius\System\Annotations\Entity as Entity;
  *   "vocabulary",
  *  },
  *  relations = {
- *   vocabulary = {
+ *   "vocabulary" = {
  *    "type" = "single",
  *    "id" = "vocabulary"
  *   }
@@ -23,5 +23,13 @@ use Nuntius\System\Annotations\Entity as Entity;
  * )
  */
 class Tag extends EntityBase {
+
+  public $id;
+
+  public $name;
+
+  public $description;
+
+  public $vocabulary;
 
 }
