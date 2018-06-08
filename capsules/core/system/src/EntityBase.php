@@ -400,7 +400,7 @@ abstract class EntityBase implements HookContainerInterface {
 
         // Try to load the entity.
         if (!$this->EntityPluginManager->createInstance($info['id'])->load($this->{$relation})) {
-          $all[$relation][] = 'There is no matching ' . $info['id'] . 'entity with the ID ' . $this->{$relation};
+          $all[$relation][] = 'There is no matching ' . $info['id'] . ' entity with the ID ' . $this->{$relation};
         }
       }
     }
