@@ -12,4 +12,6 @@ class Entity implements NuntiusAnnotation {
 
   public $properties;
 
+  public $relations;
+
 }

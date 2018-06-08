@@ -7,15 +7,21 @@ use Nuntius\System\Annotations\Entity as Entity;
 
 /**
  * @Entity(
- *  id = "vocabularies",
+ *  id = "tag",
  *  properties = {
  *   "id",
  *   "name",
- *   "password",
- *   "email"
+ *   "description",
+ *   "vocabulary",
+ *  },
+ *  relations = {
+ *   vocabulary = {
+ *    "type" = "single",
+ *    "id" = "vocabulary"
+ *   }
  *  },
  * )
  */
-class Vocabularies extends EntityBase {
+class Tag extends EntityBase {
 
 }

@@ -201,16 +201,7 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function beforeLoad(&$ids) {
     $args = ['type' => $this->plugin_id, 'ids' => &$ids];
-
-    $this
-      ->hooksDispatcher
-      ->setArguments($args)
-      ->alter('entity_before_load');
-
-    $this
-      ->hooksDispatcher
-      ->setArguments($args)
-      ->alter($this->plugin_id . '_before_load');
+    $this->hooksHelper($args, 'before_load');
   }
 
   /**
@@ -224,16 +215,8 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function afterLoad(&$results) {
     $args = ['results' => &$results];
+    $this->hooksHelper($args, 'after_load');
 
-    $this
-      ->hooksDispatcher
-      ->setArguments($args)
-      ->alter('entity_after_load');
-
-    $this
-      ->hooksDispatcher
-      ->setArguments($args)
-      ->alter($this->plugin_id . '_after_load');
   }
 
   /**
@@ -246,6 +229,8 @@ abstract class EntityBase implements HookContainerInterface {
    *  current entity.
    */
   public function beforeSave(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'before_save');
   }
 
   /**
@@ -258,6 +243,8 @@ abstract class EntityBase implements HookContainerInterface {
    *  current entity.
    */
   public function afterSave(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'after_save');
   }
 
   /**
@@ -281,7 +268,8 @@ abstract class EntityBase implements HookContainerInterface {
    *  The current entity instance.
    */
   public function beforeCreate(EntityBase $entity) {
-
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'before_create');
   }
 
   /**
@@ -295,7 +283,8 @@ abstract class EntityBase implements HookContainerInterface {
    *  The record.
    */
   public function afterCreate(array &$data) {
-    
+    $args = ['data' => &$data];
+    $this->hooksHelper($args, 'after_create');
   }
 
   /**
@@ -308,6 +297,8 @@ abstract class EntityBase implements HookContainerInterface {
    * @see EntityBase::beforeSave()
    */
   public function beforeUpdate(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'before_update');
   }
 
   /**
@@ -320,6 +311,8 @@ abstract class EntityBase implements HookContainerInterface {
    * @see EntityBase::afterSave()
    */
   public function afterUpdate(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'after_update');
   }
 
   /**
@@ -327,10 +320,12 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * This method invoked before the entity will be deleted.
    *
-   * @param EntityBase $entityBase
+   * @param EntityBase $entity
    *  The entity object.
    */
-  public function beforeDelete(EntityBase $entityBase) {
+  public function beforeDelete(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'before_delete');
   }
 
   /**
@@ -338,11 +333,24 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * The method is invoked after the entity has been deleted.
    *
-   * @param EntityBase $entityBase
+   * @param EntityBase $entity
    *  The entity object.
    */
-  public function afterDelete(EntityBase $entityBase) {
+  public function afterDelete(EntityBase $entity) {
+    $args = ['entity' => &$entity];
+    $this->hooksHelper($args, 'after_delete');
+  }
 
+  protected function hooksHelper(&$args, $hook) {
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter('entity_' . $hook);
+
+    $this
+      ->hooksDispatcher
+      ->setArguments($args)
+      ->alter($this->plugin_id . '_' . $hook);
   }
 
   /**
@@ -415,7 +423,7 @@ abstract class EntityBase implements HookContainerInterface {
    *  The array is constructed by:
    *  [
    *    'property' => [
-   *      new \ConstraintObject()
+   *      new \ConstraintObject(),
    *    ],
    *  ]
    */
