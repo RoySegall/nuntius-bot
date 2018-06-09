@@ -389,18 +389,37 @@ abstract class EntityBase implements HookContainerInterface {
     // Checking relations.
     if (!empty($this->relations)) {
       foreach ($this->relations as $relation => $info) {
+        $value = $this->{$relation};
+        $is_multiple = is_array($value);
+        /** @var EntityBase $entity */
+        $entity = $this->EntityPluginManager->createInstance($info['id']);
 
         if ($info['type'] == 'single') {
           // Check that this is a single item.
+
+          if ($is_multiple) {
+            $all[$relation][] = 'The relation type is single thus cannot be a multiple list of IDs';
+          }
+          else {
+            if (!$entity->load($this->{$relation})) {
+              $all[$relation][] = 'There is no matching ' . $info['id'] . ' entity with the ID ' . $this->{$relation};
+            }
+          }
         }
 
         if ($info['type'] == 'many') {
           // Check that this is a multiple items.
-        }
+          if (!$is_multiple) {
+            $all[$relation][] = 'The relation type is multiple thus cannot be a single ID';
+          }
+          else {
+            $entities = $entity->loadMultiple($value);
 
-        // Try to load the entity.
-        if (!$this->EntityPluginManager->createInstance($info['id'])->load($this->{$relation})) {
-          $all[$relation][] = 'There is no matching ' . $info['id'] . ' entity with the ID ' . $this->{$relation};
+            // Load all the entites.
+
+            // Check the entities which not been loaded from the DB and add them
+            // to the errors list.
+          }
         }
       }
     }
