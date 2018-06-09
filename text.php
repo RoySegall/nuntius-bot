@@ -20,11 +20,11 @@ $tag = \Nuntius\System\System::getEntityManager()->createInstance('tag');
 //  $vocabularies = $vocabulary->loadMultiple();
 //}
 //
-//$vid = array_keys($vocabularies)[0];
+//$vid = array_keys($vocabularies);
+//$tag->name = 'bmw';
+//$tag->description = '';
+//$tag->vocabulary = '5f4831cd-3217-40df-957e-dbfd2602360c';
 
-$tag->name = 'bmw';
-$tag->description = '';
-$tag->vocabulary = "aaa";
-
-$tag->validate();
+//d($vid);
+d($tag->load('d97adec0-6e8b-45b1-be9d-2a3a9249c54e', FALSE));
 

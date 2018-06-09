@@ -16,7 +16,7 @@ use Nuntius\System\Annotations\Entity as Entity;
  *  },
  *  relations = {
  *   "vocabulary" = {
- *    "type" = "single",
+ *    "type" = \Nuntius\System\EntityBase::SINGLE,
  *    "id" = "vocabulary"
  *   }
  *  },

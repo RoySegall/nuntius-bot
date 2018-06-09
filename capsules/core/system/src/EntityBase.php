@@ -11,6 +11,15 @@ use Symfony\Component\Validator\Validation;
  */
 abstract class EntityBase implements HookContainerInterface {
 
+  const SINGLE = 'single';
+  const MANY = 'many';
+
+  public $plugin_id;
+
+  public $properties;
+
+  public $relations;
+
   /**
    * @var DbDispatcher
    */
@@ -34,7 +43,7 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * @var EntityPluginManager
    */
-  protected $EntityPluginManager;
+  protected $entityPluginManager;
 
   /**
    * EntityBase constructor.
@@ -46,7 +55,7 @@ abstract class EntityBase implements HookContainerInterface {
     $this->dbDispatcher = $db;
     $this->storage = $db->getStorage();
     $this->hooksDispatcher = $hooks_dispatcher;
-    $this->EntityPluginManager = $entity_plugin_manager;
+    $this->entityPluginManager = $entity_plugin_manager;
 
     $this->validator = Validation::createValidator();
   }
@@ -92,10 +101,25 @@ abstract class EntityBase implements HookContainerInterface {
    * @return $this
    *   The current object.
    */
-  protected function createInstance($data) {
+  protected function createInstance($data, $load_relations = TRUE) {
     $this_copy = clone $this;
 
     foreach ($data as $property => $value) {
+
+      if ($load_relations && !empty($this->relations) && in_array($property, array_keys($this->relations))) {
+        $relationship = $this->relations[$property];
+
+        /** @var EntityBase $entity_manager */
+        $entity_manager = $this->entityPluginManager->createInstance($relationship['id']);
+
+        if ($relationship['type'] == self::MANY) {
+          $value = $entity_manager->loadMultiple($value);
+        }
+
+        if ($relationship['type'] == self::SINGLE) {
+          $value = $entity_manager->load($value);
+        }
+      }
       $this_copy->{$property} = $value;
     }
 
@@ -105,10 +129,8 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = []) {
+  public function loadMultiple(array $ids = [], $load_relations = TRUE) {
     $results = [];
-
-    $this->beforeLoad($ids);
 
     foreach ($this->storage->table($this->plugin_id)->loadMultiple($ids) as $result) {
 
@@ -116,7 +138,7 @@ abstract class EntityBase implements HookContainerInterface {
         continue;
       }
 
-      $results[$result['id']] = $this->createInstance($result);
+      $results[$result['id']] = $this->createInstance($result, $load_relations);
     }
 
     $this->afterLoad($results);
@@ -127,8 +149,8 @@ abstract class EntityBase implements HookContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function load($id) {
-    $results = $this->loadMultiple([$id]);
+  public function load($id, $load_relations = TRUE) {
+    $results = $this->loadMultiple([$id], $load_relations);
     return reset($results);
   }
 
@@ -143,7 +165,6 @@ abstract class EntityBase implements HookContainerInterface {
 
     $this->validate();
 
-    $this->beforeSave($this);
     $results = $this->storage->table($this->plugin_id)->save($this->createItem());
     $this->afterSave($this->createInstance($results));
     return $results;
@@ -153,7 +174,6 @@ abstract class EntityBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function delete($id) {
-    $this->beforeDelete($this);
     $this->storage->table($this->plugin_id)->delete($id);
     $this->afterDelete($this);
   }
@@ -171,7 +191,6 @@ abstract class EntityBase implements HookContainerInterface {
   public function update() {
     $this->validate();
 
-    $this->beforeUpdate($this);
     $results = $this->storage->table($this->plugin_id)->update($this->createItem());
     $instance = $this->createInstance($results);
     $this->afterUpdate($instance);
@@ -193,23 +212,7 @@ abstract class EntityBase implements HookContainerInterface {
       $item[$property] = $this->{$property};
     }
 
-    $this->afterCreate($item);
-
     return $item;
-  }
-
-  /**
-   * Pre-load hook.
-   *
-   * This function will be invoked before the ids are loaded from the DB. This
-   * allow other modules to change or alter the list of IDs.
-   *
-   * @param $ids
-   *  List of ids.
-   */
-  public function beforeLoad(&$ids) {
-    $args = ['type' => $this->plugin_id, 'ids' => &$ids];
-    $this->hooksHelper($args, 'before_load');
   }
 
   /**
@@ -223,22 +226,8 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function afterLoad(&$results) {
     $args = ['results' => &$results];
-    $this->hooksHelper($args, 'after_load');
+    $this->hooksHelper($args, 'load');
 
-  }
-
-  /**
-   * Pre-save hook.
-   *
-   * This function is invoked before the items will be saved into the DB.
-   *
-   * @param EntityBase $entity
-   *  The object of the current item. Used for getting meta tag about the
-   *  current entity.
-   */
-  public function beforeSave(EntityBase $entity) {
-    $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'before_save');
   }
 
   /**
@@ -252,7 +241,7 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function afterSave(EntityBase $entity) {
     $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'after_save');
+    $this->hooksHelper($args, 'save');
   }
 
   /**
@@ -281,35 +270,6 @@ abstract class EntityBase implements HookContainerInterface {
   }
 
   /**
-   * Post create hook.
-   *
-   * After the create method created the array which will be the record this
-   * method will be invoked. This method allow you to alter records just before
-   * the entry will go to the DB.
-   *
-   * @param array $data
-   *  The record.
-   */
-  public function afterCreate(array &$data) {
-    $args = ['data' => &$data];
-    $this->hooksHelper($args, 'after_create');
-  }
-
-  /**
-   * Pre-update hook.
-   *
-   * This method will be invoked just before the update of the entity.
-   *
-   * @param EntityBase $entity
-   *
-   * @see EntityBase::beforeSave()
-   */
-  public function beforeUpdate(EntityBase $entity) {
-    $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'before_update');
-  }
-
-  /**
    * Post update hook.
    *
    * This method will be invoked after the record saved to the DB.
@@ -321,19 +281,6 @@ abstract class EntityBase implements HookContainerInterface {
   public function afterUpdate(EntityBase $entity) {
     $args = ['entity' => &$entity];
     $this->hooksHelper($args, 'after_update');
-  }
-
-  /**
-   * Pre delete hook.
-   *
-   * This method invoked before the entity will be deleted.
-   *
-   * @param EntityBase $entity
-   *  The entity object.
-   */
-  public function beforeDelete(EntityBase $entity) {
-    $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'before_delete');
   }
 
   /**
@@ -349,6 +296,14 @@ abstract class EntityBase implements HookContainerInterface {
     $this->hooksHelper($args, 'after_delete');
   }
 
+  /**
+   * Hooks trigger helper function.
+   *
+   * @param $args
+   *  The args which will pass to the hooks.
+   * @param $hook
+   *  The name of the hook.
+   */
   protected function hooksHelper(&$args, $hook) {
     $this
       ->hooksDispatcher
@@ -387,42 +342,7 @@ abstract class EntityBase implements HookContainerInterface {
     }
 
     // Checking relations.
-    if (!empty($this->relations)) {
-      foreach ($this->relations as $relation => $info) {
-        $value = $this->{$relation};
-        $is_multiple = is_array($value);
-        /** @var EntityBase $entity */
-        $entity = $this->EntityPluginManager->createInstance($info['id']);
-
-        if ($info['type'] == 'single') {
-          // Check that this is a single item.
-
-          if ($is_multiple) {
-            $all[$relation][] = 'The relation type is single thus cannot be a multiple list of IDs';
-          }
-          else {
-            if (!$entity->load($this->{$relation})) {
-              $all[$relation][] = 'There is no matching ' . $info['id'] . ' entity with the ID ' . $this->{$relation};
-            }
-          }
-        }
-
-        if ($info['type'] == 'many') {
-          // Check that this is a multiple items.
-          if (!$is_multiple) {
-            $all[$relation][] = 'The relation type is multiple thus cannot be a single ID';
-          }
-          else {
-            $entities = $entity->loadMultiple($value);
-
-            // Load all the entites.
-
-            // Check the entities which not been loaded from the DB and add them
-            // to the errors list.
-          }
-        }
-      }
-    }
+    $this->validateRelationships($all);
 
     if ($return_errors) {
       return $all;
@@ -439,6 +359,50 @@ abstract class EntityBase implements HookContainerInterface {
     }
 
     throw new \Exception(implode("\n", $message));
+  }
+
+  protected function validateRelationships(&$all) {
+    if (empty($this->relations)) {
+      return;
+    }
+
+    foreach ($this->relations as $relation => $info) {
+      $value = $this->{$relation};
+      $is_multiple = is_array($value);
+
+      /** @var EntityBase $entity */
+      $entity = $this->entityPluginManager->createInstance($info['id']);
+
+      if ($info['type'] == 'single') {
+        // Check that this is a single item.
+
+        if ($is_multiple) {
+          $all[$relation][] = 'The relation type is single thus cannot be a multiple list of IDs';
+        }
+        else {
+          if (!$entity->load($this->{$relation})) {
+            $all[$relation][] = 'There is no matching ' . $info['id'] . ' entity with the ID ' . $this->{$relation};
+          }
+        }
+      }
+
+      if ($info['type'] == self::MANY) {
+        // Check that this is a multiple items.
+        if (!$is_multiple) {
+          $all[$relation][] = 'The relation type is multiple thus cannot be a single ID';
+        }
+        else {
+          // Load all the entities.
+          $entities = $entity->loadMultiple($value);
+
+          // Check the entities which not been loaded from the DB and add them
+          // to the errors list.
+          if ($keys = array_diff($value, array_keys($entities))) {
+            $all[$relation][] = 'The IDs: ' . implode(', ', $keys) . ' are not a valid IDs for the entity ' . $this->plugin_id;
+          }
+        }
+      }
+    }
   }
 
   /**
