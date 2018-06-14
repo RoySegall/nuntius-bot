@@ -71,8 +71,11 @@ class PluginManager {
     $list = [];
     $active_capsules = $this->capsuleService->capsuleList('enabled');
 
+    // Cloning the finder object so we won't override the capsule finder object.
+    $finder = clone $this->finder;
+
     $name_space_dir = str_replace('\\', '/', $name_space);
-    $files = $this->finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
+    $files = $finder->files()->filter(function(\SplFileInfo $file) use($name_space_dir) {
       return strpos($file->getRealPath(), $name_space_dir) !== FALSE;
     });
 
