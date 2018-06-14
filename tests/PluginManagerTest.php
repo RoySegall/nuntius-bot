@@ -36,13 +36,21 @@ class PluginManagerTest extends TestsAbstract {
     $this->assertTrue(in_array('user', array_keys($plugins)));
     $this->assertTrue(in_array('system', array_keys($plugins)));
 
-    $this->capsuleService->enableCapsule('capsule_test_secondary');
+    $this->capsuleService->enableCapsule('capsule_test_main');
     $plugins = $this->pluginManager->getPlugins('Plugin\Entity', new Entity());
 
     $this->assertTrue(in_array('user', array_keys($plugins)));
     $this->assertTrue(in_array('system', array_keys($plugins)));
     $this->assertTrue(in_array('tag', array_keys($plugins)));
     $this->assertTrue(in_array('system', array_keys($plugins)));
+  }
+
+  /**
+   * Testing plugin by another module.
+   */
+  public function testCapsuleMainPlugin() {
+    // Enabling the capsule test main capsule.
+    $this->capsuleService->enableCapsule('capsule_test_main');
   }
 
 }
