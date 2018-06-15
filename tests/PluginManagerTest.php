@@ -63,7 +63,7 @@ class PluginManagerTest extends TestsAbstract {
 
 
     $this->capsuleService->enableCapsule('capsule_test_secondary');
-    $this->assertEquals(array_keys($this->pluginManager->getPlugins('Plugin\Names', new Name())), ['hal', 'tom']);
+    $this->assertTrue(in_array('hal', array_keys($this->pluginManager->getPlugins('Plugin\Names', new Name()))));
   }
 
 }
