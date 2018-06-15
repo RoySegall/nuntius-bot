@@ -6,9 +6,7 @@ namespace Nuntius\System\Annotations;
  * @Annotation
  * @Target("CLASS")
  */
-class Entity implements NuntiusAnnotation {
-
-  public $id;
+class Entity extends NuntiusAnnotationBase implements NuntiusAnnotation {
 
   public $properties;
 

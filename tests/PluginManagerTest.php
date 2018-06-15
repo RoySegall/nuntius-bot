@@ -3,6 +3,7 @@
 namespace tests;
 
 use Nuntius\Capsule\CapsuleServiceInterface;
+use Nuntius\CapsuleTestMain\Annotations\Name;
 use Nuntius\System\Annotations\Entity;
 use Nuntius\System\PluginManager;
 
@@ -28,6 +29,10 @@ class PluginManagerTest extends TestsAbstract {
 
   /**
    * Testing the plugin manager.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   * @throws \Doctrine\Common\Annotations\AnnotationException
+   * @throws \ReflectionException
    */
   public function testPluginManager() {
     // Get all the plugins.
@@ -47,10 +52,18 @@ class PluginManagerTest extends TestsAbstract {
 
   /**
    * Testing plugin by another module.
+   *
+   * @throws \Doctrine\Common\Annotations\AnnotationException
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   * @throws \ReflectionException
    */
   public function testCapsuleMainPlugin() {
-    // Enabling the capsule test main capsule.
     $this->capsuleService->enableCapsule('capsule_test_main');
+    $this->assertEquals(array_keys($this->pluginManager->getPlugins('Plugin\Names', new Name())), ['tom']);
+
+
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+    $this->assertEquals(array_keys($this->pluginManager->getPlugins('Plugin\Names', new Name())), ['hal', 'tom']);
   }
 
 }
