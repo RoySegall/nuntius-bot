@@ -1,59 +1,47 @@
 <?php
 
 namespace tests;
-use Nuntius\EntityBase;
-use Nuntius\Nuntius;
+
+use Nuntius\System\EntityPluginManager;
+use Nuntius\System\Plugin\Entity\System;
 
 /**
  * Testing entity.
  */
 class EntityTest extends TestsAbstract {
 
-  /**
-   * entity manager.
-   *
-   * @var \Nuntius\EntityManager
-   */
-  protected $entities;
+  protected $services = [
+    'entityManager' => 'entity.plugin_manager',
+  ];
+
+  protected $capsules = ['system'];
 
   /**
-   * {@inheritdoc}
+   * @var EntityPluginManager
    */
-  public function setUp() {
-    parent::setUp();
-
-    $this->entities = Nuntius::getEntityManager();
-  }
+  protected $entityManager;
 
   /**
    * Testing entities crud operation.
    */
   public function testEntitiesCrud() {
-    foreach (array_keys(Nuntius::getSettings()->getSetting('entities')) as $entity) {
-      $this->crudOperations($entity);
-    }
-  }
+    /** @var System $entity */
+    $entity = $this->entityManager->createInstance('system');
 
-  /**
-   * Running the crud operations.
-   *
-   * @param string $entity_type
-   *   The entity type.
-   */
-  protected function crudOperations($entity_type) {
-    /** @var EntityBase $entity */
-    $entity = $this->entities->get($entity_type);
+    $entity->name = 'Testing';
+    $entity->machine_name = 'testing';
+    $entity->description = 'testing entity';
+    $entity->path = '.';
+    $entity->status = 1;
+    $object = $entity->save();
 
-    // Create entity.
-    $object = $entity->save(['title' => 'foo']);
-
-    // Query the entity.
     $result = $this->query
-      ->table($entity_type)
-      ->condition('title', 'foo')
+      ->table('system')
+      ->condition('name', 'Testing')
       ->execute();
 
     $array_copy = reset($result);
+
     $this->assertEquals($object['id'], $array_copy['id']);
     $this->assertArrayHasKey('time', $array_copy);
 
@@ -61,10 +49,12 @@ class EntityTest extends TestsAbstract {
     $this->assertEquals($entity->load($array_copy['id'])->id, $object['id']);
 
     // Update entity.
-    $entity->update(['id' => $object['id'], 'bar' => 'foo']);
+    $entity = $entity->load($object['id']);
+    $entity->name = 'foo';
+    $entity->update();
+
     $fresh_copy = $entity->load($object['id']);
-    $this->assertEquals($fresh_copy->bar, 'foo');
-    $this->assertEquals($fresh_copy->title, 'foo');
+    $this->assertEquals($fresh_copy->name, 'foo');
 
     // Delete the entity.
     $entity->delete($fresh_copy->id);

@@ -26,7 +26,6 @@ class PluginManagerTest extends TestsAbstract {
    */
   protected $capsuleService;
 
-
   /**
    * Testing the plugin manager.
    *
