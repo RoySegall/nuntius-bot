@@ -151,12 +151,12 @@ class CapsuleServiceTest extends TestsAbstract {
    */
   public function testAutoloaderRegister() {
     $this->assertFalse(class_exists('\Nuntius\System\PluginDispatcher'));
-    $this->assertFalse(class_exists('\Nuntius\System\Hooks\EntityCreate'));
 
     $this->capsuleService->enableCapsule('system');
 
     new \Nuntius\System\PluginDispatcher();
-    new \Nuntius\System\Hooks\EntityCreate();
+
+    // todo: add the new hooks.
   }
 
 }

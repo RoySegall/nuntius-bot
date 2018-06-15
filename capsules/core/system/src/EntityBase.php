@@ -97,9 +97,12 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * @param array $data
    *   The data representation of the object.
+   * @param bool $load_relations
+   *   Determine if we need to load relations or keep it as a simple record.
    *
    * @return $this
    *   The current object.
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   protected function createInstance($data, $load_relations = TRUE) {
     $this_copy = clone $this;
@@ -361,6 +364,13 @@ abstract class EntityBase implements HookContainerInterface {
     throw new \Exception(implode("\n", $message));
   }
 
+  /**
+   * Make sure the relationships are valid.
+   *
+   * @param $all
+   *  The relationships.
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   */
   protected function validateRelationships(&$all) {
     if (empty($this->relations)) {
       return;

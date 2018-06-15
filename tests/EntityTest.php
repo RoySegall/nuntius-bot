@@ -61,4 +61,18 @@ class EntityTest extends TestsAbstract {
     $this->assertFalse($entity->load($fresh_copy->id));
   }
 
+  /**
+   * Test the hooks of the entity system.
+   */
+  public function testEntityHooks() {
+
+  }
+
+  /**
+   * Test the relationships between entities.
+   */
+  public function testEntityRelationships() {
+
+  }
+
 }
