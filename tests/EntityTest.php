@@ -209,7 +209,8 @@ class EntityTest extends TestsAbstract {
 
     $this->assertEquals($errors['vocabulary'], ['The IDs: a are not a valid IDs for the entity tag_many_relation']);
 
-    $tag = $tag_multiple->vocabulary = [$vocabulary->id];
+    $tag_multiple->vocabulary = [$vocabulary->id];
+    $tag = $tag_multiple->save();
     $this->assertNotFalse($tag->id);
 
     $tag_single->vocabulary = ['a'];
