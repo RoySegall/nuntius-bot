@@ -220,7 +220,7 @@ class EntityTest extends TestsAbstract {
     $tag_single->vocabulary = 'a';
     $errors = $tag_single->validate(TRUE);
 
-    $this->assertEquals($errors['vocabulary'], ['There is no matching vocabulary entity with the ID a']);
+    $this->assertEquals($errors['vocabulary'], ['There is no mdatching vocabulary entity with the ID a']);
 
     $tag_single->vocabulary = $vocabulary->id;
     $tag = $tag_single->save();
