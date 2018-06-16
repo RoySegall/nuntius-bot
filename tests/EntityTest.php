@@ -89,7 +89,8 @@ class EntityTest extends TestsAbstract {
   }
 
   /**
-   * Checking the hook for after load.
+   * Checking the hook for after saving.
+   *
    * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function testAfterSave() {
@@ -102,9 +103,21 @@ class EntityTest extends TestsAbstract {
   }
 
   /**
+   * Testing the hook after loading the entity.
    *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function testAfterLoad() {
+    $entity = $this->createSystem();
+
+    $loaded = $this->entityManager->createInstance('system')->load($entity->id);
+
+    $this->assertEquals($loaded->name, 'Testing');
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+    $loaded = $this->entityManager->createInstance('system')->load($entity->id);
+
+    $this->assertEquals($loaded->name, 'foo');
+
   }
 
   /**

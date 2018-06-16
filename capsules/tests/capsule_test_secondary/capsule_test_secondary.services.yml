@@ -4,3 +4,5 @@ hooks:
     class: \Nuntius\CapsuleTestSecondary\Hooks\RegisterName
   entity_save:
     class: \Nuntius\CapsuleTestSecondary\Hooks\EntitySave
+  entity_load:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityLoad

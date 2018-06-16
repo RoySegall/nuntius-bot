@@ -232,7 +232,7 @@ abstract class EntityBase implements HookContainerInterface {
    *  List of items.
    */
   public function afterLoad(&$results) {
-    $args = ['results' => &$results];
+    $args = ['entities' => &$results];
     $this->hooksHelper($args, 'load');
 
   }
