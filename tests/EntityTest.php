@@ -93,7 +93,7 @@ class EntityTest extends TestsAbstract {
    *
    * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function testAfterSave() {
+  public function testEntitySave() {
     $this->capsuleService->enableCapsule('capsule_test_secondary');
 
     $entity = $this->createSystem();
@@ -107,7 +107,7 @@ class EntityTest extends TestsAbstract {
    *
    * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function testAfterLoad() {
+  public function testEntityLoad() {
     $entity = $this->createSystem();
 
     $loaded = $this->entityManager->createInstance('system')->load($entity->id);
@@ -124,7 +124,7 @@ class EntityTest extends TestsAbstract {
    *
    * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function testBeforeCreate() {
+  public function testEntityCreate() {
     $entity = $this->createSystem();
     $this->assertEquals($entity->description, 'testing entity');
     $this->capsuleService->enableCapsule('capsule_test_secondary');
@@ -133,15 +133,30 @@ class EntityTest extends TestsAbstract {
   }
 
   /**
+   * Testing integration with the update mechanism.
    *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function testAfterUpdate() {
+  public function testEntityUpdate() {
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+    $entity = $this->createSystem();
+
+    $entity->name = 'checking';
+    $new_entity = $entity->save();
+
+    $this->assertEquals($new_entity->name, 'checking updated');
   }
 
   /**
+   * Testing entity deletion integration.
    *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
-  public function testAfterDelete() {
+  public function testEntityDelete() {
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+
+    $entity = $this->createSystem();
+    $entity->delete($entity->id);
   }
 
   /**

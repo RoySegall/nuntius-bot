@@ -181,6 +181,7 @@ abstract class EntityBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function delete($id) {
+    // todo: use the current id.
     $this->storage->table($this->plugin_id)->delete($id);
     $this->afterDelete($this);
   }
@@ -287,7 +288,7 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function afterUpdate(EntityBase $entity) {
     $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'after_update');
+    $this->hooksHelper($args, 'update');
   }
 
   /**
@@ -300,7 +301,7 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function afterDelete(EntityBase $entity) {
     $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'after_delete');
+    $this->hooksHelper($args, 'delete');
   }
 
   /**
