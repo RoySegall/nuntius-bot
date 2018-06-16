@@ -145,7 +145,7 @@ abstract class EntityBase implements HookContainerInterface {
       $results[$result['id']] = $this->createInstance($result, $load_relations);
     }
 
-    $this->afterLoad($results);
+    $this->hookLoad($results);
 
     return $results;
   }
@@ -172,7 +172,7 @@ abstract class EntityBase implements HookContainerInterface {
     $results = $this->storage->table($this->plugin_id)->save($this->createItem());
 
     $new_results = $this->createInstance($results);
-    $this->afterSave($new_results);
+    $this->hookSave($new_results);
 
     return $new_results;
   }
@@ -183,7 +183,7 @@ abstract class EntityBase implements HookContainerInterface {
   public function delete($id) {
     // todo: use the current id.
     $this->storage->table($this->plugin_id)->delete($id);
-    $this->afterDelete($this);
+    $this->hookDelete($this);
   }
 
   /**
@@ -201,7 +201,7 @@ abstract class EntityBase implements HookContainerInterface {
 
     $results = $this->storage->table($this->plugin_id)->update($this->createItem());
     $instance = $this->createInstance($results);
-    $this->afterUpdate($instance);
+    $this->hookUpdate($instance);
 
     return $instance;
   }
@@ -210,7 +210,7 @@ abstract class EntityBase implements HookContainerInterface {
    * Creating an item which will be inserted to the DB.
    */
   protected function createItem() {
-    $this->beforeCreate($this);
+    $this->hookCreate($this);
     $item = [];
 
     foreach ($this->properties as $property) {
@@ -232,7 +232,7 @@ abstract class EntityBase implements HookContainerInterface {
    * @param $results
    *  List of items.
    */
-  public function afterLoad(&$results) {
+  public function hookLoad(&$results) {
     $args = ['entities' => &$results];
     $this->hooksHelper($args, 'load');
 
@@ -247,7 +247,7 @@ abstract class EntityBase implements HookContainerInterface {
    *  The object of the current item. Used for getting meta tag about the
    *  current entity.
    */
-  public function afterSave(EntityBase $entity) {
+  public function hookSave(EntityBase $entity) {
     $args = ['entity' => &$entity];
     $this->hooksHelper($args, 'save');
   }
@@ -272,7 +272,7 @@ abstract class EntityBase implements HookContainerInterface {
    * @param EntityBase $entity
    *  The current entity instance.
    */
-  public function beforeCreate(EntityBase $entity) {
+  public function hookCreate(EntityBase $entity) {
     $args = ['entity' => &$entity];
     $this->hooksHelper($args, 'create');
   }
@@ -284,9 +284,9 @@ abstract class EntityBase implements HookContainerInterface {
    *
    * @param EntityBase $entity
    *
-   * @see EntityBase::afterSave()
+   * @see EntityBase::hookSave()
    */
-  public function afterUpdate(EntityBase $entity) {
+  public function hookUpdate(EntityBase $entity) {
     $args = ['entity' => &$entity];
     $this->hooksHelper($args, 'update');
   }
@@ -299,7 +299,7 @@ abstract class EntityBase implements HookContainerInterface {
    * @param EntityBase $entity
    *  The entity object.
    */
-  public function afterDelete(EntityBase $entity) {
+  public function hookDelete(EntityBase $entity) {
     $args = ['entity' => &$entity];
     $this->hooksHelper($args, 'delete');
   }

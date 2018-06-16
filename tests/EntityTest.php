@@ -86,6 +86,22 @@ class EntityTest extends TestsAbstract {
    * Testing the validation of the entity.
    */
   public function testValidation() {
+    /** @var System $system */
+    $system = $this->entityManager->createInstance('system');
+    $errors = $system->validate(TRUE);
+
+    $this->assertEquals($errors['name'], ['This value should not be blank.']);
+    $this->assertEquals($errors['description'], ['This value should not be blank.']);
+    $this->assertEquals($errors['machine_name'], ['This value should not be blank.']);
+    $this->assertEquals($errors['path'], ['This value should not be blank.']);
+    $this->assertEquals($errors['status'], ['This value should not be blank.']);
+
+
+    $system->path = time();
+    $errors = $system->validate(TRUE);
+
+    $this->assertContains('does not exists', $errors['path'][0]);
+
   }
 
   /**
