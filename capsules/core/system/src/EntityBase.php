@@ -273,7 +273,7 @@ abstract class EntityBase implements HookContainerInterface {
    */
   public function beforeCreate(EntityBase $entity) {
     $args = ['entity' => &$entity];
-    $this->hooksHelper($args, 'before_create');
+    $this->hooksHelper($args, 'create');
   }
 
   /**

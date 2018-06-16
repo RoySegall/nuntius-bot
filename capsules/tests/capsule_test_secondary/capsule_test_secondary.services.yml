@@ -6,3 +6,5 @@ hooks:
     class: \Nuntius\CapsuleTestSecondary\Hooks\EntitySave
   entity_load:
     class: \Nuntius\CapsuleTestSecondary\Hooks\EntityLoad
+  entity_create:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityCreate

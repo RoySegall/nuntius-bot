@@ -117,13 +117,19 @@ class EntityTest extends TestsAbstract {
     $loaded = $this->entityManager->createInstance('system')->load($entity->id);
 
     $this->assertEquals($loaded->name, 'foo');
-
   }
 
   /**
+   * Testing the hook before the entity data is constructed to the object.
    *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function testBeforeCreate() {
+    $entity = $this->createSystem();
+    $this->assertEquals($entity->description, 'testing entity');
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+    $entity = $this->createSystem();
+    $this->assertEquals($entity->description, 'new description');
   }
 
   /**
