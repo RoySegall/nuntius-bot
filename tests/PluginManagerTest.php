@@ -45,8 +45,7 @@ class PluginManagerTest extends TestsAbstract {
 
     $this->assertTrue(in_array('user', array_keys($plugins)));
     $this->assertTrue(in_array('system', array_keys($plugins)));
-    $this->assertTrue(in_array('tag', array_keys($plugins)));
-    $this->assertTrue(in_array('system', array_keys($plugins)));
+    $this->assertTrue(in_array('vocabulary', array_keys($plugins)));
   }
 
   /**
