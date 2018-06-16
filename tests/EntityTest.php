@@ -101,7 +101,6 @@ class EntityTest extends TestsAbstract {
     $errors = $system->validate(TRUE);
 
     $this->assertContains('does not exists', $errors['path'][0]);
-
   }
 
   /**
@@ -184,6 +183,48 @@ class EntityTest extends TestsAbstract {
    * Test the relationships between entities.
    */
   public function testEntityRelationships() {
+    $this->capsuleService->enableCapsule('capsule_test_main');
+
+    /** @var \Nuntius\CapsuleTestMain\Plugin\Entity\TagSingleRelation $tag_single */
+    $tag_single = $this->entityManager->createInstance('tag_single_relation');
+    /** @var \Nuntius\CapsuleTestMain\Plugin\Entity\TagMultipleRelation $tag_multiple */
+    $tag_multiple = $this->entityManager->createInstance('tag_many_relation');
+
+    /** @var \Nuntius\CapsuleTestMain\Plugin\Entity\Vocabulary $vocabulary */
+    $vocabulary = $this->entityManager->createInstance('vocabulary');
+
+    $vocabulary->installEntity();
+    $tag_single->installEntity();
+    $tag_multiple->installEntity();
+
+    $vocabulary->name = 'Testing vocab';
+    $vocabulary = $vocabulary->save();
+
+    $tag_multiple->vocabulary = 'a';
+    $errors = $tag_multiple->validate(TRUE);
+    $this->assertEquals($errors['vocabulary'], ['The relation type is multiple thus cannot be a single ID']);
+
+    $tag_multiple->vocabulary = ['a'];
+    $errors = $tag_multiple->validate(TRUE);
+
+    $this->assertEquals($errors['vocabulary'], ['The IDs: a are not a valid IDs for the entity tag_many_relation']);
+
+    $tag = $tag_multiple->vocabulary = [$vocabulary->id];
+    $this->assertNotFalse($tag->id);
+
+    $tag_single->vocabulary = ['a'];
+    $errors = $tag_single->validate(TRUE);
+
+    $this->assertEquals($errors['vocabulary'], ['The relation type is single thus cannot be a multiple list of IDs']);
+
+    $tag_single->vocabulary = 'a';
+    $errors = $tag_single->validate(TRUE);
+
+    $this->assertEquals($errors['vocabulary'], ['There is no matching vocabulary entity with the ID a']);
+
+    $tag_single->vocabulary = $vocabulary->id;
+    $tag = $tag_single->save();
+    $this->assertNotFalse($tag->id);
   }
 
 }

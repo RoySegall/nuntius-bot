@@ -7,7 +7,7 @@ use Nuntius\System\Annotations\Entity as Entity;
 
 /**
  * @Entity(
- *  id = "tag",
+ *  id = "tag_many_relation",
  *  properties = {
  *   "id",
  *   "name",
@@ -16,13 +16,13 @@ use Nuntius\System\Annotations\Entity as Entity;
  *  },
  *  relations = {
  *   "vocabulary" = {
- *    "type" = \Nuntius\System\EntityBase::SINGLE,
+ *    "type" = \Nuntius\System\EntityBase::MANY,
  *    "id" = "vocabulary"
  *   }
  *  },
  * )
  */
-class Tag extends EntityBase {
+class TagMultipleRelation extends EntityBase {
 
   public $id;
 
