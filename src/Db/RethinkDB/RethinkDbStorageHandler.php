@@ -120,7 +120,7 @@ class RethinkDbStorageHandler implements DbStorageHandlerInterface {
     $query = $this->getTable();
 
     if ($ids) {
-      $query->getAll(\r\args($ids));
+      $query = $query->getAll(\r\args($ids));
     }
 
     $query->delete()->run($this->connection);

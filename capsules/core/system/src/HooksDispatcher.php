@@ -44,7 +44,6 @@ class HooksDispatcher implements HooksDispatcherInterface {
     $invokes = $this->initClass($hook_name);
 
     foreach ($invokes as $invoke) {
-      d($invoke);
       $invoke->alter($this->arguments);
     }
   }

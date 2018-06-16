@@ -6,25 +6,17 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/** @var \Nuntius\CapsuleTestMain\Plugin\Entity\Vocabulary $vocabulary */
-$vocabulary = \Nuntius\System\System::getEntityManager()->createInstance('vocabulary');
+\Nuntius\Nuntius::getCapsuleManager()->enableCapsule('capsule_test_secondary');
 
-/** @var \Nuntius\CapsuleTestMain\Plugin\Entity\Tag $tag */
-$tag = \Nuntius\System\System::getEntityManager()->createInstance('tag');
+/** @var \Nuntius\System\Plugin\Entity\System $entity */
+$entity = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
-//if (!$vocabularies = $vocabulary->loadMultiple()) {
-//  $vocabulary->name = 'Cars';
-//  $vocabulary->description = 'List of cars';
-//  $vocabulary->save();
-//
-//  $vocabularies = $vocabulary->loadMultiple();
-//}
-//
-//$vid = array_keys($vocabularies);
-//$tag->name = 'bmw';
-//$tag->description = '';
-//$tag->vocabulary = '5f4831cd-3217-40df-957e-dbfd2602360c';
 
-//d($vid);
-d($tag->load('d97adec0-6e8b-45b1-be9d-2a3a9249c54e', FALSE));
+$entity->name = 'Testing';
+$entity->machine_name = 'testing';
+$entity->description = 'testing entity';
+$entity->path = '.';
+$entity->status = 1;
 
+$entity = $entity->save();
+$entity->delete($entity->id);

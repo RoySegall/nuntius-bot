@@ -10,7 +10,7 @@ class EntityDelete extends HookBaseClass {
    * {@inheritdoc}
    */
   public function alter(&$arguments) {
-    d('a');
+    throw new \Exception('Deleted ' . $arguments['entity']->id);
   }
 
 }

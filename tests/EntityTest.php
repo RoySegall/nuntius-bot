@@ -156,7 +156,12 @@ class EntityTest extends TestsAbstract {
     $this->capsuleService->enableCapsule('capsule_test_secondary');
 
     $entity = $this->createSystem();
-    $entity->delete($entity->id);
+
+    try {
+      $entity->delete($entity->id);
+    } catch (\Exception $e) {
+      $this->assertEquals($e->getMessage(), 'Deleted ' . $entity->id);
+    }
   }
 
   /**
