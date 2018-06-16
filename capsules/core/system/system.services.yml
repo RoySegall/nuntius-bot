@@ -21,7 +21,3 @@ services:
   constraint:
     class: \Nuntius\System\Constraints\NuntiusConstraint
 
-# Define hooks.
-#hooks:
-#  entity_create:
-#    class: \Nuntius\System\Hooks\EntityCreate

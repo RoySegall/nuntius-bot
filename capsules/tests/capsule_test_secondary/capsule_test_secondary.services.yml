@@ -2,3 +2,5 @@
 hooks:
   register_names:
     class: \Nuntius\CapsuleTestSecondary\Hooks\RegisterName
+  entity_save:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntitySave

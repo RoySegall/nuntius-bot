@@ -170,8 +170,11 @@ abstract class EntityBase implements HookContainerInterface {
     $this->validate();
 
     $results = $this->storage->table($this->plugin_id)->save($this->createItem());
-    $this->afterSave($this->createInstance($results));
-    return $results;
+
+    $new_results = $this->createInstance($results);
+    $this->afterSave($new_results);
+
+    return $new_results;
   }
 
   /**

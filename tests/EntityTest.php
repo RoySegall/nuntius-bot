@@ -2,6 +2,7 @@
 
 namespace tests;
 
+use Nuntius\Capsule\CapsuleServiceInterface;
 use Nuntius\System\EntityPluginManager;
 use Nuntius\System\Plugin\Entity\System;
 
@@ -12,6 +13,7 @@ class EntityTest extends TestsAbstract {
 
   protected $services = [
     'entityManager' => 'entity.plugin_manager',
+    'capsuleService' => 'capsule_manager',
   ];
 
   protected $capsules = ['system'];
@@ -22,9 +24,16 @@ class EntityTest extends TestsAbstract {
   protected $entityManager;
 
   /**
-   * Testing entities crud operation.
+   * @var CapsuleServiceInterface
    */
-  public function testEntitiesCrud() {
+  protected $capsuleService;
+
+  /**
+   * @return System
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   */
+  protected function createSystem() {
     /** @var System $entity */
     $entity = $this->entityManager->createInstance('system');
 
@@ -33,7 +42,19 @@ class EntityTest extends TestsAbstract {
     $entity->description = 'testing entity';
     $entity->path = '.';
     $entity->status = 1;
-    $object = $entity->save();
+
+    return $entity->save();
+  }
+
+  /**
+   * Testing entities crud operation.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   */
+  public function testEntitiesCrud() {
+    /** @var System $entity */
+    $entity = $this->entityManager->createInstance('system');
+    $object = $this->createSystem();
 
     $result = $this->query
       ->table('system')
@@ -42,18 +63,18 @@ class EntityTest extends TestsAbstract {
 
     $array_copy = reset($result);
 
-    $this->assertEquals($object['id'], $array_copy['id']);
+    $this->assertEquals($object->id, $array_copy['id']);
     $this->assertArrayHasKey('time', $array_copy);
 
     // Load entity.
-    $this->assertEquals($entity->load($array_copy['id'])->id, $object['id']);
+    $this->assertEquals($entity->load($array_copy['id'])->id, $object->id);
 
     // Update entity.
-    $entity = $entity->load($object['id']);
+    $entity = $entity->load($object->id);
     $entity->name = 'foo';
     $entity->update();
 
-    $fresh_copy = $entity->load($object['id']);
+    $fresh_copy = $entity->load($object->id);
     $this->assertEquals($fresh_copy->name, 'foo');
 
     // Delete the entity.
@@ -65,35 +86,37 @@ class EntityTest extends TestsAbstract {
    * Testing the validation of the entity.
    */
   public function testValidation() {
+  }
 
+  /**
+   * Checking the hook for after load.
+   * @throws \Nuntius\Capsule\CapsuleErrorException
+   */
+  public function testAfterSave() {
+    $this->capsuleService->enableCapsule('capsule_test_secondary');
+
+    $entity = $this->createSystem();
+
+    $this->assertEquals($entity->name, 'bar');
+    $this->assertEquals($entity->foo, 'bar');
   }
 
   /**
    *
    */
   public function testAfterLoad() {
-
-  }
-
-  /**
-   *
-   */
-  public function testAfterSave() {
-
   }
 
   /**
    *
    */
   public function testBeforeCreate() {
-
   }
 
   /**
    *
    */
   public function testAfterUpdate() {
-
   }
 
   /**
@@ -106,7 +129,6 @@ class EntityTest extends TestsAbstract {
    * Test the relationships between entities.
    */
   public function testEntityRelationships() {
-
   }
 
 }
