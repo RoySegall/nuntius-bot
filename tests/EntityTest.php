@@ -62,10 +62,44 @@ class EntityTest extends TestsAbstract {
   }
 
   /**
-   * Test the hooks of the entity system.
+   * Testing the validation of the entity.
    */
-  public function testEntityHooks() {
+  public function testValidation() {
 
+  }
+
+  /**
+   *
+   */
+  public function testAfterLoad() {
+
+  }
+
+  /**
+   *
+   */
+  public function testAfterSave() {
+
+  }
+
+  /**
+   *
+   */
+  public function testBeforeCreate() {
+
+  }
+
+  /**
+   *
+   */
+  public function testAfterUpdate() {
+
+  }
+
+  /**
+   *
+   */
+  public function testAfterDelete() {
   }
 
   /**

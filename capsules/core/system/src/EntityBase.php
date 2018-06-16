@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Validation;
 abstract class EntityBase implements HookContainerInterface {
 
   const SINGLE = 'single';
+
   const MANY = 'many';
 
   public $plugin_id;
@@ -426,6 +427,7 @@ abstract class EntityBase implements HookContainerInterface {
    * @return bool
    */
   public function access($op, $item) {
+    // todo: create entity test service.
     return true;
   }
 
