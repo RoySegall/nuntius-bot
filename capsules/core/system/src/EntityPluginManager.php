@@ -66,10 +66,4 @@ class EntityPluginManager {
     return $object;
   }
 
-  /**
-   * Create the table in the DB.
-   */
-  public function installCapsuleEntities() {
-  }
-
 }

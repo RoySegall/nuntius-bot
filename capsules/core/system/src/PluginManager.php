@@ -24,6 +24,9 @@ class PluginManager {
    */
   protected $requireEnabled = TRUE;
 
+  /** @var string */
+  protected $capsule;
+
   /**
    * PluginManager constructor.
    * @param Finder $finder
@@ -53,6 +56,20 @@ class PluginManager {
   }
 
   /**
+   * Set the capsule for a better scanning.
+   *
+   * @param string $capsule
+   *  The capsule name.
+   *
+   * @return PluginManager
+   */
+  public function setCapsule($capsule) {
+    $this->capsule = $capsule;
+
+    return $this;
+  }
+
+  /**
    * Get all the plugins which a given relative namespace in a capsule.
    *
    * @param string $name_space
@@ -68,6 +85,8 @@ class PluginManager {
    * @throws \ReflectionException
    */
   public function getPlugins($name_space, NuntiusAnnotation $annotation) {
+    // todo: handle cpasule.
+
     $list = [];
     $active_capsules = $this->capsuleService->capsuleList('enabled');
 

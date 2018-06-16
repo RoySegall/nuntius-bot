@@ -122,6 +122,13 @@ class CapsuleService implements CapsuleServiceInterface {
 
       $this->dbDispatcher->getStorage()->table('system')->save($capsule);
       Nuntius::container(TRUE);
+
+      // Get the proper class of the hooks dispatching.
+
+      // Init the hook dispatcher with his dependencies.
+
+      // Invoke the hook.
+
       return TRUE;
     }
 
