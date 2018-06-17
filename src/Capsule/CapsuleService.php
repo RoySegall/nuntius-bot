@@ -130,6 +130,7 @@ class CapsuleService implements CapsuleServiceInterface {
 
       // Invoke the hook.
       $arguments = ['capsule' => $capsule_name];
+        d($capsule_name);
       $dispatcher->setArguments($arguments)->invoke('capsule_install');
 
       return TRUE;
@@ -146,6 +147,15 @@ class CapsuleService implements CapsuleServiceInterface {
     $results['status'] = TRUE;
     $this->dbDispatcher->getStorage()->table('system')->update($results);
     Nuntius::container(TRUE);
+
+    // Get the proper class of the hooks dispatching.
+    /** @var HooksDispatcherInterface $dispatcher */
+    $dispatcher = Nuntius::container()->get('hooks_dispatcher');
+
+    // Invoke the hook.
+    $arguments = ['capsule' => $capsule_name];
+    $dispatcher->setArguments($arguments)->invoke('capsule_install');
+
     return TRUE;
   }
 

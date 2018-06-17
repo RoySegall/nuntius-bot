@@ -30,14 +30,12 @@ class CapsuleInstall extends HookBaseClass implements HookContainerInterface {
     // Get all the entity plugins for that capsule.
     $entities = $this->entityPluginManager->getEntitiesList();
 
-    d('a');
-
-    foreach ($entities as $entity) {
-      if ($entity['provided_by'] != $arguments['capsule']) {
+    foreach ($entities as $type => $info) {
+      if ($info['provided_by'] != $info['capsule']) {
         continue;
       }
 
-      $entity->installEntity();
+      $this->entityPluginManager->createInstance($type)->installEntity();
     }
   }
 
