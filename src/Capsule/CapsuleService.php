@@ -4,6 +4,7 @@ namespace Nuntius\Capsule;
 
 use Nuntius\Db\DbDispatcher;
 use Nuntius\Nuntius;
+use Nuntius\System\HooksDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -124,10 +125,12 @@ class CapsuleService implements CapsuleServiceInterface {
       Nuntius::container(TRUE);
 
       // Get the proper class of the hooks dispatching.
-
-      // Init the hook dispatcher with his dependencies.
+      /** @var HooksDispatcherInterface $dispatcher */
+      $dispatcher = Nuntius::container()->get('hooks_dispatcher');
 
       // Invoke the hook.
+      $arguments = ['capsule' => $capsule_name];
+      $dispatcher->setArguments($arguments)->invoke('capsule_install');
 
       return TRUE;
     }

@@ -20,7 +20,7 @@ class EntityPluginManager {
   }
 
   /**
-   * @return array[]
+   * @return EntityBase[]
    *
    * @throws \Doctrine\Common\Annotations\AnnotationException
    * @throws \Nuntius\Capsule\CapsuleErrorException

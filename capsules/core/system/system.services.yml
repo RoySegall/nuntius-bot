@@ -20,4 +20,6 @@ services:
     arguments: ['@plugin_manager']
   constraint:
     class: \Nuntius\System\Constraints\NuntiusConstraint
-
+hooks:
+  register_names:
+    class: \Nuntius\System\Hooks\CapsuleInstall

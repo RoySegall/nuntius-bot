@@ -193,10 +193,6 @@ class EntityTest extends TestsAbstract {
     /** @var \Nuntius\CapsuleTestMain\Plugin\Entity\Vocabulary $vocabulary */
     $vocabulary = $this->entityManager->createInstance('vocabulary');
 
-    $vocabulary->installEntity();
-    $tag_single->installEntity();
-    $tag_multiple->installEntity();
-
     $vocabulary->name = 'Testing vocab';
     $vocabulary = $vocabulary->save();
 
