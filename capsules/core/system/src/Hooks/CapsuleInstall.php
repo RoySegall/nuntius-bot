@@ -31,7 +31,7 @@ class CapsuleInstall extends HookBaseClass implements HookContainerInterface {
     $entities = $this->entityPluginManager->getEntitiesList();
 
     foreach ($entities as $type => $info) {
-      if ($info['provided_by'] != $info['capsule']) {
+      if ($info['provided_by'] != $arguments['capsule']) {
         continue;
       }
 
@@ -45,4 +45,5 @@ class CapsuleInstall extends HookBaseClass implements HookContainerInterface {
   static function getContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
     return new static($container->get('entity.plugin_manager'));
   }
+
 }

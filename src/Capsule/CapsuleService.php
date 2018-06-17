@@ -130,7 +130,6 @@ class CapsuleService implements CapsuleServiceInterface {
 
       // Invoke the hook.
       $arguments = ['capsule' => $capsule_name];
-        d($capsule_name);
       $dispatcher->setArguments($arguments)->invoke('capsule_install');
 
       return TRUE;

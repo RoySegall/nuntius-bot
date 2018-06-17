@@ -439,6 +439,10 @@ abstract class EntityBase implements HookContainerInterface {
    * Installing the table.
    */
   public function installEntity() {
+    if ($this->dbDispatcher->getOperations()->tableExists($this->plugin_id)) {
+      return;
+    }
+
     $this->dbDispatcher->getOperations()->tableCreate($this->plugin_id);
   }
 
