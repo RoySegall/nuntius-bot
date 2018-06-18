@@ -131,7 +131,19 @@ abstract class EntityBase implements HookContainerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Load multiple instances of the current entity type.
+   *
+   * @param array $ids
+   *  List of IDs.
+   * @param bool $load_relations
+   *  Determine if we need to load related entities. If set to TRUE, properties
+   *  which defined as a relation to an entity will be replaced by an object.
+   *  If set to FALSE - the property will be a the ID of the entity.
+   *
+   * @return EntityBase[]
+   *  List of entities.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function loadMultiple(array $ids = [], $load_relations = TRUE) {
     $results = [];
@@ -151,7 +163,19 @@ abstract class EntityBase implements HookContainerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Load a single entity.
+   *
+   * @param $id
+   *  The ID of the entity.
+   * @param bool $load_relations
+   *  Determine if we need to load related entities. If set to TRUE, properties
+   *  which defined as a relation to an entity will be replaced by an object.
+   *  If set to FALSE - the property will be a the ID of the entity.
+   *
+   * @return EntityBase
+   *  The entity object.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function load($id, $load_relations = TRUE) {
     $results = $this->loadMultiple([$id], $load_relations);
@@ -178,23 +202,33 @@ abstract class EntityBase implements HookContainerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Delete a single item from the DB.
+   *
+   * @param string $id
+   *  The entity ID.
    */
   public function delete($id) {
-    // todo: use the current id.
     $this->storage->table($this->plugin_id)->delete($id);
     $this->hookDelete($this);
   }
 
   /**
-   * {@inheritdoc}
+   * Deleting a list of entities from the DB.
+   *
+   * @param array $ids
+   *  The list of IDs.
    */
   public function deleteMultiple(array $ids = []) {
     $this->storage->table($this->plugin_id)->delete($ids);
   }
 
   /**
-   * {@inheritdoc}
+   * Updating an entity.
+   *
+   * @return EntityBase
+   *  The entity object after the update.
+   *
+   * @throws \Nuntius\Capsule\CapsuleErrorException
    */
   public function update() {
     $this->validate();
@@ -235,7 +269,6 @@ abstract class EntityBase implements HookContainerInterface {
   public function hookLoad(&$results) {
     $args = ['entities' => &$results];
     $this->hooksHelper($args, 'load');
-
   }
 
   /**

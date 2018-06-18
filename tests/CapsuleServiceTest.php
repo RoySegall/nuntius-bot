@@ -155,8 +155,6 @@ class CapsuleServiceTest extends TestsAbstract {
     $this->capsuleService->enableCapsule('system');
 
     new \Nuntius\System\PluginDispatcher();
-
-    // todo: add the new hooks.
   }
 
 }
