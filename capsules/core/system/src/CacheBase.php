@@ -63,4 +63,17 @@ abstract class CacheBase {
    */
   abstract public function set($id, $content, $expires);
 
+  /**
+   * Determine if the plugin is ready to use.
+   *
+   * The function is useful when the plugin depends on external library or a
+   * specific type of storage.
+   *
+   * @return bool
+   *  By default return true.
+   */
+  static public function ready() {
+    return true;
+  }
+
 }

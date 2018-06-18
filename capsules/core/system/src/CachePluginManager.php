@@ -27,7 +27,12 @@ class CachePluginManager {
    * @throws \ReflectionException
    */
   public function getCacheList() {
-    return $this->pluginManager->getPlugins('Plugin\Cache', new \Nuntius\System\Annotations\Cache());
+    /** @var CacheBase[] $caches */
+    $caches = $this->pluginManager->getPlugins('Plugin\Cache', new \Nuntius\System\Annotations\Cache());
+
+    return array_filter($caches, function($item) {
+      return call_user_func([$item['namespace'], 'ready']);
+    });
   }
 
   /**
@@ -41,7 +46,7 @@ class CachePluginManager {
     $list = $this->getCacheList();
 
     if (!in_array($id, array_keys($list))) {
-      throw new \Exception('The cache plugin ' . $id . ' does not exists.');
+      throw new \Exception('The cache plugin ' . $id . ' does not exists or it is not ready to use.');
     }
 
     // todo: Move to trait or something.
