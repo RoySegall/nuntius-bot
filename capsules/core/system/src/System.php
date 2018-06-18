@@ -41,4 +41,13 @@ class System {
     return Nuntius::container()->get('entity.plugin_manager');
   }
 
+  /**
+   * @return CachePluginManager
+   *
+   * @throws \Exception
+   */
+  public static function getCacheManager() {
+      return Nuntius::container()->get('cache.plugin_manager');
+  }
+
 }

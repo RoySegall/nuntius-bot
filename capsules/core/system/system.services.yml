@@ -18,8 +18,9 @@ services:
   entity.plugin_manager:
     class: \Nuntius\System\EntityPluginManager
     arguments: ['@plugin_manager']
-  constraint:
-    class: \Nuntius\System\Constraints\NuntiusConstraint
+  cache.plugin_manager:
+    class: \Nuntius\System\CachePluginManager
+    arguments: ['@plugin_manager']
 hooks:
   capsule_install:
     class: \Nuntius\System\Hooks\CapsuleInstall
