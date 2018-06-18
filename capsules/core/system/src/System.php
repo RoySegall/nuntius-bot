@@ -3,7 +3,6 @@
 namespace Nuntius\System;
 
 use Nuntius\Nuntius;
-use Zend\ServiceManager\PluginManagerInterface;
 
 class System {
 
@@ -22,7 +21,7 @@ class System {
   /**
    * Get the plugin manager.
    *
-   * @return PluginManagerInterface
+   * @return PluginManager
    *  The plugin manager instance.
    *
    * @throws \Exception

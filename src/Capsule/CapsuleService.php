@@ -84,6 +84,7 @@ class CapsuleService implements CapsuleServiceInterface {
 
   /**
    * {@inheritdoc}
+   * @throws \Exception
    */
   public function enableCapsule($capsule_name) {
     // Check if the console exists in the system table.
@@ -124,14 +125,7 @@ class CapsuleService implements CapsuleServiceInterface {
       $this->dbDispatcher->getStorage()->table('system')->save($capsule);
       Nuntius::container(TRUE);
 
-      // Get the proper class of the hooks dispatching.
-      /** @var HooksDispatcherInterface $dispatcher */
-      $dispatcher = Nuntius::container()->get('hooks_dispatcher');
-
-      // Invoke the hook.
-      $arguments = ['capsule' => $capsule_name];
-      $dispatcher->setArguments($arguments)->invoke('capsule_install');
-
+      $this->dispatchCapsuleInstall($capsule_name);
       return TRUE;
     }
 
@@ -147,15 +141,25 @@ class CapsuleService implements CapsuleServiceInterface {
     $this->dbDispatcher->getStorage()->table('system')->update($results);
     Nuntius::container(TRUE);
 
-    // Get the proper class of the hooks dispatching.
+    $this->dispatchCapsuleInstall($capsule_name);
+    return TRUE;
+  }
+
+  /**
+   * Notify other capsule that a new capsule has been installed.
+   *
+   * @param $capsule_name
+   *  The capsule name.
+   *
+   * @throws \Exception
+   */
+  protected function dispatchCapsuleInstall($capsule_name) {
     /** @var HooksDispatcherInterface $dispatcher */
     $dispatcher = Nuntius::container()->get('hooks_dispatcher');
 
     // Invoke the hook.
     $arguments = ['capsule' => $capsule_name];
     $dispatcher->setArguments($arguments)->invoke('capsule_install');
-
-    return TRUE;
   }
 
   /**
