@@ -21,8 +21,7 @@ class HooksDispatcher implements HooksDispatcherInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct(CapsuleServiceInterface $capsule_service)
-  {
+  public function __construct(CapsuleServiceInterface $capsule_service) {
     $this->capsuleService = $capsule_service;
   }
 

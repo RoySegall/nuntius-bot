@@ -12,8 +12,14 @@ services:
   hooks_dispatcher:
     class: \Nuntius\System\HooksDispatcher
     arguments: ['@capsule_manager']
-
-# Define hooks.
+  plugin_manager:
+    class: \Nuntius\System\PluginManager
+    arguments: ['@finder', '@capsule_manager']
+  entity.plugin_manager:
+    class: \Nuntius\System\EntityPluginManager
+    arguments: ['@plugin_manager']
+  constraint:
+    class: \Nuntius\System\Constraints\NuntiusConstraint
 hooks:
-  entity_create:
-    class: \Nuntius\System\Hooks\EntityCreate
+  capsule_install:
+    class: \Nuntius\System\Hooks\CapsuleInstall

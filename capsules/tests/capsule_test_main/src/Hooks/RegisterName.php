@@ -47,7 +47,7 @@ class RegisterName extends HookBaseClass implements HookContainerInterface {
    * @throws \Exception
    */
   static function getContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
-    return new self($container->get('db'));
+    return new static($container->get('db'));
   }
 
 }

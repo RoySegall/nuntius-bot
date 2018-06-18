@@ -2,35 +2,21 @@
 
 require_once 'autoloader.php';
 
-$entity = new class {
-  private $num;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-  /**
-   * @return mixed
-   */
-  public function getNum()
-  {
-    return $this->num;
-  }
+\Nuntius\Nuntius::getCapsuleManager()->enableCapsule('capsule_test_secondary');
 
-  /**
-   * @param mixed $num
-   */
-  public function setNum($num)
-  {
-    $this->num = $num;
-  }
+/** @var \Nuntius\System\Plugin\Entity\System $entity */
+$entity = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
-};
 
-$entity->setNum(1);
+$entity->name = 'Testing';
+$entity->machine_name = 'testing';
+$entity->description = 'testing entity';
+$entity->path = '.';
+$entity->status = 1;
 
-\kint::dump('before ' . $entity->getNum());
-$arguments = ['entity' => $entity];
-
-$hooks = \Nuntius\System\System::hooksDispatcher();
-$hooks
-  ->setArguments($arguments)
-  ->alter('entity_create');
-
-\kint::dump('after ' . $entity->getNum());
+$entity = $entity->save();
+$entity->delete($entity->id);

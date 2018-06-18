@@ -17,7 +17,7 @@ namespace Nuntius\System;
  *
  * class EntityCreate extends HookBaseClass implements HookContainerInterface {
  *  static function getContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container) {
- *    return new self($container->get('capsule_manager'));
+ *    return new static($container->get('capsule_manager'));
  *  }
  *
  *  public function __construct(CapsuleServiceInterface $capsule_service) {

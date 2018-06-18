@@ -2,3 +2,13 @@
 hooks:
   register_names:
     class: \Nuntius\CapsuleTestSecondary\Hooks\RegisterName
+  entity_save:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntitySave
+  entity_load:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityLoad
+  entity_create:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityCreate
+  entity_update:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityUpdate
+  entity_delete:
+    class: \Nuntius\CapsuleTestSecondary\Hooks\EntityDelete
