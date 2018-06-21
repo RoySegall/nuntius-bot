@@ -40,7 +40,7 @@ class Memcache extends CacheBase {
   /**
    * {@inheritdoc}
    */
-  public function getMultiple() {
+  public function getMultiple($cids) {
   }
 
   /**

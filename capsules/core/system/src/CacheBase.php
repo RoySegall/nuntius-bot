@@ -45,9 +45,12 @@ abstract class CacheBase {
   /**
    * Get all the caches in the current cache bin.
    *
+   * @param array $cids
+   *  List of cache ID.
+   *
    * @return mixed
    */
-  abstract public function getMultiple();
+  abstract public function getMultiple($cids);
 
   /**
    * Setting the cache.
