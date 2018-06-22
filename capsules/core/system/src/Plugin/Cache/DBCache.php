@@ -88,12 +88,18 @@ class DBCache extends CacheBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function getMultiple($cids) {
-    return $this->dbDispatcher
+    $results = $this->dbDispatcher
       ->getQuery()
       ->table('cache')
       ->condition('id', $cids, 'IN')
       ->condition('expires', time(), '>=')
       ->execute();
+
+    foreach ($results as &$result) {
+      $result['content'] = ($result['content']);
+    }
+
+    return $results;
   }
 
   /**
@@ -104,10 +110,18 @@ class DBCache extends CacheBase implements HookContainerInterface {
       $expires = time() + (86400 * 365 * 5);
     }
 
-    return $this->dbDispatcher
+    $data = [
+      'id' => $id,
+      'content' => ($content),
+      'expires' => $expires,
+    ];
+
+    $this->dbDispatcher
       ->getStorage()
       ->table('cache')
-      ->save(['id' => $id, 'content' => $content, 'expires' => $expires]);
+      ->save($data);
+
+    return $data;
   }
 
 }
