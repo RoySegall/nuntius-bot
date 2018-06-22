@@ -3,6 +3,7 @@
 namespace Nuntius\System;
 
 use Nuntius\Db\DbDispatcher;
+use Nuntius\Nuntius;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -492,6 +493,16 @@ abstract class EntityBase implements HookContainerInterface {
    */
   protected function constraints() {
     return [];
+  }
+
+  public function __sleep() {
+    unset($this->dbDispatcher);
+
+    return array_keys(get_object_vars($this));
+  }
+
+  public function __wakeup() {
+    $this->dbDispatcher = Nuntius::container()->get('db');
   }
 
 }

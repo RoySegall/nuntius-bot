@@ -96,7 +96,7 @@ class DBCache extends CacheBase implements HookContainerInterface {
       ->execute();
 
     foreach ($results as &$result) {
-      $result['content'] = ($result['content']);
+      $result['content'] = unserialize($result['content']);
     }
 
     return $results;
@@ -110,9 +110,13 @@ class DBCache extends CacheBase implements HookContainerInterface {
       $expires = time() + (86400 * 365 * 5);
     }
 
+    $old_content = $content;
+
+    $content = serialize($content);
+
     $data = [
       'id' => $id,
-      'content' => ($content),
+      'content' => $content,
       'expires' => $expires,
     ];
 
@@ -120,6 +124,8 @@ class DBCache extends CacheBase implements HookContainerInterface {
       ->getStorage()
       ->table('cache')
       ->save($data);
+
+    $data['content'] = $old_content;
 
     return $data;
   }

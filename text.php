@@ -15,19 +15,12 @@ try {
   $entity = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
   if (!$cache_results = $cache->get('entities')) {
-//    for ($i = 0; $i <= 10; $i++) {
-//      $entity->name = 'Testing';
-//      $entity->machine_name = 'testing';
-//      $entity->description = 'testing entity';
-//      $entity->path = '.';
-//      $entity->status = 1;
-//      $entity->save();
-//    }
-
-    $cache_results = $cache->set('entities', $entity->loadMultiple());
+    $cache_results = $cache->set('entities', $entity->loadMultiple(['0161dd3c-b8af-4d84-b1cf-114c5162363e']));
   }
 
-  $cache->clear();
+  d($cache_results);
+
+//  $cache->clear();
 } catch (Exception $e) {
   d($e->getMessage());
 }
