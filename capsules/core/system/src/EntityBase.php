@@ -495,14 +495,30 @@ abstract class EntityBase implements HookContainerInterface {
     return [];
   }
 
+  /**
+   * Keep only the properties we need to serialize.
+   *
+   * @return array
+   */
   public function __sleep() {
-    unset($this->dbDispatcher);
-
-    return array_keys(get_object_vars($this));
+    return array_merge($this->properties, [
+      'plugin_id',
+      'properties',
+      'relations',
+      'hooksDispatcher',
+      'validator',
+      'entityPluginManager',
+    ]);
   }
 
+  /**
+   * Bring back the properties we removed while serializing.
+   *
+   * @throws \Exception
+   */
   public function __wakeup() {
     $this->dbDispatcher = Nuntius::container()->get('db');
+    $this->storage = $this->dbDispatcher->getStorage();
   }
 
 }

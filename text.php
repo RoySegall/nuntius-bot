@@ -15,10 +15,10 @@ try {
   $entity = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
   if (!$cache_results = $cache->get('entities')) {
-    $cache_results = $cache->set('entities', $entity->loadMultiple(['0161dd3c-b8af-4d84-b1cf-114c5162363e']));
+    $cache_results = $cache->set('entities', $entity->loadMultiple());
+  } else {
+    $cache_results['data'] = $entity->loadMultiple();
   }
-
-  d($cache_results);
 
 //  $cache->clear();
 } catch (Exception $e) {

@@ -69,35 +69,4 @@ class NuntiusRethinkdb {
       ->table($table);
   }
 
-  /**
-   * Closing the connection when serializing.
-   *
-   * Since this service will be injected as a property to an object that might
-   * be cached we need to close the service when serializing the object.
-   *
-   * @return array
-   * @throws r\Exceptions\RqlDriverError
-   */
-  public function ___sleep() {
-    try {
-      $this->connection->close(true);
-    } catch (\Exception $e) {
-
-    }
-
-    return [];
-  }
-
-  /**
-   * Opening a new connection when un-serializing.
-   *
-   * After this service was injected to an object we need to reconnect to the
-   * DB.
-   *
-   * @throws \Exception
-   */
-  public function ___wakeup() {
-    $this->__construct(Nuntius::container()->get('config'));
-  }
-
 }
