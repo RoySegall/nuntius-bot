@@ -64,7 +64,7 @@ abstract class CacheBase {
    *
    * @return mixed
    */
-  abstract public function set($id, $content, $expires);
+  abstract public function set($id, $content, $expires = NULL);
 
   /**
    * Determine if the plugin is ready to use.

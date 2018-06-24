@@ -68,7 +68,9 @@ class Memcache extends CacheBase implements HookContainerInterface {
    * @return mixed
    */
   public function get($cid) {
-    return $this->memcached->get($cid);
+    $content = $this->memcached->get($cid);
+
+    return unserialize($content);
   }
 
   /**
@@ -80,7 +82,11 @@ class Memcache extends CacheBase implements HookContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function set($id, $content, $expires) {
+  public function set($id, $content, $expires = NULL) {
+
+    if (!$expires) {
+      $expires = time() + (86400 * 365 * 5);
+    }
 
     $old_content = $content;
     $content = serialize($content);

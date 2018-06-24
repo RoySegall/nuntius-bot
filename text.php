@@ -8,17 +8,22 @@ try {
 
 //  \Nuntius\Nuntius::getCapsuleManager()->enableCapsule('system');
 
-  /** @var \Nuntius\System\Plugin\Cache\DBCache $cache */
-  $cache = \Nuntius\System\System::getCacheManager()->createInstance('db');
+  /** @var \Nuntius\System\Plugin\Cache\Memcache $cache */
+  $cache = \Nuntius\System\System::getCacheManager()->createInstance('memcache');
 
   /** @var \Nuntius\System\Plugin\Entity\System $entity */
   $entity = \Nuntius\System\System::getEntityManager()->createInstance('system');
 
-  if (!$cache_results = $cache->get('entities')) {
-    $cache_results = $cache->set('entities', $entity->loadMultiple());
-  } else {
-    $cache_results['data'] = $entity->loadMultiple();
-  }
+//  $cache->set('a', $entity->loadMultiple());
+//
+  $cache->get('a');
+
+
+//  if (!$cache_results = $cache->get('entities')) {
+//    $cache_results = $cache->set('entities', $entity->loadMultiple());
+//  } else {
+//    $cache_results['data'] = $entity->loadMultiple();
+//  }
 
 //  $cache->clear();
 } catch (Exception $e) {
