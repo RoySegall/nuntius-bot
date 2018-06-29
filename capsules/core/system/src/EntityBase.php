@@ -508,6 +508,8 @@ abstract class EntityBase implements HookContainerInterface {
       'hooksDispatcher',
       'validator',
       'entityPluginManager',
+      'namespace',
+      'provided_by',
     ]);
   }
 
