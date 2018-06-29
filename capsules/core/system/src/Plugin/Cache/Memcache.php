@@ -57,6 +57,20 @@ class Memcache extends CacheBase implements HookContainerInterface {
    * {@inheritdoc}
    */
   public function clear($cid = NULL) {
+    $this->memcached->delete($cid);
+
+    if ($cid) {
+      if (is_array($cid)) {
+        $this->memcached->deleteMulti($cid);
+      }
+      else {
+        $this->memcached->delete($cid);
+      }
+
+      return;
+    }
+
+    $this->memcached->delete($cid);
   }
 
   /**
@@ -68,15 +82,20 @@ class Memcache extends CacheBase implements HookContainerInterface {
    * @return mixed
    */
   public function get($cid) {
-    $content = $this->memcached->get($cid);
+    $content = $this->getMultiple([$cid]);
 
-    return unserialize($content);
+    return reset($content);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getMultiple($cids) {
+    $result = $this->memcached->getMulti($cids);
+
+    return array_map(function($item) {
+      return unserialize($item);
+    }, $result);
   }
 
   /**
@@ -93,11 +112,7 @@ class Memcache extends CacheBase implements HookContainerInterface {
 
     $this->memcached->set($id, $content, $expires);
 
-    return [
-      'id' => $id,
-      'content' => $old_content,
-      'expires' => $expires,
-    ];
+    return $old_content;
   }
 
   /**
