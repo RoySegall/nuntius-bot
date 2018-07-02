@@ -10,6 +10,7 @@ addons:
 
 services:
   - mongodb
+  - memcached
 
 env:
   matrix:
@@ -31,6 +32,8 @@ before_script:
 
   # Set up stuff for the webhooks tests.
   - nohup php -S localhost:8888 > /dev/null 2>&1 &
+
+  - memcached -p 2020 --daemon
 
   - export NUNTIUS_BASE_URL=http://localhost:8888
 
