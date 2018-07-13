@@ -58,7 +58,6 @@ abstract class EntityBase implements HookContainerInterface {
     $this->storage = $db->getStorage();
     $this->hooksDispatcher = $hooks_dispatcher;
     $this->entityPluginManager = $entity_plugin_manager;
-
     $this->validator = Validation::createValidator();
   }
 
@@ -521,6 +520,8 @@ abstract class EntityBase implements HookContainerInterface {
   public function __wakeup() {
     $this->dbDispatcher = Nuntius::container()->get('db');
     $this->storage = $this->dbDispatcher->getStorage();
+    // Setting the storage.
+    $this->storage->table($this->plugin_id);
   }
 
 }
